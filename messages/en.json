@@ -58,5 +58,21 @@
       "VALIDACION": "Please check the form",
       "DESCONOCIDO": "Something went wrong. Please try again."
     }
+  },
+  "Gracias": {
+    "titulo": "We received your payment",
+    "confirmando": "Confirming your booking…",
+    "demora": "We'll email you as soon as it's confirmed.",
+    "confirmada": "Your booking is confirmed!",
+    "confirmadaAyuda": "Keep your booking link: you can see the details and cancel there.",
+    "verReserva": "View my booking",
+    "noConfirmada": "We couldn't confirm your booking. If you were charged, the payment is refunded automatically.",
+    "volverInicio": "Back to home"
+  },
+  "Cancelado": {
+    "titulo": "The payment wasn't completed",
+    "cuerpo": "Your spots are released in 30 minutes.",
+    "volverTour": "Back to the tour",
+    "volverInicio": "Back to home"
   }
 }

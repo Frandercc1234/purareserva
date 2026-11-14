@@ -58,5 +58,21 @@
       "VALIDACION": "Revisá los datos del formulario",
       "DESCONOCIDO": "Algo salió mal. Intentá de nuevo."
     }
+  },
+  "Gracias": {
+    "titulo": "Recibimos tu pago",
+    "confirmando": "Confirmando tu reserva…",
+    "demora": "Te enviaremos un correo apenas se confirme.",
+    "confirmada": "¡Tu reserva está confirmada!",
+    "confirmadaAyuda": "Guardá el enlace de tu reserva: ahí podés ver los datos y cancelar.",
+    "verReserva": "Ver mi reserva",
+    "noConfirmada": "No pudimos confirmar tu reserva. Si te cobraron, el pago se reembolsa automáticamente.",
+    "volverInicio": "Volver al inicio"
+  },
+  "Cancelado": {
+    "titulo": "No se completó el pago",
+    "cuerpo": "Tus cupos se liberan en 30 minutos.",
+    "volverTour": "Volver al tour",
+    "volverInicio": "Volver al inicio"
   }
 }

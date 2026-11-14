@@ -325,6 +325,10 @@ export type Database = {
       };
     };
     Functions: {
+      confirmar_reserva_pago: {
+        Args: { p_payment_intent: string; p_reserva_id: string };
+        Returns: string;
+      };
       crear_negocio: {
         Args: { p_email: string; p_nombre: string; p_slug: string };
         Returns: {

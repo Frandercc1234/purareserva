@@ -25,6 +25,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.29",
     "prettier": "^3.10.1",
+    "supabase": "^3.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^2.1.9"

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { aCentavos } from './dinero';
 
 export const slugSchema = z
   .string()
@@ -46,6 +47,43 @@ export const negocioSchema = z.object({
     .int('Debe ser un número entero')
     .min(0, 'Entre 0 y 168')
     .max(168, 'Entre 0 y 168'),
+  activo: z.boolean(),
+});
+
+const entero = (min: number, max: number) =>
+  z.coerce
+    .number({ message: 'Ingresá un número' })
+    .int('Debe ser un número entero')
+    .min(min, `Entre ${min} y ${max}`)
+    .max(max, `Entre ${min} y ${max}`);
+
+export const tourSchema = z.object({
+  nombre_es: z
+    .string()
+    .trim()
+    .min(2, 'Entre 2 y 100 caracteres')
+    .max(100, 'Entre 2 y 100 caracteres'),
+  nombre_en: z
+    .string()
+    .trim()
+    .min(2, 'Entre 2 y 100 caracteres')
+    .max(100, 'Entre 2 y 100 caracteres'),
+  descripcion_es: z.string().trim().max(2000, 'Máximo 2000 caracteres'),
+  descripcion_en: z.string().trim().max(2000, 'Máximo 2000 caracteres'),
+  precio: z.string().transform((v, ctx) => {
+    const c = aCentavos(v);
+    if (c === null || c < 100 || c > 1_000_000) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Ingresá un precio entre $1.00 y $10000.00',
+      });
+      return z.NEVER;
+    }
+    return c;
+  }),
+  duracion_min: entero(15, 1440),
+  cupo_default: entero(1, 200),
+  punto_encuentro: z.string().trim().max(200, 'Máximo 200 caracteres'),
   activo: z.boolean(),
 });
 

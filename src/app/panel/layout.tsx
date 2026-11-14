@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { Sidebar } from '@/components/panel/Sidebar';
 import { createClient } from '@/lib/supabase/server';
 import { cerrarSesion } from '../(auth)/actions';
 
@@ -21,19 +22,9 @@ export default async function PanelLayout({
   if (!negocio) redirect('/registro');
 
   return (
-    <div className="min-h-screen">
-      <header className="flex items-center justify-between border-b border-borde px-4 py-3">
-        <span className="font-semibold">{negocio.nombre}</span>
-        <form action={cerrarSesion}>
-          <button
-            type="submit"
-            className="h-11 px-3 text-sm text-primario underline"
-          >
-            Cerrar sesión
-          </button>
-        </form>
-      </header>
-      <div className="p-4">{children}</div>
+    <div className="min-h-screen md:flex">
+      <Sidebar nombre={negocio.nombre} cerrarSesion={cerrarSesion} />
+      <div className="min-w-0 flex-1 px-4 py-6 md:p-8">{children}</div>
     </div>
   );
 }

@@ -3,20 +3,13 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import {
+  camposDeZod,
   loginSchema,
   registroSchema,
   type Resultado,
 } from '@/lib/validaciones';
 
 export type EstadoForm = Resultado | null;
-
-function camposDeZod(error: {
-  issues: { path: PropertyKey[]; message: string }[];
-}) {
-  const campos: Record<string, string> = {};
-  for (const i of error.issues) campos[String(i.path[0])] ??= i.message;
-  return campos;
-}
 
 export async function iniciarSesion(
   _prev: EstadoForm,

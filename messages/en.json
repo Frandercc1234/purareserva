@@ -31,5 +31,32 @@
     "deposito": "You pay a {pct}% deposit now; the rest at the meeting point.",
     "cancelacion": "{horas, plural, =0 {You can cancel with a refund up until departure.} one {Refund if you cancel up to # hour before departure.} other {Refund if you cancel up to # hours before departure.}}",
     "porOperador": "Operated by {nombre}"
+  },
+  "Reserva": {
+    "titulo": "Your details",
+    "nombre": "Full name",
+    "email": "Email",
+    "telefono": "Phone (with country code)",
+    "personas": "Guests",
+    "personasAyuda": "Maximum {max}",
+    "total": "Total",
+    "depositoAhora": "Deposit to pay now",
+    "saldo": "Balance to pay at the meeting point",
+    "pagar": "Pay deposit {monto}",
+    "elegirPrimero": "Choose a departure to book",
+    "procesando": "Redirecting to payment…",
+    "errores": {
+      "salida_id": "Choose a departure",
+      "nombre": "Enter your name (at least 2 letters)",
+      "email": "Enter a valid email",
+      "telefono": "Enter a valid phone (8 to 20 digits, optional +)",
+      "personas": "Choose between 1 and 50 guests",
+      "SIN_CUPO": "There aren't enough spots left on this departure",
+      "SALIDA_NO_DISPONIBLE": "This departure is no longer available",
+      "SALIDA_NO_EXISTE": "This departure doesn't exist",
+      "STRIPE_ERROR": "We couldn't start the payment. Please try again in a few minutes.",
+      "VALIDACION": "Please check the form",
+      "DESCONOCIDO": "Something went wrong. Please try again."
+    }
   }
 }

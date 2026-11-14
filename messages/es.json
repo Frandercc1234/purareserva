@@ -31,5 +31,32 @@
     "deposito": "Pagás un depósito del {pct}% al reservar; el resto en el lugar.",
     "cancelacion": "{horas, plural, =0 {Podés cancelar con reembolso hasta el momento de la salida.} one {Cancelación con reembolso hasta # hora antes de la salida.} other {Cancelación con reembolso hasta # horas antes de la salida.}}",
     "porOperador": "Operado por {nombre}"
+  },
+  "Reserva": {
+    "titulo": "Tus datos",
+    "nombre": "Nombre completo",
+    "email": "Correo electrónico",
+    "telefono": "Teléfono (con código de país)",
+    "personas": "Personas",
+    "personasAyuda": "Máximo {max}",
+    "total": "Total",
+    "depositoAhora": "Depósito a pagar ahora",
+    "saldo": "Saldo a pagar en el lugar",
+    "pagar": "Pagar depósito {monto}",
+    "elegirPrimero": "Elegí una salida para reservar",
+    "procesando": "Redirigiendo al pago…",
+    "errores": {
+      "salida_id": "Elegí una salida",
+      "nombre": "Ingresá tu nombre (mínimo 2 letras)",
+      "email": "Ingresá un correo válido",
+      "telefono": "Ingresá un teléfono válido (8 a 20 dígitos, con + opcional)",
+      "personas": "Elegí entre 1 y 50 personas",
+      "SIN_CUPO": "Ya no quedan suficientes cupos en esta salida",
+      "SALIDA_NO_DISPONIBLE": "Esta salida ya no está disponible",
+      "SALIDA_NO_EXISTE": "Esta salida no existe",
+      "STRIPE_ERROR": "No pudimos iniciar el pago. Intentá de nuevo en unos minutos.",
+      "VALIDACION": "Revisá los datos del formulario",
+      "DESCONOCIDO": "Algo salió mal. Intentá de nuevo."
+    }
   }
 }

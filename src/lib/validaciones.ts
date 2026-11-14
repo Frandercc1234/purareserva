@@ -129,6 +129,18 @@ export const salidasLoteSchema = z.object({
   cupo: cupoOpcional,
 });
 
+export const reservaSchema = z.object({
+  salida_id: uuid,
+  nombre: z.string().trim().min(2).max(100),
+  email: z.string().trim().email(),
+  telefono: z
+    .string()
+    .trim()
+    .regex(/^\+?[0-9 ]{8,20}$/),
+  personas: z.coerce.number().int().min(1).max(50),
+  idioma: z.enum(['es', 'en']),
+});
+
 /** Primer mensaje de error por campo, para mostrarlo junto a cada input. */
 export function camposDeZod(error: {
   issues: { path: PropertyKey[]; message: string }[];

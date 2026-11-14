@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { SalidaPicker } from '@/components/publico/SalidaPicker';
+import { ReservaForm } from '@/components/publico/ReservaForm';
 import { WhatsAppButton } from '@/components/publico/WhatsAppButton';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -65,7 +65,7 @@ export default async function TourPage({
     locale === 'en' ? tour.descripcion_en : tour.descripcion_es;
 
   return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-8 md:py-12">
+    <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-8 pb-28 md:py-12 lg:pb-12">
       <Link
         href={`/${negocio.slug}`}
         className="inline-flex h-11 items-center text-primario underline"
@@ -107,7 +107,11 @@ export default async function TourPage({
 
         <Card className="flex h-fit flex-col gap-4">
           {disponibles.length ? (
-            <SalidaPicker salidas={disponibles} />
+            <ReservaForm
+              salidas={disponibles}
+              precioCents={tour.precio_cents}
+              depositoPct={negocio.deposito_pct}
+            />
           ) : (
             <div className="flex flex-col gap-3">
               <EmptyState

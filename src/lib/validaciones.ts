@@ -87,6 +87,35 @@ export const tourSchema = z.object({
   activo: z.boolean(),
 });
 
+/** UUID por formato (acepta también los ids fijos del seed). */
+export const uuid = z
+  .string()
+  .regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+
+const fecha = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Elegí una fecha');
+const hora = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Elegí una hora');
+const cupoOpcional = z
+  .union([z.literal(''), entero(1, 200)])
+  .transform((v) => (v === '' ? null : v));
+
+export const salidaSchema = z.object({
+  tour_id: uuid,
+  fecha,
+  hora,
+  cupo: cupoOpcional,
+});
+
+export const salidasLoteSchema = z.object({
+  tour_id: uuid,
+  desde: fecha,
+  hasta: fecha,
+  dias: z
+    .array(z.coerce.number().int().min(0).max(6))
+    .min(1, 'Elegí al menos un día'),
+  hora,
+  cupo: cupoOpcional,
+});
+
 /** Primer mensaje de error por campo, para mostrarlo junto a cada input. */
 export function camposDeZod(error: {
   issues: { path: PropertyKey[]; message: string }[];

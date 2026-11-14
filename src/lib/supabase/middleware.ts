@@ -2,8 +2,8 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import type { Database } from '@/types/database';
 
-export async function updateSession(request: NextRequest) {
-  let response = NextResponse.next({ request });
+export async function updateSession(request: NextRequest, base?: NextResponse) {
+  let response = base ?? NextResponse.next({ request });
 
   const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -13,7 +13,7 @@ export async function updateSession(request: NextRequest) {
         getAll: () => request.cookies.getAll(),
         setAll(list) {
           list.forEach(({ name, value }) => request.cookies.set(name, value));
-          response = NextResponse.next({ request });
+          if (!base) response = NextResponse.next({ request });
           list.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options),
           );

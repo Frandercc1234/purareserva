@@ -1,0 +1,14 @@
+{
+  "Comun": {
+    "nombreApp": "PuraReserva",
+    "idioma": "Idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "Landing": {
+    "titulo": "Reservá tours en Guanacaste",
+    "subtitulo": "Tours de operadores locales, con cupo confirmado y depósito en línea.",
+    "operadores": "Operadores",
+    "vacio": "Todavía no hay operadores publicados"
+  }
+}

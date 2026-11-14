@@ -1,0 +1,14 @@
+{
+  "Comun": {
+    "nombreApp": "PuraReserva",
+    "idioma": "Language",
+    "es": "Español",
+    "en": "English"
+  },
+  "Landing": {
+    "titulo": "Book tours in Guanacaste",
+    "subtitulo": "Tours from local operators, with confirmed spots and an online deposit.",
+    "operadores": "Operators",
+    "vacio": "No operators published yet"
+  }
+}

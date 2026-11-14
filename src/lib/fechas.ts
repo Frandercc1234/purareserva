@@ -20,3 +20,40 @@ export function formatearCorto(fecha: Date | string, locale = 'es') {
     minute: '2-digit',
   }).format(new Date(fecha));
 }
+
+/** Día calendario en Costa Rica ("2026-03-02"), útil para agrupar salidas. */
+export function diaCR(fecha: Date | string) {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: ZONA,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date(fecha));
+}
+
+/** "lunes 18 de noviembre" / "Monday, November 18". */
+export function formatearDia(fecha: Date | string, locale = 'es') {
+  return new Intl.DateTimeFormat(locale, {
+    timeZone: ZONA,
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  }).format(new Date(fecha));
+}
+
+/** "8:00" / "8:00 AM" según el idioma. */
+export function formatearHora(fecha: Date | string, locale = 'es') {
+  return new Intl.DateTimeFormat(locale, {
+    timeZone: ZONA,
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(new Date(fecha));
+}
+
+/** 150 -> "2 h 30 min", 60 -> "1 h", 45 -> "45 min". */
+export function formatearDuracion(minutos: number) {
+  const h = Math.floor(minutos / 60);
+  const m = minutos % 60;
+  if (h === 0) return `${m} min`;
+  return m === 0 ? `${h} h` : `${h} h ${m} min`;
+}

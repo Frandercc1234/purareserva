@@ -3,12 +3,33 @@
     "nombreApp": "PuraReserva",
     "idioma": "Idioma",
     "es": "Español",
-    "en": "English"
+    "en": "English",
+    "porPersona": "por persona",
+    "verTours": "Ver tours",
+    "volver": "Volver",
+    "whatsapp": "Consultar por WhatsApp"
   },
   "Landing": {
     "titulo": "Reservá tours en Guanacaste",
     "subtitulo": "Tours de operadores locales, con cupo confirmado y depósito en línea.",
     "operadores": "Operadores",
-    "vacio": "Todavía no hay operadores publicados"
+    "vacio": "Todavía no hay operadores publicados",
+    "cantidadTours": "{count, plural, one {# tour} other {# tours}}"
+  },
+  "Negocio": {
+    "sinTours": "Este operador no tiene tours disponibles",
+    "tours": "Tours"
+  },
+  "Tour": {
+    "duracion": "Duración",
+    "puntoEncuentro": "Punto de encuentro",
+    "elegirSalida": "Elegí tu salida",
+    "sinSalidas": "No hay salidas disponibles en los próximos días",
+    "sinSalidasAyuda": "Escribile al operador para coordinar una fecha.",
+    "cupos": "{count, plural, one {# cupo} other {# cupos}}",
+    "agotado": "Agotado",
+    "deposito": "Pagás un depósito del {pct}% al reservar; el resto en el lugar.",
+    "cancelacion": "{horas, plural, =0 {Podés cancelar con reembolso hasta el momento de la salida.} one {Cancelación con reembolso hasta # hora antes de la salida.} other {Cancelación con reembolso hasta # horas antes de la salida.}}",
+    "porOperador": "Operado por {nombre}"
   }
 }

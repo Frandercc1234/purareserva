@@ -1,11 +1,24 @@
 import { z } from 'zod';
 import { aCentavos } from './dinero';
 
+/** Rutas que no pueden ser el slug de un negocio. */
+const SLUGS_RESERVADOS = [
+  'reserva',
+  'panel',
+  'login',
+  'registro',
+  'api',
+  'dev',
+  'es',
+  'en',
+];
+
 export const slugSchema = z
   .string()
   .min(3)
   .max(40)
-  .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+  .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/)
+  .refine((s) => !SLUGS_RESERVADOS.includes(s));
 
 export const loginSchema = z.object({
   email: z.string().email(),

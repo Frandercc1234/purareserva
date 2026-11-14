@@ -3,12 +3,33 @@
     "nombreApp": "PuraReserva",
     "idioma": "Language",
     "es": "Español",
-    "en": "English"
+    "en": "English",
+    "porPersona": "per person",
+    "verTours": "View tours",
+    "volver": "Back",
+    "whatsapp": "Ask on WhatsApp"
   },
   "Landing": {
     "titulo": "Book tours in Guanacaste",
     "subtitulo": "Tours from local operators, with confirmed spots and an online deposit.",
     "operadores": "Operators",
-    "vacio": "No operators published yet"
+    "vacio": "No operators published yet",
+    "cantidadTours": "{count, plural, one {# tour} other {# tours}}"
+  },
+  "Negocio": {
+    "sinTours": "This operator has no tours available",
+    "tours": "Tours"
+  },
+  "Tour": {
+    "duracion": "Duration",
+    "puntoEncuentro": "Meeting point",
+    "elegirSalida": "Choose your departure",
+    "sinSalidas": "No departures available in the coming days",
+    "sinSalidasAyuda": "Message the operator to arrange a date.",
+    "cupos": "{count, plural, one {# spot} other {# spots}}",
+    "agotado": "Sold out",
+    "deposito": "You pay a {pct}% deposit now; the rest at the meeting point.",
+    "cancelacion": "{horas, plural, =0 {You can cancel with a refund up until departure.} one {Refund if you cancel up to # hour before departure.} other {Refund if you cancel up to # hours before departure.}}",
+    "porOperador": "Operated by {nombre}"
   }
 }

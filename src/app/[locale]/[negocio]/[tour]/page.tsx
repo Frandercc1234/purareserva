@@ -1,0 +1,128 @@
+import { notFound } from 'next/navigation';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { SalidaPicker } from '@/components/publico/SalidaPicker';
+import { WhatsAppButton } from '@/components/publico/WhatsAppButton';
+import { Card } from '@/components/ui/Card';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Link } from '@/i18n/routing';
+import { formatearUSD } from '@/lib/dinero';
+import { formatearDuracion } from '@/lib/fechas';
+import { createPublicClient } from '@/lib/supabase/public';
+
+export const dynamic = 'force-dynamic';
+
+export default async function TourPage({
+  params,
+}: {
+  params: Promise<{ locale: string; negocio: string; tour: string }>;
+}) {
+  const { locale, negocio: negocioSlug, tour: tourSlug } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('Tour');
+  const c = await getTranslations('Comun');
+  const supabase = createPublicClient();
+
+  const { data: negocio } = await supabase
+    .from('negocios')
+    .select('id, slug, nombre, whatsapp, deposito_pct, horas_cancelacion')
+    .eq('slug', negocioSlug)
+    .maybeSingle();
+  if (!negocio) notFound();
+
+  const { data: tour } = await supabase
+    .from('tours')
+    .select('*')
+    .eq('negocio_id', negocio.id)
+    .eq('slug', tourSlug)
+    .maybeSingle();
+  if (!tour) notFound();
+
+  // Salidas futuras con más de 1 hora de anticipación (igual que crear_reserva).
+  const limite = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+  const { data: salidas } = await supabase
+    .from('salidas_ocupacion')
+    .select('id, inicia_en, cupo, ocupados')
+    .eq('tour_id', tour.id)
+    .eq('estado', 'programada')
+    .gt('inicia_en', limite)
+    .order('inicia_en', { ascending: true })
+    .limit(200);
+
+  const disponibles = (salidas ?? []).flatMap((s) =>
+    s.id && s.inicia_en
+      ? [
+          {
+            id: s.id,
+            inicia_en: s.inicia_en,
+            libres: (s.cupo ?? 0) - (s.ocupados ?? 0),
+          },
+        ]
+      : [],
+  );
+
+  const nombre = locale === 'en' ? tour.nombre_en : tour.nombre_es;
+  const descripcion =
+    locale === 'en' ? tour.descripcion_en : tour.descripcion_es;
+
+  return (
+    <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-8 md:py-12">
+      <Link
+        href={`/${negocio.slug}`}
+        className="inline-flex h-11 items-center text-primario underline"
+      >
+        {negocio.nombre}
+      </Link>
+
+      <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
+        <div className="flex flex-col gap-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={tour.imagen_url ?? '/tour-default.svg'}
+            alt={nombre}
+            className="aspect-video w-full rounded-tarjeta object-cover"
+          />
+          <h1 className="text-3xl font-semibold">{nombre}</h1>
+          <p>
+            <span className="text-2xl font-semibold text-texto">
+              {formatearUSD(tour.precio_cents, locale)}
+            </span>{' '}
+            <span className="text-texto-suave">{c('porPersona')}</span>
+          </p>
+          {descripcion && <p className="text-texto-suave">{descripcion}</p>}
+          <dl className="grid gap-2 sm:grid-cols-2">
+            <div>
+              <dt className="text-sm text-texto-suave">{t('duracion')}</dt>
+              <dd>{formatearDuracion(tour.duracion_min)}</dd>
+            </div>
+            {tour.punto_encuentro && (
+              <div>
+                <dt className="text-sm text-texto-suave">
+                  {t('puntoEncuentro')}
+                </dt>
+                <dd>{tour.punto_encuentro}</dd>
+              </div>
+            )}
+          </dl>
+        </div>
+
+        <Card className="flex h-fit flex-col gap-4">
+          {disponibles.length ? (
+            <SalidaPicker salidas={disponibles} />
+          ) : (
+            <div className="flex flex-col gap-3">
+              <EmptyState
+                titulo={t('sinSalidas')}
+                descripcion={t('sinSalidasAyuda')}
+                accion={<WhatsAppButton numero={negocio.whatsapp} />}
+              />
+            </div>
+          )}
+          <div className="flex flex-col gap-1 text-sm text-texto-suave">
+            <p>{t('deposito', { pct: negocio.deposito_pct })}</p>
+            <p>{t('cancelacion', { horas: negocio.horas_cancelacion })}</p>
+          </div>
+        </Card>
+      </div>
+    </main>
+  );
+}

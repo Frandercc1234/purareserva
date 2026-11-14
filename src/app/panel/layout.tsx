@@ -22,12 +22,12 @@ export default async function PanelLayout({
 
   return (
     <div className="min-h-screen">
-      <header className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
+      <header className="flex items-center justify-between border-b border-borde px-4 py-3">
         <span className="font-semibold">{negocio.nombre}</span>
         <form action={cerrarSesion}>
           <button
             type="submit"
-            className="h-11 px-3 text-sm text-teal-700 underline"
+            className="h-11 px-3 text-sm text-primario underline"
           >
             Cerrar sesión
           </button>

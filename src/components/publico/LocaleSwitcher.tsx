@@ -17,7 +17,9 @@ export function LocaleSwitcher() {
           locale={l}
           aria-current={l === actual ? 'true' : undefined}
           className={`inline-flex h-11 items-center rounded-lg px-3 ${
-            l === actual ? 'bg-teal-700 text-white' : 'text-teal-700 underline'
+            l === actual
+              ? 'bg-primario text-superficie'
+              : 'text-primario underline'
           }`}
         >
           {t(l)}

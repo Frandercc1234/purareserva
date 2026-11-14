@@ -24,7 +24,7 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <HtmlLang locale={locale} />
-      <header className="flex items-center justify-between border-b border-gray-200 px-4 py-2">
+      <header className="flex items-center justify-between border-b border-borde px-4 py-2">
         <span className="font-semibold">PuraReserva</span>
         <LocaleSwitcher />
       </header>

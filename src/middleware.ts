@@ -5,7 +5,7 @@ import { updateSession } from '@/lib/supabase/middleware';
 
 const intl = createIntlMiddleware(routing);
 
-const PRIVADAS = ['/panel', '/login', '/registro', '/api'];
+const PRIVADAS = ['/panel', '/login', '/registro', '/api', '/dev'];
 
 function esPrivada(pathname: string) {
   return PRIVADAS.some((p) => pathname === p || pathname.startsWith(`${p}/`));

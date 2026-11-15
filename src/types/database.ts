@@ -246,6 +246,7 @@ export type Database = {
           nombre_es: string;
           precio_cents: number;
           punto_encuentro: string;
+          punto_encuentro_en: string;
           slug: string;
         };
         ComputedFields: never;
@@ -263,6 +264,7 @@ export type Database = {
           nombre_es: string;
           precio_cents: number;
           punto_encuentro?: string;
+          punto_encuentro_en?: string;
           slug: string;
         };
         Update: {
@@ -279,6 +281,7 @@ export type Database = {
           nombre_es?: string;
           precio_cents?: number;
           punto_encuentro?: string;
+          punto_encuentro_en?: string;
           slug?: string;
         };
         Relationships: [

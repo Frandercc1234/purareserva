@@ -19,6 +19,7 @@ export type TourEditable = {
   duracion_min: number;
   cupo_default: number;
   punto_encuentro: string;
+  punto_encuentro_en: string;
   imagen_url: string | null;
   activo: boolean;
 };
@@ -35,7 +36,11 @@ export function TourForm({ tour }: { tour?: TourEditable }) {
   const [idioma, setIdioma] = useState<Idioma>('es');
   const [vista, setVista] = useState<string | null>(null);
 
-  const errorEn = !!(campos.nombre_en || campos.descripcion_en);
+  const errorEn = !!(
+    campos.nombre_en ||
+    campos.descripcion_en ||
+    campos.punto_encuentro_en
+  );
   const errorEs = !!(campos.nombre_es || campos.descripcion_es);
   // Si el idioma visible no tiene errores pero el otro sí, avisar en la pestaña.
   const tabs: { id: Idioma; texto: string; error: boolean }[] = [
@@ -123,6 +128,14 @@ export function TourForm({ tour }: { tour?: TourEditable }) {
             name="descripcion_en"
             defaultValue={v?.descripcion_en ?? tour?.descripcion_en ?? ''}
             error={campos.descripcion_en}
+          />
+          <Input
+            label="Meeting point (English)"
+            name="punto_encuentro_en"
+            defaultValue={
+              v?.punto_encuentro_en ?? tour?.punto_encuentro_en ?? ''
+            }
+            error={campos.punto_encuentro_en}
           />
         </div>
         {(errorEs || errorEn) && (

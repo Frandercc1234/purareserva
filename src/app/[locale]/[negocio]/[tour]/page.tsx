@@ -61,6 +61,8 @@ export default async function TourPage({
   );
 
   const nombre = locale === 'en' ? tour.nombre_en : tour.nombre_es;
+  const punto =
+    (locale === 'en' && tour.punto_encuentro_en) || tour.punto_encuentro;
   const descripcion =
     locale === 'en' ? tour.descripcion_en : tour.descripcion_es;
 
@@ -94,12 +96,12 @@ export default async function TourPage({
               <dt className="text-sm text-texto-suave">{t('duracion')}</dt>
               <dd>{formatearDuracion(tour.duracion_min)}</dd>
             </div>
-            {tour.punto_encuentro && (
+            {punto && (
               <div>
                 <dt className="text-sm text-texto-suave">
                   {t('puntoEncuentro')}
                 </dt>
-                <dd>{tour.punto_encuentro}</dd>
+                <dd>{punto}</dd>
               </div>
             )}
           </dl>

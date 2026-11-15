@@ -34,6 +34,7 @@ export default async function EditarTourPage({
           duracion_min: tour.duracion_min,
           cupo_default: tour.cupo_default,
           punto_encuentro: tour.punto_encuentro,
+          punto_encuentro_en: tour.punto_encuentro_en,
           imagen_url: tour.imagen_url,
           activo: tour.activo,
         }}

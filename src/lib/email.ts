@@ -52,7 +52,7 @@ async function datosDeReserva(admin: Admin, reservaId: string, token: string) {
   const { data: r } = await admin
     .from('reservas')
     .select(
-      'nombre, email, telefono, personas, idioma, total_cents, deposito_cents, salidas(inicia_en, tours(nombre_es, nombre_en, punto_encuentro, negocios(nombre, email_contacto, whatsapp)))',
+      'nombre, email, telefono, personas, idioma, total_cents, deposito_cents, salidas(inicia_en, tours(nombre_es, nombre_en, punto_encuentro, punto_encuentro_en, negocios(nombre, email_contacto, whatsapp)))',
     )
     .eq('id', reservaId)
     .maybeSingle();
@@ -69,7 +69,8 @@ async function datosDeReserva(admin: Admin, reservaId: string, token: string) {
     personas: r.personas,
     tour: r.idioma === 'en' ? tour.nombre_en : tour.nombre_es,
     fecha: formatearFechaHora(r.salidas.inicia_en, r.idioma),
-    puntoEncuentro: tour.punto_encuentro,
+    puntoEncuentro:
+      (r.idioma === 'en' && tour.punto_encuentro_en) || tour.punto_encuentro,
     negocio: negocio.nombre,
     negocioEmail: negocio.email_contacto,
     negocioWhatsapp: negocio.whatsapp,

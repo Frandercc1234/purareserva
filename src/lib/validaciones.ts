@@ -98,6 +98,7 @@ export const tourSchema = z.object({
   duracion_min: entero(15, 1440),
   cupo_default: entero(1, 200),
   punto_encuentro: z.string().trim().max(200, 'Máximo 200 caracteres'),
+  punto_encuentro_en: z.string().trim().max(200, 'Máximo 200 caracteres'),
   activo: z.boolean(),
 });
 

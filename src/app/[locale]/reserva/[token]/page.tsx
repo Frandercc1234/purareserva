@@ -32,7 +32,7 @@ export default async function ReservaPage({
   const { data: r } = await createAdminClient()
     .from('reservas')
     .select(
-      'nombre, personas, estado, total_cents, deposito_cents, salidas(inicia_en, tours(nombre_es, nombre_en, punto_encuentro, negocios(nombre, email_contacto, whatsapp, horas_cancelacion)))',
+      'nombre, personas, estado, total_cents, deposito_cents, salidas(inicia_en, tours(nombre_es, nombre_en, punto_encuentro, punto_encuentro_en, negocios(nombre, email_contacto, whatsapp, horas_cancelacion)))',
     )
     .eq('token_hash', hashToken(token))
     .maybeSingle();
@@ -58,7 +58,9 @@ export default async function ReservaPage({
     [t('deposito'), formatearUSD(r.deposito_cents, locale)],
     [t('saldo'), formatearUSD(r.total_cents - r.deposito_cents, locale)],
   ];
-  if (tour.punto_encuentro) filas.push([t('punto'), tour.punto_encuentro]);
+  const punto =
+    (locale === 'en' && tour.punto_encuentro_en) || tour.punto_encuentro;
+  if (punto) filas.push([t('punto'), punto]);
   filas.push([t('operador'), negocio.nombre]);
 
   const nota: Record<string, string> = {

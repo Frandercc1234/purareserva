@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ReservaForm } from '@/components/publico/ReservaForm';
@@ -7,9 +8,54 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Link } from '@/i18n/routing';
 import { formatearUSD } from '@/lib/dinero';
 import { formatearDuracion } from '@/lib/fechas';
+import { IMAGEN_RESPALDO } from '@/lib/imagenes';
+import { alternativas, recortar } from '@/lib/seo';
 import { createPublicClient } from '@/lib/supabase/public';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; negocio: string; tour: string }>;
+}): Promise<Metadata> {
+  const { locale, negocio: negocioSlug, tour: tourSlug } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+  const supabase = createPublicClient();
+  const { data: negocio } = await supabase
+    .from('negocios')
+    .select('id, nombre')
+    .eq('slug', negocioSlug)
+    .maybeSingle();
+  if (!negocio) return {};
+  const { data: tour } = await supabase
+    .from('tours')
+    .select(
+      'nombre_es, nombre_en, descripcion_es, descripcion_en, precio_cents, imagen_url',
+    )
+    .eq('negocio_id', negocio.id)
+    .eq('slug', tourSlug)
+    .maybeSingle();
+  if (!tour) return {};
+
+  const nombre = locale === 'en' ? tour.nombre_en : tour.nombre_es;
+  const titulo = `${nombre} – ${negocio.nombre}`;
+  const texto = locale === 'en' ? tour.descripcion_en : tour.descripcion_es;
+  const descripcion = `${t('precioPorPersona', {
+    precio: formatearUSD(tour.precio_cents, locale),
+  })} ${recortar(texto)}`.trim();
+  return {
+    title: titulo,
+    description: descripcion,
+    alternates: alternativas(locale, `/${negocioSlug}/${tourSlug}`),
+    openGraph: {
+      title: titulo,
+      description: descripcion,
+      images: [{ url: tour.imagen_url ?? IMAGEN_RESPALDO, alt: nombre }],
+      locale: locale === 'en' ? 'en_US' : 'es_CR',
+    },
+  };
+}
 
 export default async function TourPage({
   params,

@@ -191,5 +191,15 @@
     "titulo": "We couldn't find this page",
     "texto": "The link may be mistyped, or the page may no longer exist.",
     "irInicio": "Go to home"
+  },
+  "Metadata": {
+    "landingTitulo": "Guanacaste tours with online deposit",
+    "landingDescripcion": "Book tours from local Guanacaste operators, with confirmed spots and an online deposit.",
+    "negocioRespaldo": "Tours by {nombre} in Guanacaste, Costa Rica.",
+    "precioPorPersona": "{precio} per person.",
+    "reservaTitulo": "Your booking",
+    "reservaDescripcion": "Details and status of your booking.",
+    "ogTitulo": "Tours in Guanacaste",
+    "ogSubtitulo": "Confirmed spots and an online deposit"
   }
 }

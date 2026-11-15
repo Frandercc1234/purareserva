@@ -191,5 +191,15 @@
     "titulo": "No encontramos esta página",
     "texto": "Puede que el enlace esté mal escrito o que la página ya no exista.",
     "irInicio": "Ir al inicio"
+  },
+  "Metadata": {
+    "landingTitulo": "Tours en Guanacaste con depósito en línea",
+    "landingDescripcion": "Reservá tours de operadores locales de Guanacaste, con cupo confirmado y depósito en línea.",
+    "negocioRespaldo": "Tours de {nombre} en Guanacaste, Costa Rica.",
+    "precioPorPersona": "{precio} por persona.",
+    "reservaTitulo": "Tu reserva",
+    "reservaDescripcion": "Datos y estado de tu reserva.",
+    "ogTitulo": "Tours en Guanacaste",
+    "ogSubtitulo": "Cupo confirmado y depósito en línea"
   }
 }

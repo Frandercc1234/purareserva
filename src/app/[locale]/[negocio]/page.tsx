@@ -1,12 +1,57 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TourCard } from '@/components/publico/TourCard';
 import { WhatsAppButton } from '@/components/publico/WhatsAppButton';
 import { Link } from '@/i18n/routing';
+import { IMAGEN_RESPALDO } from '@/lib/imagenes';
+import { alternativas, recortar } from '@/lib/seo';
 import { createPublicClient } from '@/lib/supabase/public';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; negocio: string }>;
+}): Promise<Metadata> {
+  const { locale, negocio: slug } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+  const supabase = createPublicClient();
+  const { data: negocio } = await supabase
+    .from('negocios')
+    .select('id, nombre, descripcion_es, descripcion_en, portada_url')
+    .eq('slug', slug)
+    .maybeSingle();
+  if (!negocio) return {};
+
+  const { data: tour } = await supabase
+    .from('tours')
+    .select('imagen_url')
+    .eq('negocio_id', negocio.id)
+    .not('imagen_url', 'is', null)
+    .order('creado_en')
+    .limit(1)
+    .maybeSingle();
+
+  const descripcion = recortar(
+    (locale === 'en' ? negocio.descripcion_en : negocio.descripcion_es) ||
+      t('negocioRespaldo', { nombre: negocio.nombre }),
+  );
+  const imagen = negocio.portada_url ?? tour?.imagen_url ?? IMAGEN_RESPALDO;
+  return {
+    title: negocio.nombre,
+    description: descripcion,
+    alternates: alternativas(locale, `/${slug}`),
+    openGraph: {
+      title: negocio.nombre,
+      description: descripcion,
+      images: [{ url: imagen, alt: negocio.nombre }],
+      locale: locale === 'en' ? 'en_US' : 'es_CR',
+    },
+  };
+}
 
 export default async function NegocioPage({
   params,

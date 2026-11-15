@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import NextLink from 'next/link';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Imagen } from '@/components/publico/Imagen';
@@ -5,6 +6,7 @@ import { botonClases } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Link } from '@/i18n/routing';
 import { IMAGEN_RESPALDO } from '@/lib/imagenes';
+import { alternativas } from '@/lib/seo';
 import { createPublicClient } from '@/lib/supabase/public';
 
 export const dynamic = 'force-dynamic';
@@ -12,6 +14,25 @@ export const dynamic = 'force-dynamic';
 const HECHOS = ['cupo', 'deposito', 'idiomas'] as const;
 const PASOS = ['uno', 'dos', 'tres'] as const;
 const BENEFICIOS = ['uno', 'dos', 'tres'] as const;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+  return {
+    title: t('landingTitulo'),
+    description: t('landingDescripcion'),
+    alternates: alternativas(locale),
+    openGraph: {
+      title: t('landingTitulo'),
+      description: t('landingDescripcion'),
+      locale: locale === 'en' ? 'en_US' : 'es_CR',
+    },
+  };
+}
 
 export default async function LandingPage({
   params,

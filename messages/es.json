@@ -176,5 +176,14 @@
     "notaReembolsada": "Esta reserva fue cancelada y el depósito se reembolsó.",
     "notaPendiente": "Estamos esperando la confirmación del pago.",
     "notaExpirada": "Esta reserva venció sin completar el pago."
+  },
+  "Footer": {
+    "turistas": "Turistas",
+    "operadores": "Operadores",
+    "comoFunciona": "Cómo funciona",
+    "politicaCancelacion": "Política de cancelación",
+    "proyecto": "Proyecto de portafolio de",
+    "repositorio": "Repositorio",
+    "verLinkedin": "Perfil de LinkedIn de {autor}"
   }
 }

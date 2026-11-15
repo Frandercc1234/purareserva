@@ -176,5 +176,14 @@
     "notaReembolsada": "This booking was cancelled and the deposit was refunded.",
     "notaPendiente": "We're waiting for the payment confirmation.",
     "notaExpirada": "This booking expired without completing the payment."
+  },
+  "Footer": {
+    "turistas": "Tourists",
+    "operadores": "Operators",
+    "comoFunciona": "How it works",
+    "politicaCancelacion": "Cancellation policy",
+    "proyecto": "Portfolio project by",
+    "repositorio": "Repository",
+    "verLinkedin": "{autor}'s LinkedIn profile"
   }
 }

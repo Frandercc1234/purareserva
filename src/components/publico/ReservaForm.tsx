@@ -221,7 +221,10 @@ export function ReservaForm({
       </div>
 
       {/* Móvil: barra fija abajo con el depósito y el botón. */}
-      <div className="fixed inset-x-0 bottom-0 z-20 flex flex-col gap-2 border-t border-borde bg-superficie px-4 py-3 lg:hidden">
+      <div
+        id="barra-reserva"
+        className="fixed inset-x-0 bottom-0 z-20 flex flex-col gap-2 border-t border-borde bg-superficie px-4 py-3 lg:hidden"
+      >
         {resumenErrores}
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-col leading-tight">

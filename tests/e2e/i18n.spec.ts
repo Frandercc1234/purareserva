@@ -49,7 +49,8 @@ for (const idioma of ['en', 'es'] as const) {
 
 test('el selector de idioma conserva la ruta', async ({ page }) => {
   await irA(page, '/es/aventuras-rincon/canopy-rincon');
-  await page.getByRole('link', { name: 'English' }).click();
+  // Hay un selector en la cabecera y otro en el pie: se usa el de la cabecera.
+  await page.getByRole('banner').getByRole('link', { name: 'English' }).click();
   await expect(page).toHaveURL(/\/en\/aventuras-rincon\/canopy-rincon$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(

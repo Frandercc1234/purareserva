@@ -2,28 +2,44 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { Link, usePathname, routing } from '@/i18n/routing';
+import { cn } from '@/components/ui/cn';
 
+/** Selector de idioma: "ES | EN" compacto en móvil y "Español / English" desde 640px. */
 export function LocaleSwitcher() {
   const actual = useLocale();
   const pathname = usePathname();
   const t = useTranslations('Comun');
 
   return (
-    <nav aria-label={t('idioma')} className="flex gap-1 text-sm">
-      {routing.locales.map((l) => (
-        <Link
-          key={l}
-          href={pathname}
-          locale={l}
-          aria-current={l === actual ? 'true' : undefined}
-          className={`inline-flex h-11 items-center rounded-lg px-2.5 sm:px-3 ${
-            l === actual
-              ? 'bg-primario text-superficie'
-              : 'text-primario underline'
-          }`}
-        >
-          {t(l)}
-        </Link>
+    <nav aria-label={t('idioma')} className="flex items-center text-sm">
+      {routing.locales.map((l, i) => (
+        <span key={l} className="flex items-center">
+          {i > 0 && (
+            <span aria-hidden="true" className="text-borde sm:hidden">
+              |
+            </span>
+          )}
+          <Link
+            href={pathname}
+            locale={l}
+            hrefLang={l}
+            aria-label={t(l)}
+            aria-current={l === actual ? 'true' : undefined}
+            className={cn(
+              'inline-flex h-11 min-w-9 items-center justify-center rounded-control px-1.5 transition-colors duration-150 sm:ml-1 sm:px-3',
+              l === actual
+                ? 'font-semibold text-primario sm:bg-primario sm:text-superficie'
+                : 'text-primario underline sm:underline',
+            )}
+          >
+            <span aria-hidden="true" className="sm:hidden">
+              {l.toUpperCase()}
+            </span>
+            <span aria-hidden="true" className="hidden sm:inline">
+              {t(l)}
+            </span>
+          </Link>
+        </span>
       ))}
     </nav>
   );

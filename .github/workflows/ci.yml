@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  calidad:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Valores de relleno: el build no consulta la base, solo necesita que existan.
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+      SUPABASE_SERVICE_ROLE_KEY: ci-placeholder
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build
+
+  e2e:
+    needs: calidad
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CI: true
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      # El webhook se simula: las pruebas firman los eventos con este secreto fijo,
+      # así que no hace falta `stripe listen` en CI.
+      STRIPE_WEBHOOK_SECRET: whsec_ci_secreto_solo_para_pruebas
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      EMAIL_FROM: PuraReserva <onboarding@resend.dev>
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comprobar secretos
+        run: |
+          if [ -z "$STRIPE_SECRET_KEY" ]; then
+            echo "::error::Falta el secreto STRIPE_SECRET_KEY (clave sk_test_ de Stripe en modo prueba)."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Iniciar Supabase local
+        run: |
+          supabase start -x studio,imgproxy,vector,logflare,edge-runtime,mailpit
+          supabase db reset
+
+      - name: Variables de Supabase para la app y las pruebas
+        run: |
+          eval "$(supabase status -o env | sed 's/^/export /')"
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=$API_URL"
+            echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$ANON_KEY"
+            echo "SUPABASE_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY"
+          } >> "$GITHUB_ENV"
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Pruebas end-to-end
+        run: npx playwright test
+
+      - name: Guardar resultados si fallan
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultados-playwright
+          path: test-results/
+          retention-days: 7

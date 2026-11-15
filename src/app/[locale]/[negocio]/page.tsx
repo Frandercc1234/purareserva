@@ -6,7 +6,7 @@ import { TourCard } from '@/components/publico/TourCard';
 import { WhatsAppButton } from '@/components/publico/WhatsAppButton';
 import { Link } from '@/i18n/routing';
 import { IMAGEN_RESPALDO } from '@/lib/imagenes';
-import { alternativas, recortar } from '@/lib/seo';
+import { alternativas, recortar, tituloNoEncontrada } from '@/lib/seo';
 import { createPublicClient } from '@/lib/supabase/public';
 
 export const dynamic = 'force-dynamic';
@@ -24,7 +24,7 @@ export async function generateMetadata({
     .select('id, nombre, descripcion_es, descripcion_en, portada_url')
     .eq('slug', slug)
     .maybeSingle();
-  if (!negocio) return {};
+  if (!negocio) return await tituloNoEncontrada(locale);
 
   const { data: tour } = await supabase
     .from('tours')

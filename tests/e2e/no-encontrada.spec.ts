@@ -18,6 +18,8 @@ for (const { ruta, titulo } of casos) {
     const respuesta = await page.goto(ruta);
     expect(respuesta?.status()).toBe(404);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(titulo);
+    // La pestaña también va en el idioma de la ruta.
+    await expect(page).toHaveTitle(`${titulo} | PuraReserva`);
     // Con la cabecera y el pie públicos, y sin desbordes.
     await expect(page.getByRole('banner')).toBeVisible();
     await expect(page.getByRole('contentinfo')).toBeVisible();
@@ -29,6 +31,17 @@ for (const { ruta, titulo } of casos) {
   });
 }
 
+test('una ruta con varios segmentos usa el idioma de la ruta', async ({
+  page,
+}) => {
+  const respuesta = await page.goto('/en/a/b/c');
+  expect(respuesta?.status()).toBe(404);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    "We couldn't find this page",
+  );
+  await expect(page).toHaveTitle("We couldn't find this page | PuraReserva");
+});
+
 test('una ruta fuera de los idiomas muestra la 404 en español', async ({
   page,
 }) => {
@@ -37,4 +50,5 @@ test('una ruta fuera de los idiomas muestra la 404 en español', async ({
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'No encontramos esta página',
   );
+  await expect(page).toHaveTitle('No encontramos esta página | PuraReserva');
 });

@@ -9,7 +9,7 @@ import { Link } from '@/i18n/routing';
 import { formatearUSD } from '@/lib/dinero';
 import { formatearDuracion } from '@/lib/fechas';
 import { IMAGEN_RESPALDO } from '@/lib/imagenes';
-import { alternativas, recortar } from '@/lib/seo';
+import { alternativas, recortar, tituloNoEncontrada } from '@/lib/seo';
 import { createPublicClient } from '@/lib/supabase/public';
 
 export const dynamic = 'force-dynamic';
@@ -27,7 +27,7 @@ export async function generateMetadata({
     .select('id, nombre')
     .eq('slug', negocioSlug)
     .maybeSingle();
-  if (!negocio) return {};
+  if (!negocio) return await tituloNoEncontrada(locale);
   const { data: tour } = await supabase
     .from('tours')
     .select(
@@ -36,7 +36,7 @@ export async function generateMetadata({
     .eq('negocio_id', negocio.id)
     .eq('slug', tourSlug)
     .maybeSingle();
-  if (!tour) return {};
+  if (!tour) return await tituloNoEncontrada(locale);
 
   const nombre = locale === 'en' ? tour.nombre_en : tour.nombre_es;
   const titulo = `${nombre} – ${negocio.nombre}`;

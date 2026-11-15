@@ -114,7 +114,16 @@
       "DESCONOCIDO": "Algo salió mal. Intentá de nuevo."
     },
     "reservar": "Reservar",
-    "depositoCorto": "Depósito a pagar"
+    "depositoCorto": "Depósito a pagar",
+    "revisar": "Revisá: {campos}",
+    "camposLista": {
+      "salida_id": "salida",
+      "nombre": "nombre",
+      "email": "correo",
+      "telefono": "teléfono",
+      "personas": "personas"
+    },
+    "telefonoEjemplo": "+506 8888 8888"
   },
   "Gracias": {
     "titulo": "Recibimos tu pago",

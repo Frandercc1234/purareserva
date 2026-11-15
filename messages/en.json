@@ -114,7 +114,16 @@
       "DESCONOCIDO": "Something went wrong. Please try again."
     },
     "reservar": "Book",
-    "depositoCorto": "Deposit due"
+    "depositoCorto": "Deposit due",
+    "revisar": "Check: {campos}",
+    "camposLista": {
+      "salida_id": "departure",
+      "nombre": "name",
+      "email": "email",
+      "telefono": "phone",
+      "personas": "guests"
+    },
+    "telefonoEjemplo": "+506 8888 8888"
   },
   "Gracias": {
     "titulo": "We received your payment",

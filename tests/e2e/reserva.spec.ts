@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import {
   DIA_MS,
+  crearReserva,
   crearSalida,
   db,
   estadoDeReserva,
@@ -97,11 +98,15 @@ test('el turista reserva, llega a Stripe Checkout y el pago confirma la reserva'
   }
 });
 
-test('pedir más personas que cupos muestra el error y no crea la reserva', async ({
+test('pedir más personas que cupos se frena en el formulario y el servidor rechaza si otro toma el último cupo', async ({
   page,
 }) => {
   const salidaId = await crearSalida({ enMs: 4 * DIA_MS, cupo: 1 });
   const email = `${unico('sincupo')}@example.com`;
+  const reservar = page
+    .getByRole('button', { name: /Pagar depósito/ })
+    .or(page.getByRole('button', { name: 'Reservar', exact: true }));
+  let competidora: string | undefined;
   try {
     await elegirSalida(page, salidaId);
     await page.getByLabel('Nombre completo').fill('Sin Cupo');
@@ -109,11 +114,21 @@ test('pedir más personas que cupos muestra el error y no crea la reserva', asyn
     await page
       .getByLabel('Teléfono (con código de país)')
       .fill('+506 8888 7777');
+
+    // Más personas que cupos libres: el formulario lo frena y no llega al servidor.
     await page.getByLabel('Personas').fill('3');
-    await page
-      .getByRole('button', { name: /Pagar depósito/ })
-      .or(page.getByRole('button', { name: 'Reservar', exact: true }))
-      .click();
+    await reservar.click();
+    await expect(page.getByLabel('Personas')).toBeFocused();
+    await expect(
+      page.getByRole('alert').filter({ hasText: 'Revisá: personas' }),
+    ).toBeVisible();
+
+    // Otro turista toma el último cupo mientras este completa el formulario.
+    competidora = (
+      await crearReserva({ salidaId, personas: 1, estado: 'pendiente_pago' })
+    ).id;
+    await page.getByLabel('Personas').fill('1');
+    await reservar.click();
     await expect(
       page.getByText('Ya no quedan suficientes cupos en esta salida'),
     ).toBeVisible();
@@ -123,8 +138,41 @@ test('pedir más personas que cupos muestra el error y no crea la reserva', asyn
       .eq('email', email);
     expect(count).toBe(0);
   } finally {
-    await limpiar({ salidaIds: [salidaId] });
+    await limpiar({
+      reservaIds: competidora ? [competidora] : [],
+      salidaIds: [salidaId],
+    });
   }
+});
+
+test('enviar el formulario vacío lleva el foco al selector de salida y lista los errores', async ({
+  page,
+}) => {
+  await irA(page, URL_TOUR);
+  await page
+    .getByRole('button', { name: /Pagar depósito/ })
+    .or(page.getByRole('button', { name: 'Reservar', exact: true }))
+    .click();
+
+  // Sin salida elegida, el foco va al día activo del selector.
+  await expect(page.locator('#selector-salida [data-foco]')).toBeFocused();
+  await expect(
+    page.getByRole('alert').filter({ hasText: 'Revisá: salida, nombre' }),
+  ).toBeVisible();
+  await expect(page.getByText('Elegí tu salida').first()).toBeVisible();
+
+  // Los campos declaran autocompletado para que el navegador los llene.
+  await expect(page.getByLabel('Nombre completo')).toHaveAttribute(
+    'autocomplete',
+    'name',
+  );
+  await expect(page.getByLabel('Correo electrónico')).toHaveAttribute(
+    'autocomplete',
+    'email',
+  );
+  await expect(
+    page.getByLabel('Teléfono (con código de país)'),
+  ).toHaveAttribute('autocomplete', 'tel');
 });
 
 // Pago real con la tarjeta de prueba 4242 en Stripe Checkout. Necesita `stripe listen`

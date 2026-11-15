@@ -1,9 +1,14 @@
-/** Centavos de USD a texto, por ejemplo 4500 -> "$45.00" (locale en). */
+/**
+ * Centavos de USD a texto para mostrar: "US$85" y "US$21,25" en español, "$85" y
+ * "$21.25" en inglés. Sin decimales cuando los centavos son 0.
+ */
 export function formatearUSD(cents: number, locale = 'en') {
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: 'USD',
+  const sinDecimales = cents % 100 === 0;
+  const numero = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: sinDecimales ? 0 : 2,
+    maximumFractionDigits: sinDecimales ? 0 : 2,
   }).format(cents / 100);
+  return `${locale === 'es' ? 'US$' : '$'}${numero}`;
 }
 
 /** Texto en dólares a centavos: "45.5" -> 4550. Devuelve null si no es válido. */

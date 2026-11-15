@@ -30,7 +30,7 @@ export function TourCard({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={imagenUrl ?? '/tour-default.svg'}
-          alt=""
+          alt={nombre}
           loading="lazy"
           className="size-full object-cover transition-transform duration-500 ease-[var(--ease-out)] motion-safe:group-hover:scale-[1.03]"
         />

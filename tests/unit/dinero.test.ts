@@ -3,7 +3,10 @@ import { aCentavos, centavosATexto, formatearUSD } from '@/lib/dinero';
 
 describe('dinero', () => {
   it('formatea centavos como USD', () => {
-    expect(formatearUSD(4500, 'en')).toBe('$45.00');
+    expect(formatearUSD(8500, 'es')).toBe('US$85');
+    expect(formatearUSD(2125, 'es')).toBe('US$21,25');
+    expect(formatearUSD(8500, 'en')).toBe('$85');
+    expect(formatearUSD(2125, 'en')).toBe('$21.25');
     expect(formatearUSD(5, 'en')).toBe('$0.05');
   });
 

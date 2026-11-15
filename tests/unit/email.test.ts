@@ -21,9 +21,9 @@ const base: DatosCorreo = {
   negocio: 'Aventuras Rincón',
   negocioEmail: 'dueno1@test.com',
   negocioWhatsapp: '+50688887777',
-  total: '130,00 US$',
-  deposito: '39,00 US$',
-  saldo: '91,00 US$',
+  total: 'US$130',
+  deposito: 'US$39',
+  saldo: 'US$91',
   enlace: 'http://localhost:3000/es/reserva/abc123',
 };
 
@@ -55,8 +55,8 @@ describe('plantillas de correo', () => {
   it('incluye el enlace secreto, los montos y el punto de encuentro', () => {
     const { html } = confirmacionTurista(base);
     expect(html).toContain('href="http://localhost:3000/es/reserva/abc123"');
-    expect(html).toContain('39,00 US$');
-    expect(html).toContain('91,00 US$');
+    expect(html).toContain('US$39');
+    expect(html).toContain('US$91');
     expect(html).toContain('Entrada principal');
   });
 

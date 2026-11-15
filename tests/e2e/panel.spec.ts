@@ -35,7 +35,7 @@ test('el dueño crea un tour, programa salidas en lote y las ve en la página p�
     await page.waitForURL('**/panel/tours');
     const fila = page.getByRole('row').filter({ hasText: nombre });
     await expect(fila).toBeVisible();
-    await expect(fila).toContainText('$25.00');
+    await expect(fila).toContainText('$25');
 
     // Crear salidas en lote.
     await fila.getByRole('link', { name: 'Salidas' }).click();

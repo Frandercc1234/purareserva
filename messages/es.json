@@ -185,5 +185,11 @@
     "proyecto": "Proyecto de portafolio de",
     "repositorio": "Repositorio",
     "verLinkedin": "Perfil de LinkedIn de {autor}"
+  },
+  "NotFound": {
+    "codigo": "Error 404",
+    "titulo": "No encontramos esta página",
+    "texto": "Puede que el enlace esté mal escrito o que la página ya no exista.",
+    "irInicio": "Ir al inicio"
   }
 }

@@ -185,5 +185,11 @@
     "proyecto": "Portfolio project by",
     "repositorio": "Repository",
     "verLinkedin": "{autor}'s LinkedIn profile"
+  },
+  "NotFound": {
+    "codigo": "Error 404",
+    "titulo": "We couldn't find this page",
+    "texto": "The link may be mistyped, or the page may no longer exist.",
+    "irInicio": "Go to home"
   }
 }

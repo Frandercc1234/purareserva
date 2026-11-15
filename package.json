@@ -10,11 +10,13 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "format": "prettier --write .",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "guia:indexar": "tsx --conditions=react-server --env-file=.env.local scripts/indexar-guia.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.119.0",
+    "gray-matter": "^4.0.3",
     "next": "15.5.29",
     "next-intl": "^3.26.5",
     "react": "19.1.0",

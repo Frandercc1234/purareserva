@@ -13,21 +13,29 @@ import {
 
 const URL_TOUR = '/es/aventuras-rincon/canopy-rincon';
 
+/** Abre el tour con la salida en la URL (como al compartir el enlace) y comprueba que quedó elegida. */
+async function elegirSalida(
+  page: import('@playwright/test').Page,
+  salidaId: string,
+) {
+  await irA(page, `${URL_TOUR}?salida=${salidaId}`);
+  await expect(page.locator(`input[value="${salidaId}"]`)).toBeChecked();
+}
+
 async function reservarHastaStripe(
   page: import('@playwright/test').Page,
   salidaId: string,
   email: string,
 ) {
-  await irA(page, URL_TOUR);
-  await page
-    .locator('label')
-    .filter({ has: page.locator(`input[value="${salidaId}"]`) })
-    .click();
+  await elegirSalida(page, salidaId);
   await page.getByLabel('Nombre completo').fill('Ana Mora');
   await page.getByLabel('Correo electrónico').fill(email);
   await page.getByLabel('Teléfono (con código de país)').fill('+506 8888 7777');
   await page.getByLabel('Personas').fill('2');
-  await page.getByRole('button', { name: /Pagar depósito/ }).click();
+  await page
+    .getByRole('button', { name: /Pagar depósito/ })
+    .or(page.getByRole('button', { name: 'Reservar', exact: true }))
+    .click();
   await page.waitForURL(/checkout\.stripe\.com/, { timeout: 45_000 });
 }
 
@@ -95,18 +103,17 @@ test('pedir más personas que cupos muestra el error y no crea la reserva', asyn
   const salidaId = await crearSalida({ enMs: 4 * DIA_MS, cupo: 1 });
   const email = `${unico('sincupo')}@example.com`;
   try {
-    await irA(page, URL_TOUR);
-    await page
-      .locator('label')
-      .filter({ has: page.locator(`input[value="${salidaId}"]`) })
-      .click();
+    await elegirSalida(page, salidaId);
     await page.getByLabel('Nombre completo').fill('Sin Cupo');
     await page.getByLabel('Correo electrónico').fill(email);
     await page
       .getByLabel('Teléfono (con código de país)')
       .fill('+506 8888 7777');
     await page.getByLabel('Personas').fill('3');
-    await page.getByRole('button', { name: /Pagar depósito/ }).click();
+    await page
+      .getByRole('button', { name: /Pagar depósito/ })
+      .or(page.getByRole('button', { name: 'Reservar', exact: true }))
+      .click();
     await expect(
       page.getByText('Ya no quedan suficientes cupos en esta salida'),
     ).toBeVisible();

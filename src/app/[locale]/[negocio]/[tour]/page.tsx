@@ -13,10 +13,13 @@ export const dynamic = 'force-dynamic';
 
 export default async function TourPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; negocio: string; tour: string }>;
+  searchParams: Promise<{ salida?: string }>;
 }) {
   const { locale, negocio: negocioSlug, tour: tourSlug } = await params;
+  const { salida: salidaParam } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations('Tour');
   const c = await getTranslations('Comun');
@@ -67,23 +70,22 @@ export default async function TourPage({
     locale === 'en' ? tour.descripcion_en : tour.descripcion_es;
 
   return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-8 pb-28 md:py-12 lg:pb-12">
-      <Link
-        href={`/${negocio.slug}`}
-        className="inline-flex h-11 items-center text-primario underline"
-      >
-        {negocio.nombre}
-      </Link>
-
-      <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
-        <div className="flex flex-col gap-4">
+    <main className="mx-auto max-w-5xl px-4 py-8 pb-28 md:py-10 lg:pb-12">
+      <div className="grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
+        <div className="flex min-w-0 flex-col gap-4">
+          <Link
+            href={`/${negocio.slug}`}
+            className="inline-flex h-11 w-fit items-center text-primario underline"
+          >
+            {negocio.nombre}
+          </Link>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={tour.imagen_url ?? '/tour-default.svg'}
             alt={nombre}
             className="aspect-video w-full rounded-tarjeta object-cover"
           />
-          <h1 className="text-3xl font-semibold">{nombre}</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">{nombre}</h1>
           <p>
             <span className="text-2xl font-semibold text-texto">
               {formatearUSD(tour.precio_cents, locale)}
@@ -105,28 +107,31 @@ export default async function TourPage({
               </div>
             )}
           </dl>
+          <div className="flex flex-col gap-1 border-t border-borde pt-4 text-sm text-texto-suave">
+            <p>{t('deposito', { pct: negocio.deposito_pct })}</p>
+            <p>{t('cancelacion', { horas: negocio.horas_cancelacion })}</p>
+          </div>
         </div>
 
-        <Card className="flex h-fit flex-col gap-4">
+        <Card className="flex h-fit min-w-0 flex-col gap-4 lg:sticky lg:top-24">
           {disponibles.length ? (
             <ReservaForm
               salidas={disponibles}
+              salidaInicialId={
+                disponibles.some((s) => s.id === salidaParam)
+                  ? (salidaParam ?? null)
+                  : null
+              }
               precioCents={tour.precio_cents}
               depositoPct={negocio.deposito_pct}
             />
           ) : (
-            <div className="flex flex-col gap-3">
-              <EmptyState
-                titulo={t('sinSalidas')}
-                descripcion={t('sinSalidasAyuda')}
-                accion={<WhatsAppButton numero={negocio.whatsapp} />}
-              />
-            </div>
+            <EmptyState
+              titulo={t('sinSalidas')}
+              descripcion={t('sinSalidasAyuda')}
+              accion={<WhatsAppButton numero={negocio.whatsapp} />}
+            />
           )}
-          <div className="flex flex-col gap-1 text-sm text-texto-suave">
-            <p>{t('deposito', { pct: negocio.deposito_pct })}</p>
-            <p>{t('cancelacion', { horas: negocio.horas_cancelacion })}</p>
-          </div>
         </Card>
       </div>
     </main>

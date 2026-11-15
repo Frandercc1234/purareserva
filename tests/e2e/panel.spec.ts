@@ -63,8 +63,9 @@ test('el dueño crea un tour, programa salidas en lote y las ve en la página p�
     await expect(
       page.getByRole('heading', { level: 1, name: nombre }),
     ).toBeVisible();
-    await expect(page.locator('input[name="salida_id"]')).toHaveCount(
-      esperadas,
+    // El selector muestra una tira con los primeros 14 días que tienen salidas.
+    await expect(page.locator('#selector-salida [aria-pressed]')).toHaveCount(
+      Math.min(esperadas, 14),
     );
     await irA(page, `/en/aventuras-rincon/${slug}`);
     await expect(

@@ -77,3 +77,20 @@ export function rangoMesCR(ahora = new Date()) {
     hasta: new Date(Date.UTC(y, m, 1, 6)),
   };
 }
+
+/** Día de la semana corto y número del día, en hora de Costa Rica ("lun", "18"). */
+export function formatearDiaCorto(fecha: Date | string, locale = 'es') {
+  const f = new Date(fecha);
+  return {
+    semana: new Intl.DateTimeFormat(locale, {
+      timeZone: ZONA,
+      weekday: 'short',
+    })
+      .format(f)
+      .replace('.', ''),
+    numero: new Intl.DateTimeFormat(locale, {
+      timeZone: ZONA,
+      day: 'numeric',
+    }).format(f),
+  };
+}

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   diaCR,
   formatearDia,
+  formatearDiaCorto,
   formatearDuracion,
   formatearFechaHora,
   formatearHora,
@@ -45,5 +46,19 @@ describe('fechas', () => {
     const r = rangoMesCR(new Date('2026-12-01T06:00:00Z'));
     expect(r.desde.toISOString()).toBe('2026-12-01T06:00:00.000Z');
     expect(r.hasta.toISOString()).toBe('2027-01-01T06:00:00.000Z');
+  });
+});
+
+describe('formatearDiaCorto', () => {
+  it('usa la hora de Costa Rica para el día', () => {
+    // 03:00 UTC del 3 de marzo sigue siendo el 2 de marzo en Costa Rica.
+    expect(formatearDiaCorto('2026-03-03T03:00:00Z', 'es')).toEqual({
+      semana: 'lun',
+      numero: '2',
+    });
+    expect(formatearDiaCorto('2026-03-03T03:00:00Z', 'en')).toEqual({
+      semana: 'Mon',
+      numero: '2',
+    });
   });
 });

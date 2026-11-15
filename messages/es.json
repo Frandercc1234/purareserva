@@ -80,7 +80,12 @@
     "agotado": "Agotado",
     "deposito": "Pagás un depósito del {pct}% al reservar; el resto en el lugar.",
     "cancelacion": "{horas, plural, =0 {Podés cancelar con reembolso hasta el momento de la salida.} one {Cancelación con reembolso hasta # hora antes de la salida.} other {Cancelación con reembolso hasta # horas antes de la salida.}}",
-    "porOperador": "Operado por {nombre}"
+    "porOperador": "Operado por {nombre}",
+    "dias": "Día",
+    "horarios": "Horario",
+    "diasAnteriores": "Días anteriores",
+    "diasSiguientes": "Días siguientes",
+    "cuposLibres": "{count, plural, one {# cupo libre} other {# cupos libres}}"
   },
   "Reserva": {
     "titulo": "Tus datos",
@@ -107,7 +112,9 @@
       "STRIPE_ERROR": "No pudimos iniciar el pago. Intentá de nuevo en unos minutos.",
       "VALIDACION": "Revisá los datos del formulario",
       "DESCONOCIDO": "Algo salió mal. Intentá de nuevo."
-    }
+    },
+    "reservar": "Reservar",
+    "depositoCorto": "Depósito a pagar"
   },
   "Gracias": {
     "titulo": "Recibimos tu pago",

@@ -80,7 +80,12 @@
     "agotado": "Sold out",
     "deposito": "You pay a {pct}% deposit now; the rest at the meeting point.",
     "cancelacion": "{horas, plural, =0 {You can cancel with a refund up until departure.} one {Refund if you cancel up to # hour before departure.} other {Refund if you cancel up to # hours before departure.}}",
-    "porOperador": "Operated by {nombre}"
+    "porOperador": "Operated by {nombre}",
+    "dias": "Day",
+    "horarios": "Time",
+    "diasAnteriores": "Earlier days",
+    "diasSiguientes": "Later days",
+    "cuposLibres": "{count, plural, one {# spot left} other {# spots left}}"
   },
   "Reserva": {
     "titulo": "Your details",
@@ -107,7 +112,9 @@
       "STRIPE_ERROR": "We couldn't start the payment. Please try again in a few minutes.",
       "VALIDACION": "Please check the form",
       "DESCONOCIDO": "Something went wrong. Please try again."
-    }
+    },
+    "reservar": "Book",
+    "depositoCorto": "Deposit due"
   },
   "Gracias": {
     "titulo": "We received your payment",

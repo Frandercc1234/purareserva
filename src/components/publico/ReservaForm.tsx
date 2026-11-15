@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { startTransition, useActionState, useState } from 'react';
+import { startTransition, useActionState, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import {
@@ -14,12 +14,21 @@ import {
 } from '@/app/[locale]/[negocio]/[tour]/actions';
 import { formatearUSD } from '@/lib/dinero';
 
+/** Guarda la salida elegida en la URL para que recargar o compartir la conserve. */
+function guardarSalidaEnUrl(id: string) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('salida', id);
+  window.history.replaceState(null, '', url);
+}
+
 export function ReservaForm({
   salidas,
+  salidaInicialId,
   precioCents,
   depositoPct,
 }: {
   salidas: SalidaDisponible[];
+  salidaInicialId: string | null;
   precioCents: number;
   depositoPct: number;
 }) {
@@ -29,7 +38,10 @@ export function ReservaForm({
     crearReserva,
     null,
   );
-  const [salida, setSalida] = useState<SalidaDisponible | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [salida, setSalida] = useState<SalidaDisponible | null>(
+    salidas.find((s) => s.id === salidaInicialId && s.libres > 0) ?? null,
+  );
   const [personas, setPersonas] = useState('1');
 
   const campos = estado?.campos ?? {};
@@ -44,8 +56,32 @@ export function ReservaForm({
   const errorGeneral =
     estado && !estado.campos ? t(`errores.${estado.error}`) : null;
 
+  /** Primer elemento sin completar, o null si el formulario está listo. */
+  function primeroIncompleto(): HTMLElement | null {
+    const form = formRef.current;
+    if (!form) return null;
+    if (!salida)
+      return form.querySelector<HTMLElement>('#selector-salida [data-foco]');
+    for (const nombre of ['nombre', 'email', 'telefono', 'personas']) {
+      const campo = form.elements.namedItem(nombre) as HTMLInputElement | null;
+      if (campo && !campo.value.trim()) return campo;
+    }
+    return null;
+  }
+
+  function reservarDesdeBarra() {
+    const pendienteDeCompletar = primeroIncompleto();
+    if (pendienteDeCompletar) {
+      pendienteDeCompletar.scrollIntoView({ block: 'center' });
+      pendienteDeCompletar.focus({ preventScroll: true });
+      return;
+    }
+    formRef.current?.requestSubmit();
+  }
+
   return (
     <form
+      ref={formRef}
       method="post"
       onSubmit={(e) => {
         // Sin reinicio automático: si hay un error se conservan los datos.
@@ -53,24 +89,20 @@ export function ReservaForm({
         const datos = new FormData(e.currentTarget);
         startTransition(() => accion(datos));
       }}
-      className="flex flex-col gap-5"
+      className="flex flex-col gap-4"
       noValidate
     >
       <input type="hidden" name="idioma" value={locale} />
-      <div>
-        <SalidaPicker
-          salidas={salidas}
-          onSeleccionar={(s) => {
-            setSalida(s);
-            if (s && Number(personas) > s.libres) setPersonas(String(s.libres));
-          }}
-        />
-        {campos.salida_id && (
-          <p role="alert" className="mt-2 text-sm text-error">
-            {err('salida_id')}
-          </p>
-        )}
-      </div>
+      <SalidaPicker
+        salidas={salidas}
+        seleccionadaId={salida?.id ?? null}
+        onSeleccionar={(s) => {
+          setSalida(s);
+          guardarSalidaEnUrl(s.id);
+          if (Number(personas) > s.libres) setPersonas(String(s.libres));
+        }}
+        error={err('salida_id')}
+      />
 
       <h2 className="text-lg font-semibold">{t('titulo')}</h2>
       <Input
@@ -86,25 +118,27 @@ export function ReservaForm({
         autoComplete="email"
         error={err('email')}
       />
-      <Input
-        label={t('telefono')}
-        name="telefono"
-        type="tel"
-        autoComplete="tel"
-        error={err('telefono')}
-      />
-      <Input
-        label={t('personas')}
-        name="personas"
-        type="number"
-        inputMode="numeric"
-        min={1}
-        max={salida?.libres ?? 50}
-        value={personas}
-        onChange={(e) => setPersonas(e.target.value)}
-        hint={salida ? t('personasAyuda', { max: salida.libres }) : undefined}
-        error={err('personas')}
-      />
+      <div className="grid gap-4 sm:grid-cols-[3fr_2fr]">
+        <Input
+          label={t('telefono')}
+          name="telefono"
+          type="tel"
+          autoComplete="tel"
+          error={err('telefono')}
+        />
+        <Input
+          label={t('personas')}
+          name="personas"
+          type="number"
+          inputMode="numeric"
+          min={1}
+          max={salida?.libres ?? 50}
+          value={personas}
+          onChange={(e) => setPersonas(e.target.value)}
+          hint={salida ? t('personasAyuda', { max: salida.libres }) : undefined}
+          error={err('personas')}
+        />
+      </div>
 
       <dl className="flex flex-col gap-1 rounded-control bg-fondo p-3 text-sm">
         <div className="flex justify-between">
@@ -127,12 +161,29 @@ export function ReservaForm({
         </p>
       )}
 
-      {/* En móvil el botón queda fijo abajo. */}
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-borde bg-superficie p-4 lg:static lg:border-0 lg:bg-transparent lg:p-0">
+      <div className="hidden lg:block">
         <Button type="submit" disabled={pendiente} className="w-full">
           {pendiente
             ? t('procesando')
             : t('pagar', { monto: formatearUSD(deposito, locale) })}
+        </Button>
+      </div>
+
+      {/* Móvil: barra fija abajo con el depósito y el botón. */}
+      <div className="fixed inset-x-0 bottom-0 z-20 flex items-center justify-between gap-3 border-t border-borde bg-superficie px-4 py-3 lg:hidden">
+        <div className="flex flex-col leading-tight">
+          <span className="text-sm text-texto-suave">{t('depositoCorto')}</span>
+          <span className="text-lg font-semibold">
+            {formatearUSD(deposito, locale)}
+          </span>
+        </div>
+        <Button
+          type="button"
+          onClick={reservarDesdeBarra}
+          disabled={pendiente}
+          className="min-w-36"
+        >
+          {pendiente ? t('procesando') : t('reservar')}
         </Button>
       </div>
     </form>

@@ -22,7 +22,7 @@ export default async function EditarTourPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-semibold">Editar tour</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">Editar tour</h1>
       <TourForm
         tour={{
           id: tour.id,

@@ -10,9 +10,9 @@ export function KpiCard({
   detalle?: string;
 }) {
   return (
-    <Card className="flex flex-col gap-1 px-5 py-4">
+    <Card className="flex flex-col gap-1 border-t-4 border-t-primario px-5 py-4">
       <p className="text-sm text-texto-suave">{etiqueta}</p>
-      <p className="text-3xl font-semibold">{valor}</p>
+      <p className="text-3xl font-semibold tracking-tight">{valor}</p>
       {detalle && <p className="text-sm text-texto-suave">{detalle}</p>}
     </Card>
   );

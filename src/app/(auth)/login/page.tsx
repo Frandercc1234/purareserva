@@ -15,8 +15,8 @@ function Formulario() {
   );
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 px-4">
-      <h1 className="text-2xl font-semibold">Iniciar sesión</h1>
+    <main className="entrar flex w-full max-w-sm flex-col gap-6">
+      <h1 className="text-3xl font-semibold tracking-tight">Iniciar sesión</h1>
       <form action={accion} className="flex flex-col gap-4" noValidate>
         <Input
           label="Correo"

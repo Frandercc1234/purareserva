@@ -46,7 +46,9 @@ export default async function SalidasPage({
         >
           Volver a tours
         </Link>
-        <h1 className="text-3xl font-semibold">Salidas: {tour.nombre_es}</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">
+          Salidas: {tour.nombre_es}
+        </h1>
       </div>
 
       <div className="grid max-w-4xl gap-6 lg:grid-cols-2">

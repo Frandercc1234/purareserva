@@ -20,7 +20,7 @@ export default async function ConfiguracionPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-semibold">Configuración</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">Configuración</h1>
       <ConfiguracionForm negocio={negocio} />
     </div>
   );

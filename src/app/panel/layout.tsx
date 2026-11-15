@@ -21,7 +21,7 @@ export default async function PanelLayout({
   return (
     <div className="min-h-screen md:flex">
       <Sidebar nombre={negocio.nombre} cerrarSesion={cerrarSesion} />
-      <div className="min-w-0 flex-1 px-4 py-6 md:p-8">{children}</div>
+      <div className="entrar min-w-0 flex-1 px-4 py-6 md:p-10">{children}</div>
     </div>
   );
 }

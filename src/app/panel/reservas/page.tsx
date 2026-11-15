@@ -131,7 +131,7 @@ export default async function ReservasPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-semibold">Reservas</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">Reservas</h1>
 
       <Card>
         <form

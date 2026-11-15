@@ -26,20 +26,20 @@ values
    'dueno2@test.com', '+50687776666', 25, 48);
 
 insert into tours (id, negocio_id, slug, nombre_es, nombre_en, descripcion_es, descripcion_en,
-                   precio_cents, duracion_min, cupo_default, punto_encuentro)
+                   precio_cents, duracion_min, cupo_default, punto_encuentro, imagen_url)
 values
   ('bbbbbbbb-0000-0000-0000-000000000001', 'aaaaaaaa-0000-0000-0000-000000000001', 'canopy-rincon',
    'Canopy en el Rincón', 'Rincón Canopy', 'Tirolesa entre el bosque tropical.', 'Zip line through the tropical forest.',
-   6500, 150, 12, 'Entrada principal del parque'),
+   6500, 150, 12, 'Entrada principal del parque', '/tours/canopy.jpg'),
   ('bbbbbbbb-0000-0000-0000-000000000002', 'aaaaaaaa-0000-0000-0000-000000000001', 'aguas-termales',
    'Aguas termales y barro', 'Hot springs and mud', 'Relax en aguas termales volcánicas.', 'Relax in volcanic hot springs.',
-   4500, 180, 20, 'Recepción de las termales'),
+   4500, 180, 20, 'Recepción de las termales', '/tours/termales.jpg'),
   ('bbbbbbbb-0000-0000-0000-000000000003', 'aaaaaaaa-0000-0000-0000-000000000002', 'catamaran-atardecer',
    'Catamarán al atardecer', 'Sunset catamaran', 'Navegá la costa con bebidas incluidas.', 'Sail the coast, drinks included.',
-   8500, 180, 25, 'Muelle de Tamarindo'),
+   8500, 180, 25, 'Muelle de Tamarindo', '/tours/catamaran.jpg'),
   ('bbbbbbbb-0000-0000-0000-000000000004', 'aaaaaaaa-0000-0000-0000-000000000002', 'snorkel-bahia',
    'Snorkel en la bahía', 'Bay snorkeling', 'Snorkel con guía y equipo incluido.', 'Guided snorkeling, gear included.',
-   5500, 120, 10, 'Playa Tamarindo, torre de salvavidas');
+   5500, 120, 10, 'Playa Tamarindo, torre de salvavidas', '/tours/snorkel.jpg');
 
 insert into salidas (tour_id, negocio_id, inicia_en, cupo)
 select t.id, t.negocio_id,

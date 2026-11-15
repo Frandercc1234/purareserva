@@ -58,7 +58,7 @@ export default async function PanelPage() {
   if (!totalTours) {
     return (
       <div className="flex flex-col gap-6">
-        <h1 className="text-3xl font-semibold">Resumen</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Resumen</h1>
         <Card className="flex max-w-2xl flex-col gap-4">
           <h2 className="text-lg font-semibold">Empecemos en tres pasos</h2>
           <ol className="flex flex-col gap-3">
@@ -93,7 +93,7 @@ export default async function PanelPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-semibold">Resumen</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Resumen</h1>
         <Link
           href={`/es/${negocio.slug}`}
           target="_blank"

@@ -6,6 +6,8 @@ Cada negocio se registra, publica sus tours y programa salidas con cupo. Los tur
 
 Es un proyecto de portafolio. Todo funciona de punta a punta en modo prueba. No se cobra dinero real.
 
+v1.1: mejoras de experiencia, SEO y accesibilidad.
+
 ## Demo
 
 - Sitio: https://purareserva.vercel.app

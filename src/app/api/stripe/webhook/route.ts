@@ -1,4 +1,5 @@
 import type Stripe from 'stripe';
+import { notificarConfirmacion, notificarSinCupo } from '@/lib/email';
 import { getStripe } from '@/lib/stripe';
 import { createAdminClient } from '@/lib/supabase/admin';
 
@@ -16,6 +17,24 @@ async function reservaDeSesion(admin: Admin, sesion: Stripe.Checkout.Session) {
   return data;
 }
 
+/** El token de la reserva viaja en la success_url de la sesión (?t=...). */
+function tokenDeSesion(sesion: Stripe.Checkout.Session) {
+  try {
+    return new URL(sesion.success_url ?? '').searchParams.get('t');
+  } catch {
+    return null;
+  }
+}
+
+/** Un problema al enviar correos nunca debe hacer fallar el webhook. */
+async function avisar(accion: () => Promise<void>) {
+  try {
+    await accion();
+  } catch (e) {
+    console.error('Webhook de Stripe: error al enviar correos', e);
+  }
+}
+
 async function completada(admin: Admin, sesion: Stripe.Checkout.Session) {
   const reserva = await reservaDeSesion(admin, sesion);
   if (!reserva) return; // sin reserva asociada (p. ej. eventos de prueba)
@@ -31,6 +50,12 @@ async function completada(admin: Admin, sesion: Stripe.Checkout.Session) {
   });
   if (error) throw error;
 
+  const token = tokenDeSesion(sesion);
+
+  if (resultado === 'confirmada' && token) {
+    await avisar(() => notificarConfirmacion(admin, reserva.id, token));
+  }
+
   if (resultado === 'sin_cupo') {
     // Pagó después de vencer la retención y el cupo ya se ocupó: se reembolsa.
     if (!paymentIntent)
@@ -45,6 +70,7 @@ async function completada(admin: Admin, sesion: Stripe.Checkout.Session) {
       })
       .eq('id', reserva.id);
     if (e) throw e;
+    if (token) await avisar(() => notificarSinCupo(admin, reserva.id, token));
   }
 }
 

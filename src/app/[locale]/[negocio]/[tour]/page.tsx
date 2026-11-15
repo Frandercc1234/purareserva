@@ -62,10 +62,10 @@ export default async function TourPage({
   searchParams,
 }: {
   params: Promise<{ locale: string; negocio: string; tour: string }>;
-  searchParams: Promise<{ salida?: string }>;
+  searchParams: Promise<{ salida?: string; personas?: string }>;
 }) {
   const { locale, negocio: negocioSlug, tour: tourSlug } = await params;
-  const { salida: salidaParam } = await searchParams;
+  const { salida: salidaParam, personas: personasParam } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations('Tour');
   const c = await getTranslations('Comun');
@@ -115,6 +115,17 @@ export default async function TourPage({
   const descripcion =
     locale === 'en' ? tour.descripcion_en : tour.descripcion_es;
 
+  // Salida y personas que vienen en el enlace (por ejemplo, desde el asistente). Se validan
+  // contra los cupos libres; el servidor vuelve a validar al reservar.
+  const salidaInicial = disponibles.find(
+    (s) => s.id === salidaParam && s.libres > 0,
+  );
+  const personasPedidas = Number.parseInt(personasParam ?? '', 10);
+  const personasInicial =
+    Number.isInteger(personasPedidas) && personasPedidas >= 1
+      ? Math.min(personasPedidas, salidaInicial?.libres ?? 50)
+      : 1;
+
   return (
     <main className="mx-auto max-w-5xl px-4 py-8 pb-28 md:py-10 lg:pb-12">
       <div className="grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
@@ -163,11 +174,8 @@ export default async function TourPage({
           {disponibles.length ? (
             <ReservaForm
               salidas={disponibles}
-              salidaInicialId={
-                disponibles.some((s) => s.id === salidaParam)
-                  ? (salidaParam ?? null)
-                  : null
-              }
+              salidaInicialId={salidaInicial?.id ?? null}
+              personasInicial={personasInicial}
               precioCents={tour.precio_cents}
               depositoPct={negocio.deposito_pct}
             />

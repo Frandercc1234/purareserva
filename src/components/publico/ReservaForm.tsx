@@ -44,11 +44,13 @@ function enfocarCampo(form: HTMLFormElement | null, campo: string) {
 export function ReservaForm({
   salidas,
   salidaInicialId,
+  personasInicial = 1,
   precioCents,
   depositoPct,
 }: {
   salidas: SalidaDisponible[];
   salidaInicialId: string | null;
+  personasInicial?: number;
   precioCents: number;
   depositoPct: number;
 }) {
@@ -62,7 +64,7 @@ export function ReservaForm({
   const [salida, setSalida] = useState<SalidaDisponible | null>(
     salidas.find((s) => s.id === salidaInicialId && s.libres > 0) ?? null,
   );
-  const [personas, setPersonas] = useState('1');
+  const [personas, setPersonas] = useState(String(personasInicial));
   const [erroresCliente, setErroresCliente] = useState<string[]>([]);
 
   const campos = estado?.campos ?? {};

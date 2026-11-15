@@ -145,6 +145,27 @@ test('pedir más personas que cupos se frena en el formulario y el servidor rech
   }
 });
 
+test('el enlace con ?salida y ?personas llena el formulario y respeta los cupos', async ({
+  page,
+}) => {
+  const salidaId = await crearSalida({ enMs: 5 * DIA_MS, cupo: 5 });
+  try {
+    await irA(page, `${URL_TOUR}?salida=${salidaId}&personas=3`);
+    await expect(page.locator(`input[value="${salidaId}"]`)).toBeChecked();
+    await expect(page.getByLabel('Personas')).toHaveValue('3');
+
+    // Más personas que cupos libres: se ajusta al máximo de la salida.
+    await irA(page, `${URL_TOUR}?salida=${salidaId}&personas=9`);
+    await expect(page.getByLabel('Personas')).toHaveValue('5');
+
+    // Valores inválidos: queda en 1.
+    await irA(page, `${URL_TOUR}?salida=${salidaId}&personas=abc`);
+    await expect(page.getByLabel('Personas')).toHaveValue('1');
+  } finally {
+    await limpiar({ salidaIds: [salidaId] });
+  }
+});
+
 test('enviar el formulario vacío lleva el foco al selector de salida y lista los errores', async ({
   page,
 }) => {

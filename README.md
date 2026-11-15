@@ -13,9 +13,9 @@ Es un proyecto de portafolio. Todo funciona de punta a punta en modo prueba. No 
 
 Para entrar al panel del dueño, usá uno de estos usuarios en `/login`:
 
-| Usuario | Contraseña | Negocio |
-|---|---|---|
-| `dueno1@test.com` | `Prueba123!` | Aventuras Rincón |
+| Usuario           | Contraseña   | Negocio             |
+| ----------------- | ------------ | ------------------- |
+| `dueno1@test.com` | `Prueba123!` | Aventuras Rincón    |
 | `dueno2@test.com` | `Prueba123!` | Mar y Sol Tamarindo |
 
 Para probar el pago, reservá un tour y usá la tarjeta de prueba `4242 4242 4242 4242`, cualquier fecha futura y cualquier CVC.
@@ -52,18 +52,18 @@ Panel del dueño y versión móvil:
 
 ## Stack
 
-| Tecnología | Uso |
-|---|---|
-| Next.js 15 (App Router) y React 19 | Parte pública y panel en una sola app, con Server Actions |
-| TypeScript | Tipos de punta a punta, también los generados desde Supabase |
-| Tailwind CSS 4 | Estilos y responsive |
-| Supabase | Postgres, Auth, RLS y Storage |
-| next-intl | Rutas `/es` y `/en` |
-| Stripe | Checkout del depósito, webhooks y reembolsos |
-| Resend | Correos transaccionales |
-| Zod | Validación de todas las entradas del servidor |
-| Vitest y Playwright | Pruebas unitarias y end-to-end |
-| GitHub Actions y Vercel | CI y despliegue |
+| Tecnología                         | Uso                                                          |
+| ---------------------------------- | ------------------------------------------------------------ |
+| Next.js 15 (App Router) y React 19 | Parte pública y panel en una sola app, con Server Actions    |
+| TypeScript                         | Tipos de punta a punta, también los generados desde Supabase |
+| Tailwind CSS 4                     | Estilos y responsive                                         |
+| Supabase                           | Postgres, Auth, RLS y Storage                                |
+| next-intl                          | Rutas `/es` y `/en`                                          |
+| Stripe                             | Checkout del depósito, webhooks y reembolsos                 |
+| Resend                             | Correos transaccionales                                      |
+| Zod                                | Validación de todas las entradas del servidor                |
+| Vitest y Playwright                | Pruebas unitarias y end-to-end                               |
+| GitHub Actions y Vercel            | CI y despliegue                                              |
 
 ## Decisiones de diseño
 
@@ -126,15 +126,15 @@ Necesitás:
 
    Completar `.env.local`:
 
-   | Variable | De dónde sale |
-   |---|---|
-   | `NEXT_PUBLIC_SUPABASE_URL` | Ya viene con el valor local. `supabase status` la confirma |
-   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `supabase status -o env` (`ANON_KEY`) |
-   | `SUPABASE_SERVICE_ROLE_KEY` | `supabase status -o env` (`SERVICE_ROLE_KEY`) |
-   | `STRIPE_SECRET_KEY` | Stripe Dashboard en modo prueba, Developers, API keys |
-   | `STRIPE_WEBHOOK_SECRET` | Lo imprime `stripe listen` (paso 4) |
-   | `RESEND_API_KEY` | Resend, API Keys |
-   | `EMAIL_FROM` | Ya viene con el remitente de prueba de Resend |
+   | Variable                        | De dónde sale                                              |
+   | ------------------------------- | ---------------------------------------------------------- |
+   | `NEXT_PUBLIC_SUPABASE_URL`      | Ya viene con el valor local. `supabase status` la confirma |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `supabase status -o env` (`ANON_KEY`)                      |
+   | `SUPABASE_SERVICE_ROLE_KEY`     | `supabase status -o env` (`SERVICE_ROLE_KEY`)              |
+   | `STRIPE_SECRET_KEY`             | Stripe Dashboard en modo prueba, Developers, API keys      |
+   | `STRIPE_WEBHOOK_SECRET`         | Lo imprime `stripe listen` (paso 4)                        |
+   | `RESEND_API_KEY`                | Resend, API Keys                                           |
+   | `EMAIL_FROM`                    | Ya viene con el remitente de prueba de Resend              |
 
    Con `onboarding@resend.dev`, Resend solo entrega correos al dueño de la cuenta. Con los correos de prueba de la demo, el envío falla y se registra, y la reserva sigue igual. Para entregar a cualquier destinatario hay que verificar un dominio en Resend y cambiar `EMAIL_FROM`.
 
@@ -154,13 +154,13 @@ Necesitás:
 
 ## Pruebas
 
-| Comando | Qué corre |
-|---|---|
-| `npm run lint` | ESLint |
-| `npm run typecheck` | Tipos de TypeScript |
-| `npm run test` | Pruebas unitarias con Vitest (dinero, fechas, salidas, tokens, cancelación, correos) |
-| `npm run test:e2e` | Pruebas end-to-end con Playwright, en escritorio y en iPhone 13 |
-| `npx tsx scripts/concurrencia.ts` | Comprueba que no hay sobreventa con 10 reservas en paralelo |
+| Comando                                                 | Qué corre                                                                            |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `npm run lint`                                          | ESLint                                                                               |
+| `npm run typecheck`                                     | Tipos de TypeScript                                                                  |
+| `npm run test`                                          | Pruebas unitarias con Vitest (dinero, fechas, salidas, tokens, cancelación, correos) |
+| `npm run test:e2e`                                      | Pruebas end-to-end con Playwright, en escritorio y en iPhone 13                      |
+| `npx tsx --env-file=.env.local scripts/concurrencia.ts` | Comprueba que no hay sobreventa con 10 reservas en paralelo                          |
 
 Para las pruebas e2e necesitás la base local en marcha (`supabase start`) y `.env.local` completo. Playwright compila y arranca la app solo. La primera vez:
 

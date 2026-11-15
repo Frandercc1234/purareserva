@@ -5,14 +5,14 @@ titulo_es: 'Parque Nacional Santa Rosa'
 titulo_en: 'Santa Rosa National Park'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/where-to-go/guanacaste/top-10-in-guanacaste
-revisado: false
+revisado: true
 ---
 
 ## es
 
 El Parque Nacional Santa Rosa está en el norte de Guanacaste y protege un área muy importante de bosque seco, único en Centroamérica.
 
-Tiene dos sectores, Murciélago y Santa Rosa, con playas poco visitadas, entre ellas Hachal, Danta, Coquito, Santa Elena, Blanca Naranjo y Nancite.
+Tiene dos sectores, Murciélago y Santa Rosa, con playas poco visitadas, entre ellas Hachal, Danta, Coquito, Santa Elena, Blanca, Naranjo y Nancite.
 
 El parque es reconocido por su fauna: en sus alrededores hay una estación biológica que monitorea animales como el venado cola blanca, los monos aulladores y carablanca, las tortugas marinas, reptiles y anfibios, entre otros.
 
@@ -22,7 +22,7 @@ También tiene gran importancia histórica: allí están la Casona de Santa Rosa
 
 Santa Rosa National Park is in the northern part of Guanacaste and protects a very important area of dry forest, unique in Central America.
 
-It has two sectors, Murciélago and Santa Rosa, with rarely visited beaches, among them Hachal, Danta, Coquito, Santa Elena, Blanca Naranjo and Nancite.
+It has two sectors, Murciélago and Santa Rosa, with rarely visited beaches, among them Hachal, Danta, Coquito, Santa Elena, Blanca, Naranjo and Nancite.
 
 The park is recognized for its wildlife: in the vicinity there is a biological station that monitors animals such as white-tailed deer, howler and white-faced monkeys, sea turtles, reptiles and amphibians, among others.
 

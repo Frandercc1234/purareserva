@@ -5,7 +5,7 @@ titulo_es: 'Aeropuerto de Liberia (LIR) y transporte público'
 titulo_en: 'Liberia Airport (LIR) and public buses'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/planning-your-trip/travel-resources
-revisado: false
+revisado: true
 ---
 
 ## es

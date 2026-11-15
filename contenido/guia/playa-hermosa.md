@@ -5,7 +5,7 @@ titulo_es: 'Playa Hermosa (Guanacaste)'
 titulo_en: 'Hermosa Beach (Guanacaste)'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/where-to-go/guanacaste/tourist-attractions-10-in-guanacaste
-revisado: false
+revisado: true
 ---
 
 ## es
@@ -14,7 +14,7 @@ Playa Hermosa es una bahía de cerca de una milla de largo, con arena grisácea,
 
 Las olas son muy pequeñas y hay abundante vegetación costera. La fuente la señala como buena para nadar, tomar el sol, ver atardeceres y practicar deportes acuáticos, incluido el buceo, además de caminar y andar a caballo.
 
-La playa tiene el galardón Bandera Azul, que reconoce su limpieza y seguridad.
+La playa tiene el galardón Bandera Azul, que reconoce su limpieza y seguridad. Conviene verificar el estado actual del galardón en la fuente.
 
 ## en
 
@@ -22,4 +22,4 @@ Hermosa Beach is a bay about a mile long with grayish sand, set between two rock
 
 The waves are very small and there is abundant coastal vegetation. The source describes it as great for swimming, sunbathing, watching sunsets and water sports, including diving, as well as hiking and horseback riding.
 
-The beach carries the Blue Flag certification, recognizing its cleanliness and safety.
+The beach carries the Blue Flag certification, recognizing its cleanliness and safety. Check the source for the current status of the award.

@@ -5,7 +5,7 @@ titulo_es: 'Cómo moverse con seguridad: taxis y auto'
 titulo_en: 'Getting around safely: taxis and driving'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/faq/html/costa-rica.html
-revisado: false
+revisado: true
 ---
 
 ## es

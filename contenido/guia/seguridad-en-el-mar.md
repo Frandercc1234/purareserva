@@ -5,7 +5,7 @@ titulo_es: 'Seguridad en el mar: corrientes de resaca'
 titulo_en: 'Sea safety: rip currents'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/faq/html/costa-rica.html
-revisado: false
+revisado: true
 ---
 
 ## es

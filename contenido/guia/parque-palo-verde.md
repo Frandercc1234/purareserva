@@ -5,7 +5,7 @@ titulo_es: 'Parque Nacional Palo Verde'
 titulo_en: 'Palo Verde National Park'
 fuente_nombre: 'SINAC (Sistema Nacional de Áreas de Conservación)'
 fuente_url: https://www.sinac.go.cr/ES/ac/acat/pnpv/Paginas/default.aspx
-revisado: false
+revisado: true
 ---
 
 ## es

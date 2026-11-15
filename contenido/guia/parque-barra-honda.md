@@ -5,7 +5,7 @@ titulo_es: 'Parque Nacional Barra Honda'
 titulo_en: 'Barra Honda National Park'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/where-to-go/guanacaste/top-10-in-guanacaste
-revisado: false
+revisado: true
 ---
 
 ## es

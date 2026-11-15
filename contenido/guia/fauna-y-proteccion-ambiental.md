@@ -5,7 +5,7 @@ titulo_es: 'Fauna y protección ambiental'
 titulo_en: 'Wildlife and environmental protection'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/faq/html/costa-rica.html
-revisado: false
+revisado: true
 ---
 
 ## es
@@ -16,7 +16,7 @@ En las áreas protegidas hay que mantenerse en los senderos marcados, evitar el 
 
 En la estación seca (generalmente de diciembre a abril) pueden ocurrir incendios forestales, sobre todo en Guanacaste y otras zonas del Pacífico norte.
 
-Sobre tortugas marinas en Guanacaste, la fuente menciona la anidación de baulas y tortugas negras en Santa Cruz en diciembre y febrero, y en agosto, además de la llegada de tortugas lora en Ostional. Las reglas para observarlas las definen las autoridades y los guías autorizados de cada sitio.
+Sobre tortugas marinas en Guanacaste, la fuente señala agosto como un buen mes para ver la llegada de tortugas lora (golfinas) a Ostional y la anidación de tortugas baula (laúd) y tortugas negras en Santa Cruz. Las reglas para observarlas las definen las autoridades y los guías autorizados de cada sitio.
 
 ## en
 
@@ -26,4 +26,4 @@ In protected areas, stay on marked trails, avoid noise from devices such as radi
 
 During the dry season (generally December to April) wildfires may occur, particularly in Guanacaste and other areas of the North Pacific.
 
-About sea turtles in Guanacaste, the source mentions the nesting of leatherback and black turtles in Santa Cruz in December and February, and in August, as well as the arrival of olive ridley turtles in Ostional. The rules for watching them are set by the authorities and the authorized guides at each site.
+About sea turtles in Guanacaste, the source names August as a good month to see olive ridley turtles arriving at Ostional and leatherback and black turtles nesting in Santa Cruz. The rules for watching them are set by the authorities and the authorized guides at each site.

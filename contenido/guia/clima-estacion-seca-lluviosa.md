@@ -5,7 +5,7 @@ titulo_es: 'Estación seca y lluviosa en Guanacaste'
 titulo_en: 'Dry and rainy seasons in Guanacaste'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/climate/guanacaste-weather-forecast
-revisado: false
+revisado: true
 ---
 
 ## es

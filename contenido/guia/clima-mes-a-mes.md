@@ -5,7 +5,7 @@ titulo_es: 'Qué esperar mes a mes en Guanacaste'
 titulo_en: 'What to expect month by month in Guanacaste'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/planning-your-trip/climate
-revisado: false
+revisado: true
 ---
 
 ## es

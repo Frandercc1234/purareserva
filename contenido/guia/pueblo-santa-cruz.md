@@ -5,7 +5,7 @@ titulo_es: 'Santa Cruz'
 titulo_en: 'Santa Cruz'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/where-to-go/guanacaste/cultural-manifestation-in-guanacaste
-revisado: false
+revisado: true
 ---
 
 ## es

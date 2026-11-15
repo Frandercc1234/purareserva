@@ -5,7 +5,7 @@ titulo_es: 'Playa Conchal'
 titulo_en: 'Conchal Beach'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/where-to-go/guanacaste/tourist-attractions-10-in-guanacaste
-revisado: false
+revisado: true
 ---
 
 ## es
@@ -16,7 +16,7 @@ La ensenada mide alrededor de una milla y su nombre viene de que la arena está 
 
 Según la fuente, es un buen lugar para nadar, caminar, andar a caballo, hacer excursiones en bote y practicar deportes acuáticos, incluido el buceo.
 
-La playa ha recibido el galardón Bandera Azul de certificación ecológica.
+La playa ha recibido el galardón Bandera Azul de certificación ecológica. Conviene verificar el estado actual del galardón en la fuente.
 
 ## en
 
@@ -26,4 +26,4 @@ The inlet is about a mile long and gets its name from sand made of millions of s
 
 According to the source, it is a good place for swimming, hiking, horseback riding, boat excursions and water sports, including diving.
 
-The beach has been awarded the Blue Flag ecological certification.
+The beach has been awarded the Blue Flag ecological certification. Check the source for the current status of the award.

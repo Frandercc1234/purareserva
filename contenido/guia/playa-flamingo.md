@@ -5,7 +5,7 @@ titulo_es: 'Playa Flamingo (Playa Blanca)'
 titulo_en: 'Flamingo Beach (Blanca Beach)'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/where-to-go/guanacaste/tourist-attractions-10-in-guanacaste
-revisado: false
+revisado: true
 ---
 
 ## es

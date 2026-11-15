@@ -5,7 +5,7 @@ titulo_es: 'Nicoya'
 titulo_en: 'Nicoya'
 fuente_nombre: 'Instituto Costarricense de Turismo (Visit Costa Rica)'
 fuente_url: https://www.visitcostarica.com/where-to-go/guanacaste/cultural-manifestation-in-guanacaste
-revisado: false
+revisado: true
 ---
 
 ## es

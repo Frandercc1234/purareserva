@@ -1,0 +1,18 @@
+name: keepalive
+
+# Supabase (plan gratuito) pausa el proyecto tras una semana sin actividad.
+# Este ping cada 3 días lo mantiene activo.
+on:
+  schedule:
+    - cron: '0 14 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping a /api/salud
+        run: |
+          curl -f -sS \
+            -H "Authorization: Bearer ${{ secrets.SALUD_TOKEN }}" \
+            https://purareserva.vercel.app/api/salud

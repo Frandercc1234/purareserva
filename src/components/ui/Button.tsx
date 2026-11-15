@@ -3,7 +3,7 @@ import { cn } from './cn';
 type Variante = 'primario' | 'secundario';
 
 const base =
-  'inline-flex h-11 items-center justify-center gap-2 rounded-control px-5 font-semibold transition-colors disabled:cursor-not-allowed';
+  'inline-flex h-11 items-center justify-center gap-2 rounded-control px-5 font-semibold transition-[color,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] motion-safe:active:scale-[0.97] disabled:cursor-not-allowed disabled:active:scale-100';
 
 const variantes: Record<Variante, string> = {
   primario:

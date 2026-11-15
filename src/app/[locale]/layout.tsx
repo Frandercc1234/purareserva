@@ -3,7 +3,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { HtmlLang } from '@/components/publico/HtmlLang';
-import { LocaleSwitcher } from '@/components/publico/LocaleSwitcher';
+import { Footer } from '@/components/publico/Footer';
+import { Header } from '@/components/publico/Header';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -24,11 +25,9 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <HtmlLang locale={locale} />
-      <header className="flex items-center justify-between border-b border-borde px-4 py-2">
-        <span className="font-semibold">PuraReserva</span>
-        <LocaleSwitcher />
-      </header>
+      <Header />
       {children}
+      <Footer />
     </NextIntlClientProvider>
   );
 }

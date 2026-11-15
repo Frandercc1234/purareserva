@@ -33,3 +33,30 @@ body {
   outline: 2px solid var(--color-primario);
   outline-offset: 2px;
 }
+
+/* Movimiento: curva fuerte de salida, solo propiedades baratas, y reposo si el usuario lo pide. */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.entrar {
+  animation: entrar 520ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entrar {
+    animation: none;
+  }
+}

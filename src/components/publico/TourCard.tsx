@@ -24,15 +24,17 @@ export function TourCard({
   return (
     <Link
       href={`/${negocioSlug}/${tourSlug}`}
-      className="group flex flex-col overflow-hidden rounded-tarjeta border border-borde bg-superficie shadow-tarjeta"
+      className="group flex h-full flex-col overflow-hidden rounded-tarjeta border border-borde bg-superficie shadow-tarjeta transition-[transform,box-shadow,border-color] duration-200 ease-[var(--ease-out)] hover:border-primario/40 hover:shadow-md motion-safe:hover:-translate-y-0.5"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={imagenUrl ?? '/tour-default.svg'}
-        alt=""
-        loading="lazy"
-        className="aspect-video w-full object-cover"
-      />
+      <div className="aspect-video overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={imagenUrl ?? '/tour-default.svg'}
+          alt=""
+          loading="lazy"
+          className="size-full object-cover transition-transform duration-500 ease-[var(--ease-out)] motion-safe:group-hover:scale-[1.03]"
+        />
+      </div>
       <div className="flex flex-col gap-1 p-4">
         <h3 className="text-lg font-semibold group-hover:text-primario">
           {nombre}

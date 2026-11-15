@@ -7,18 +7,68 @@
     "porPersona": "por persona",
     "verTours": "Ver tours",
     "volver": "Volver",
-    "whatsapp": "Consultar por WhatsApp"
+    "whatsapp": "Consultar por WhatsApp",
+    "soyOperador": "Soy operador",
+    "iniciarSesion": "Iniciar sesión",
+    "inicio": "Ir al inicio",
+    "principal": "Principal",
+    "operadoresPie": "Para operadores",
+    "registrarNegocio": "Registrar mi negocio",
+    "panelOperador": "Panel del operador",
+    "lema": "Reservas de tours en Guanacaste"
   },
   "Landing": {
     "titulo": "Reservá tours en Guanacaste",
     "subtitulo": "Tours de operadores locales, con cupo confirmado y depósito en línea.",
     "operadores": "Operadores",
     "vacio": "Todavía no hay operadores publicados",
-    "cantidadTours": "{count, plural, one {# tour} other {# tours}}"
+    "cantidadTours": "{count, plural, one {# tour} other {# tours}}",
+    "etiqueta": "Guanacaste, Costa Rica",
+    "verOperadores": "Ver operadores",
+    "hechos": {
+      "cupo": {
+        "valor": "30 min",
+        "texto": "de cupo retenido mientras pagás"
+      },
+      "deposito": {
+        "valor": "Depósito",
+        "texto": "en línea, el resto se paga en el lugar"
+      },
+      "idiomas": {
+        "valor": "ES · EN",
+        "texto": "reservá sin crear cuenta"
+      }
+    },
+    "comoTitulo": "Cómo funciona",
+    "pasos": {
+      "uno": {
+        "titulo": "Elegí tu tour",
+        "texto": "Mirá los tours de operadores locales y las salidas con cupo libre."
+      },
+      "dos": {
+        "titulo": "Pagá el depósito",
+        "texto": "Retenemos tu cupo 30 minutos y pagás solo una parte con tarjeta."
+      },
+      "tres": {
+        "titulo": "Presentate y disfrutá",
+        "texto": "Recibís un correo con tu enlace. El resto se paga el día del tour."
+      }
+    },
+    "opTitulo": "¿Tenés un tour en Guanacaste?",
+    "opTexto": "Publicá tus tours, programá salidas con cupo y cobrá un depósito en línea. Sin sobreventa y sin llevar cupos en papel.",
+    "opBeneficios": {
+      "uno": "Cupos que no se venden dos veces",
+      "dos": "Depósito cobrado antes de la salida",
+      "tres": "Panel con tus reservas e ingresos"
+    },
+    "opCta": "Registrar mi negocio",
+    "opLogin": "Ya tengo cuenta"
   },
   "Negocio": {
     "sinTours": "Este operador no tiene tours disponibles",
-    "tours": "Tours"
+    "tours": "Tours",
+    "operador": "Operador local",
+    "volver": "Todos los operadores"
   },
   "Tour": {
     "duracion": "Duración",

@@ -16,7 +16,7 @@ export function LocaleSwitcher() {
           href={pathname}
           locale={l}
           aria-current={l === actual ? 'true' : undefined}
-          className={`inline-flex h-11 items-center rounded-lg px-3 ${
+          className={`inline-flex h-11 items-center rounded-lg px-2.5 sm:px-3 ${
             l === actual
               ? 'bg-primario text-superficie'
               : 'text-primario underline'

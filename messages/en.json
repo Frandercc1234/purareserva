@@ -7,18 +7,68 @@
     "porPersona": "per person",
     "verTours": "View tours",
     "volver": "Back",
-    "whatsapp": "Ask on WhatsApp"
+    "whatsapp": "Ask on WhatsApp",
+    "soyOperador": "I run tours",
+    "iniciarSesion": "Log in",
+    "inicio": "Go to home",
+    "principal": "Main",
+    "operadoresPie": "For operators",
+    "registrarNegocio": "Register my business",
+    "panelOperador": "Operator dashboard",
+    "lema": "Tour bookings in Guanacaste"
   },
   "Landing": {
     "titulo": "Book tours in Guanacaste",
     "subtitulo": "Tours from local operators, with confirmed spots and an online deposit.",
     "operadores": "Operators",
     "vacio": "No operators published yet",
-    "cantidadTours": "{count, plural, one {# tour} other {# tours}}"
+    "cantidadTours": "{count, plural, one {# tour} other {# tours}}",
+    "etiqueta": "Guanacaste, Costa Rica",
+    "verOperadores": "View operators",
+    "hechos": {
+      "cupo": {
+        "valor": "30 min",
+        "texto": "spot held while you pay"
+      },
+      "deposito": {
+        "valor": "Deposit",
+        "texto": "online, the rest is paid on site"
+      },
+      "idiomas": {
+        "valor": "ES · EN",
+        "texto": "book without an account"
+      }
+    },
+    "comoTitulo": "How it works",
+    "pasos": {
+      "uno": {
+        "titulo": "Pick your tour",
+        "texto": "Browse tours from local operators and departures with open spots."
+      },
+      "dos": {
+        "titulo": "Pay the deposit",
+        "texto": "We hold your spot for 30 minutes and you pay only part by card."
+      },
+      "tres": {
+        "titulo": "Show up and enjoy",
+        "texto": "You get an email with your link. The rest is paid on the day."
+      }
+    },
+    "opTitulo": "Do you run tours in Guanacaste?",
+    "opTexto": "Publish your tours, schedule departures with limited spots and collect a deposit online. No overselling and no paper spot lists.",
+    "opBeneficios": {
+      "uno": "Spots that are never sold twice",
+      "dos": "Deposit collected before the departure",
+      "tres": "Dashboard with your bookings and income"
+    },
+    "opCta": "Register my business",
+    "opLogin": "I already have an account"
   },
   "Negocio": {
     "sinTours": "This operator has no tours available",
-    "tours": "Tours"
+    "tours": "Tours",
+    "operador": "Local operator",
+    "volver": "All operators"
   },
   "Tour": {
     "duracion": "Duration",

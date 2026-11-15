@@ -37,6 +37,24 @@ export default function RegistroPage() {
         : 'No pudimos crear la cuenta. Revisá los datos.'
       : null;
 
+  if (estado?.ok) {
+    return (
+      <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-4 px-4 py-8">
+        <h1 className="text-2xl font-semibold">Revisá tu correo</h1>
+        <p role="status" className="text-texto-suave">
+          Te enviamos un enlace para confirmar tu cuenta. Al abrirlo entrás
+          directo al panel y se crea tu negocio.
+        </p>
+        <p className="text-sm text-texto-suave">
+          Si no lo ves en unos minutos, mirá la carpeta de spam.
+        </p>
+        <Link href="/login" className="text-primario underline">
+          Ir a iniciar sesión
+        </Link>
+      </main>
+    );
+  }
+
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-6 px-4 py-8">
       <h1 className="text-2xl font-semibold">Registrá tu negocio</h1>

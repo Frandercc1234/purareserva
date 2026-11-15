@@ -1,12 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useActionState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useActionState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { iniciarSesion, type EstadoForm } from '../actions';
 
-export default function LoginPage() {
+function Formulario() {
+  const errorEnlace = useSearchParams().get('error') === 'confirmacion';
   const [estado, accion, pendiente] = useActionState<EstadoForm, FormData>(
     iniciarSesion,
     null,
@@ -30,6 +32,12 @@ export default function LoginPage() {
           autoComplete="current-password"
           required
         />
+        {errorEnlace && !estado && (
+          <p role="alert" className="text-sm text-error">
+            El enlace de confirmación no es válido o venció. Iniciá sesión o
+            registrate de nuevo.
+          </p>
+        )}
         {estado && !estado.ok && (
           <p role="alert" className="text-sm text-error">
             Correo o contraseña incorrectos
@@ -46,5 +54,13 @@ export default function LoginPage() {
         </Link>
       </p>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <Formulario />
+    </Suspense>
   );
 }

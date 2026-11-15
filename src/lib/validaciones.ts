@@ -4,6 +4,7 @@ import { aCentavos } from './dinero';
 /** Rutas que no pueden ser el slug de un negocio. */
 const SLUGS_RESERVADOS = [
   'reserva',
+  'auth',
   'panel',
   'login',
   'registro',

@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { Sidebar } from '@/components/panel/Sidebar';
+import { negocioDelDueno } from '@/lib/panel';
 import { createClient } from '@/lib/supabase/server';
 import { cerrarSesion } from '../(auth)/actions';
 
@@ -14,11 +15,7 @@ export default async function PanelLayout({
   } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const { data: negocio } = await supabase
-    .from('negocios')
-    .select('nombre')
-    .eq('owner_id', user.id)
-    .maybeSingle();
+  const negocio = await negocioDelDueno(supabase, user);
   if (!negocio) redirect('/registro');
 
   return (

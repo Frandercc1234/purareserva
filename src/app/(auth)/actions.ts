@@ -59,10 +59,19 @@ export async function registrar(
       };
     }
 
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error || !data.session) {
-      return { ok: false, error: error ? 'VALIDACION' : 'DESCONOCIDO' };
-    }
+    const sitio = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${sitio}/auth/callback`,
+        // Con confirmación de correo el negocio se crea al primer ingreso, con estos datos.
+        data: { nombre_negocio: nombreNegocio, slug },
+      },
+    });
+    if (error) return { ok: false, error: 'VALIDACION' };
+    // Sin sesión: Supabase envió un correo de confirmación.
+    if (!data.session) return { ok: true };
   }
 
   const { error } = await supabase.rpc('crear_negocio', {

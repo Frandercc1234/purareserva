@@ -53,6 +53,52 @@ export type Database = {
         };
         Relationships: [];
       };
+      guia: {
+        Row: {
+          actualizado_en: string;
+          contenido_en: string;
+          contenido_es: string;
+          embedding: string | null;
+          fuente_nombre: string;
+          fuente_url: string;
+          id: string;
+          revisado: boolean;
+          slug: string;
+          tipo: Database['public']['Enums']['tipo_guia'];
+          titulo_en: string;
+          titulo_es: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          actualizado_en?: string;
+          contenido_en: string;
+          contenido_es: string;
+          embedding?: string | null;
+          fuente_nombre: string;
+          fuente_url: string;
+          id?: string;
+          revisado?: boolean;
+          slug: string;
+          tipo: Database['public']['Enums']['tipo_guia'];
+          titulo_en: string;
+          titulo_es: string;
+        };
+        Update: {
+          actualizado_en?: string;
+          contenido_en?: string;
+          contenido_es?: string;
+          embedding?: string | null;
+          fuente_nombre?: string;
+          fuente_url?: string;
+          id?: string;
+          revisado?: boolean;
+          slug?: string;
+          tipo?: Database['public']['Enums']['tipo_guia'];
+          titulo_en?: string;
+          titulo_es?: string;
+        };
+        Relationships: [];
+      };
       negocios: {
         Row: {
           activo: boolean;
@@ -297,6 +343,25 @@ export type Database = {
           },
         ];
       };
+      uso_asistente: {
+        Row: {
+          clave: string;
+          dia: string;
+          mensajes: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          clave: string;
+          dia?: string;
+          mensajes?: number;
+        };
+        Update: {
+          clave?: string;
+          dia?: string;
+          mensajes?: number;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       salidas_ocupacion: {
@@ -331,6 +396,23 @@ export type Database = {
       };
     };
     Functions: {
+      buscar_guia: {
+        Args: {
+          p_embedding: string;
+          p_limite?: number;
+          p_similitud_min?: number;
+        };
+        Returns: {
+          contenido_en: string;
+          contenido_es: string;
+          fuente_nombre: string;
+          fuente_url: string;
+          similitud: number;
+          slug: string;
+          titulo_en: string;
+          titulo_es: string;
+        }[];
+      };
       confirmar_reserva_pago: {
         Args: { p_payment_intent: string; p_reserva_id: string };
         Returns: string;
@@ -406,6 +488,14 @@ export type Database = {
           tour_nombre: string;
         }[];
       };
+      registrar_mensaje_asistente: {
+        Args: {
+          p_clave: string;
+          p_limite_global: number;
+          p_limite_visitante: number;
+        };
+        Returns: boolean;
+      };
       resumen_ingresos: {
         Args: { p_desde: string; p_hasta: string; p_negocio_id: string };
         Returns: {
@@ -424,6 +514,8 @@ export type Database = {
         | 'expirada';
       estado_salida: 'programada' | 'cancelada';
       idioma: 'es' | 'en';
+      tipo_guia:
+        'playa' | 'pueblo' | 'parque' | 'clima' | 'transporte' | 'consejo';
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -563,6 +655,14 @@ export const Constants = {
       ],
       estado_salida: ['programada', 'cancelada'],
       idioma: ['es', 'en'],
+      tipo_guia: [
+        'playa',
+        'pueblo',
+        'parque',
+        'clima',
+        'transporte',
+        'consejo',
+      ],
     },
   },
 } as const;

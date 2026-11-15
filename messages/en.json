@@ -74,5 +74,42 @@
     "cuerpo": "Your spots are released in 30 minutes.",
     "volverTour": "Back to the tour",
     "volverInicio": "Back to home"
+  },
+  "ReservaPagina": {
+    "estados": {
+      "pendiente_pago": "Awaiting payment",
+      "confirmada": "Confirmed",
+      "cancelada": "Cancelled",
+      "reembolsada": "Refunded",
+      "expirada": "Expired"
+    },
+    "tour": "Tour",
+    "fecha": "Date and time",
+    "personas": "Guests",
+    "total": "Total",
+    "deposito": "Deposit paid",
+    "saldo": "Balance to pay at the meeting point",
+    "punto": "Meeting point",
+    "operador": "Operator",
+    "contacto": "Operator contact",
+    "cancelar": "Cancel booking",
+    "dialogoTitulo": "Cancel your booking?",
+    "conReembolso": "You're cancelling within the deadline: we'll refund your {monto} deposit automatically.",
+    "sinReembolso": "The deadline for a refund was {horas, plural, =0 {the moment of departure} one {# hour before departure} other {# hours before departure}}. If you cancel now, your {monto} deposit is not refunded.",
+    "confirmarCancelar": "Yes, cancel",
+    "volver": "No, go back",
+    "cancelando": "Cancelling…",
+    "okReembolso": "Booking cancelled. We refunded your deposit; it should appear on your card in a few days.",
+    "okSinReembolso": "Booking cancelled. The deposit is not refunded because it's past the deadline.",
+    "errores": {
+      "NO_CANCELABLE": "This booking can no longer be cancelled.",
+      "RESERVA_NO_EXISTE": "We couldn't find the booking.",
+      "STRIPE_ERROR": "We couldn't process the refund. Your booking is still active; please try again in a few minutes.",
+      "DESCONOCIDO": "Something went wrong. Please try again."
+    },
+    "notaCancelada": "This booking is cancelled.",
+    "notaReembolsada": "This booking was cancelled and the deposit was refunded.",
+    "notaPendiente": "We're waiting for the payment confirmation.",
+    "notaExpirada": "This booking expired without completing the payment."
   }
 }

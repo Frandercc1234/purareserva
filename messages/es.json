@@ -74,5 +74,42 @@
     "cuerpo": "Tus cupos se liberan en 30 minutos.",
     "volverTour": "Volver al tour",
     "volverInicio": "Volver al inicio"
+  },
+  "ReservaPagina": {
+    "estados": {
+      "pendiente_pago": "Pendiente de pago",
+      "confirmada": "Confirmada",
+      "cancelada": "Cancelada",
+      "reembolsada": "Reembolsada",
+      "expirada": "Expirada"
+    },
+    "tour": "Tour",
+    "fecha": "Fecha y hora",
+    "personas": "Personas",
+    "total": "Total",
+    "deposito": "Depósito pagado",
+    "saldo": "Saldo a pagar en el lugar",
+    "punto": "Punto de encuentro",
+    "operador": "Operador",
+    "contacto": "Contacto del operador",
+    "cancelar": "Cancelar reserva",
+    "dialogoTitulo": "¿Cancelar tu reserva?",
+    "conReembolso": "Cancelás dentro del plazo: te reembolsamos el depósito de {monto} automáticamente.",
+    "sinReembolso": "El plazo para cancelar con reembolso era hasta {horas, plural, =0 {el momento de la salida} one {# hora antes de la salida} other {# horas antes de la salida}}. Si cancelás ahora, el depósito de {monto} no se reembolsa.",
+    "confirmarCancelar": "Sí, cancelar",
+    "volver": "No, volver",
+    "cancelando": "Cancelando…",
+    "okReembolso": "Reserva cancelada. Te reembolsamos el depósito; lo vas a ver en tu tarjeta en unos días.",
+    "okSinReembolso": "Reserva cancelada. El depósito no se reembolsa por estar fuera de plazo.",
+    "errores": {
+      "NO_CANCELABLE": "Esta reserva ya no se puede cancelar.",
+      "RESERVA_NO_EXISTE": "No encontramos la reserva.",
+      "STRIPE_ERROR": "No pudimos procesar el reembolso. Tu reserva sigue activa; intentá de nuevo en unos minutos.",
+      "DESCONOCIDO": "Algo salió mal. Intentá de nuevo."
+    },
+    "notaCancelada": "Esta reserva está cancelada.",
+    "notaReembolsada": "Esta reserva fue cancelada y el depósito se reembolsó.",
+    "notaPendiente": "Estamos esperando la confirmación del pago.",
+    "notaExpirada": "Esta reserva venció sin completar el pago."
   }
 }

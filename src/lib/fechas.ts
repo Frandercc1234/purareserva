@@ -57,3 +57,23 @@ export function formatearDuracion(minutos: number) {
   if (h === 0) return `${m} min`;
   return m === 0 ? `${h} h` : `${h} h ${m} min`;
 }
+
+/** Año y mes (1-12) del instante dado, vistos en Costa Rica. */
+function anioMesCR(fecha: Date) {
+  const p = new Intl.DateTimeFormat('en-CA', {
+    timeZone: ZONA,
+    year: 'numeric',
+    month: '2-digit',
+  }).formatToParts(fecha);
+  const n = (t: string) => Number(p.find((x) => x.type === t)!.value);
+  return { y: n('year'), m: n('month') };
+}
+
+/** Rango [desde, hasta) del mes actual en hora de Costa Rica (UTC-6), como instantes UTC. */
+export function rangoMesCR(ahora = new Date()) {
+  const { y, m } = anioMesCR(ahora);
+  return {
+    desde: new Date(Date.UTC(y, m - 1, 1, 6)),
+    hasta: new Date(Date.UTC(y, m, 1, 6)),
+  };
+}

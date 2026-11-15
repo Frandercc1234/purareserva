@@ -390,6 +390,23 @@ export type Database = {
         };
       };
       cupos_disponibles: { Args: { p_salida_id: string }; Returns: number };
+      ocupacion_por_tour: {
+        Args: { p_dias?: number; p_negocio_id: string };
+        Returns: {
+          cupo: number;
+          ocupados: number;
+          tour_id: string;
+          tour_nombre: string;
+        }[];
+      };
+      resumen_ingresos: {
+        Args: { p_desde: string; p_hasta: string; p_negocio_id: string };
+        Returns: {
+          ingresos: number;
+          personas: number;
+          reservas: number;
+        }[];
+      };
     };
     Enums: {
       estado_reserva:

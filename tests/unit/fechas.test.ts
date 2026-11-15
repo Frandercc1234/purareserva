@@ -5,6 +5,7 @@ import {
   formatearDuracion,
   formatearFechaHora,
   formatearHora,
+  rangoMesCR,
 } from '@/lib/fechas';
 
 describe('fechas', () => {
@@ -31,5 +32,18 @@ describe('fechas', () => {
     expect(formatearDuracion(150)).toBe('2 h 30 min');
     expect(formatearDuracion(60)).toBe('1 h');
     expect(formatearDuracion(45)).toBe('45 min');
+  });
+
+  it('rangoMesCR usa el mes de Costa Rica, no el de UTC', () => {
+    // 2026-12-01T02:00Z son las 20:00 del 30 de noviembre en Costa Rica
+    const r = rangoMesCR(new Date('2026-12-01T02:00:00Z'));
+    expect(r.desde.toISOString()).toBe('2026-11-01T06:00:00.000Z');
+    expect(r.hasta.toISOString()).toBe('2026-12-01T06:00:00.000Z');
+  });
+
+  it('rangoMesCR en el primer instante del mes y cambio de año', () => {
+    const r = rangoMesCR(new Date('2026-12-01T06:00:00Z'));
+    expect(r.desde.toISOString()).toBe('2026-12-01T06:00:00.000Z');
+    expect(r.hasta.toISOString()).toBe('2027-01-01T06:00:00.000Z');
   });
 });

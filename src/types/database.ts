@@ -65,6 +65,7 @@ export type Database = {
           id: string;
           nombre: string;
           owner_id: string;
+          portada_url: string | null;
           slug: string;
           whatsapp: string | null;
         };
@@ -80,6 +81,7 @@ export type Database = {
           id?: string;
           nombre: string;
           owner_id: string;
+          portada_url?: string | null;
           slug: string;
           whatsapp?: string | null;
         };
@@ -94,6 +96,7 @@ export type Database = {
           id?: string;
           nombre?: string;
           owner_id?: string;
+          portada_url?: string | null;
           slug?: string;
           whatsapp?: string | null;
         };
@@ -345,6 +348,7 @@ export type Database = {
           id: string;
           nombre: string;
           owner_id: string;
+          portada_url: string | null;
           slug: string;
           whatsapp: string | null;
         };

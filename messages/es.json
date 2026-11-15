@@ -24,7 +24,6 @@
     "vacio": "Todavía no hay operadores publicados",
     "cantidadTours": "{count, plural, one {# tour} other {# tours}}",
     "etiqueta": "Guanacaste, Costa Rica",
-    "verOperadores": "Ver operadores",
     "hechos": {
       "cupo": {
         "valor": "30 min",

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { MAX_IMAGEN, TIPOS_IMAGEN } from '@/lib/imagenes';
 import { contextoPanel } from '@/lib/panel';
 import { slugify } from '@/lib/slug';
 import { camposDeZod, tourSchema } from '@/lib/validaciones';
@@ -12,13 +13,6 @@ export type EstadoTour = {
   campos?: Record<string, string>;
   valores?: Record<string, string>;
 } | null;
-
-const TIPOS_IMAGEN: Record<string, string> = {
-  'image/jpeg': 'jpg',
-  'image/png': 'png',
-  'image/webp': 'webp',
-};
-const MAX_IMAGEN = 2 * 1024 * 1024;
 
 async function slugLibre(
   supabase: Awaited<ReturnType<typeof contextoPanel>>['supabase'],

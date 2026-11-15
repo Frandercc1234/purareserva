@@ -20,6 +20,7 @@ export type NegocioForm = {
   horas_cancelacion: number;
   activo: boolean;
   slug: string;
+  portada_url: string | null;
 };
 
 export function ConfiguracionForm({ negocio }: { negocio: NegocioForm }) {
@@ -30,6 +31,8 @@ export function ConfiguracionForm({ negocio }: { negocio: NegocioForm }) {
   const v = estado?.valores;
   const campos = estado?.campos ?? {};
   const [pct, setPct] = useState(String(negocio.deposito_pct));
+  const [vista, setVista] = useState<string | null>(null);
+  const portadaActual = vista ?? negocio.portada_url;
 
   const pctNum = Number(pct);
   const ejemplo =
@@ -76,6 +79,34 @@ export function ConfiguracionForm({ negocio }: { negocio: NegocioForm }) {
           defaultValue={v?.whatsapp ?? negocio.whatsapp ?? ''}
           error={campos.whatsapp}
           hint="Con código de país, por ejemplo +50688887777"
+        />
+      </Card>
+
+      <Card className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold">Portada</h2>
+        <p className="text-sm text-texto-suave">
+          Se muestra en la tarjeta de tu negocio en la página principal. Si no
+          subís ninguna, se usa la imagen de tu primer tour activo.
+        </p>
+        {portadaActual && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={portadaActual}
+            alt="Vista previa de la portada del negocio"
+            className="aspect-video w-full max-w-md rounded-control object-cover"
+          />
+        )}
+        <Input
+          label="Subir portada (JPG, PNG o WebP, máximo 2 MB)"
+          name="portada"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="h-auto py-2"
+          error={campos.portada}
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            setVista(f ? URL.createObjectURL(f) : null);
+          }}
         />
       </Card>
 

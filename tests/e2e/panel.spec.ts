@@ -118,3 +118,34 @@ test('un tour desactivado deja de verse en la página pública', async ({
     await db.from('tours').delete().eq('slug', slug);
   }
 });
+
+test('el dueño sube la portada de su negocio y se ve en la landing', async ({
+  page,
+}) => {
+  try {
+    await iniciarSesion(page, DUENO1);
+    await irA(page, '/panel/configuracion');
+    await page
+      .getByLabel(/Subir portada/)
+      .setInputFiles('public/tours/snorkel.jpg');
+    await page.getByRole('button', { name: 'Guardar cambios' }).click();
+    await expect(page.getByText('Cambios guardados')).toBeVisible();
+
+    const { data } = await db
+      .from('negocios')
+      .select('portada_url')
+      .eq('slug', 'aventuras-rincon')
+      .single();
+    expect(data?.portada_url).toContain('/portada.jpg');
+
+    await irA(page, '/es');
+    await expect(page.locator('main img[alt="Aventuras Rincón"]')).toHaveCount(
+      1,
+    );
+  } finally {
+    await db
+      .from('negocios')
+      .update({ portada_url: null })
+      .eq('slug', 'aventuras-rincon');
+  }
+});

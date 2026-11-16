@@ -422,7 +422,7 @@
         "herramienta": "preparar_reserva",
         "reservaOk": true,
         "personas": 2,
-        "noContiene": ["http", "www\\."]
+        "noContiene": ["http", "www\\.", "```", "salida_id"]
       }
     },
     {
@@ -440,7 +440,7 @@
         "herramienta": "preparar_reserva",
         "reservaOk": true,
         "personas": 2,
-        "noContiene": ["http", "www\\."]
+        "noContiene": ["http", "www\\.", "```", "salida_id"]
       }
     },
     {
@@ -452,7 +452,7 @@
         "herramienta": "preparar_reserva",
         "reservaOk": true,
         "personas": 2,
-        "noContiene": ["http", "www\\."]
+        "noContiene": ["http", "www\\.", "```", "salida_id"]
       }
     },
 

@@ -19,6 +19,8 @@ import type {
   ResultadoReserva,
   TourParaChat,
 } from '@/lib/asistente/herramientas';
+import { reservaEscrita } from '@/lib/asistente/reserva-escrita';
+import { BotonReservaEscrita } from './BotonReservaEscrita';
 import { MensajeAsistente } from './MensajeAsistente';
 import { TarjetaTourChat } from './TarjetaTourChat';
 import NextLink from 'next/link';
@@ -49,6 +51,21 @@ type ParteHerramienta = {
   input?: { personas?: number };
   output?: unknown;
 };
+
+/** El mensaje ya trae un preparar_reserva que salió bien (el botón está en pantalla). */
+function tieneReservaLista(m: UIMessage | undefined) {
+  return (
+    m?.role === 'assistant' &&
+    m.parts.some((p) => {
+      const h = p as ParteHerramienta;
+      return (
+        h.type === 'tool-preparar_reserva' &&
+        h.state === 'output-available' &&
+        (h.output as ResultadoReserva | undefined)?.ok === true
+      );
+    })
+  );
+}
 
 function Escribiendo({ etiqueta }: { etiqueta: string }) {
   return (
@@ -283,6 +300,22 @@ export function AsistentePanel({
                 }
                 return null;
               })}
+              {!tieneReservaLista(m) &&
+                (() => {
+                  // El modelo escribió la reserva como JSON en vez de llamar a la herramienta.
+                  const escrita = reservaEscrita(
+                    m.parts
+                      .map((p) => (p.type === 'text' ? p.text : ''))
+                      .join('\n'),
+                  );
+                  return escrita ? (
+                    <BotonReservaEscrita
+                      salidaId={escrita.salida_id}
+                      personas={escrita.personas}
+                      alNavegar={onCerrar}
+                    />
+                  ) : null;
+                })()}
             </div>
           ),
         )}
@@ -307,7 +340,13 @@ export function AsistentePanel({
             </div>
           </div>
         )}
-        {error?.tipo === 'no-disponible' && (
+        {error?.tipo === 'no-disponible' && tieneReservaLista(ultimo) && (
+          // La reserva ya está lista: el botón basta, sin el aviso rojo.
+          <p className="text-xs leading-4 text-texto-suave">
+            {t('noPudoTerminar')}
+          </p>
+        )}
+        {error?.tipo === 'no-disponible' && !tieneReservaLista(ultimo) && (
           <div
             role="alert"
             className="flex flex-col gap-2 rounded-control border border-error bg-fondo p-3 text-sm leading-5"

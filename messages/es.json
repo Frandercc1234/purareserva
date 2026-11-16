@@ -224,6 +224,7 @@
     "limiteEntrada": "Límite alcanzado por hoy",
     "verTours": "Ver tours",
     "noDisponible": "El asistente no está disponible ahora. Probá en unos minutos.",
+    "noPudoTerminar": "El asistente no pudo terminar la respuesta.",
     "reintentar": "Reintentar",
     "completarReserva": "Completar reserva",
     "ver": "Ver",

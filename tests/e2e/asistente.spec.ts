@@ -281,6 +281,34 @@ test('si el asistente no está disponible se muestra el aviso y se puede reinten
   await expect(dialogo.getByRole('alert')).toHaveCount(0);
 });
 
+test('si el modelo falla después de dejar lista la reserva, queda el botón y no el aviso rojo', async ({
+  page,
+}) => {
+  const salidaId = await crearSalida({ enMs: DIA_MS, cupo: 5 });
+  try {
+    await irA(page, '/es/aventuras-rincon');
+    const dialogo = await abrir(page);
+    await preguntar(page, 'Tours para mañana para 2 personas');
+    await expect(dialogo.locator('article').first()).toBeVisible();
+    await expect(dialogo.getByText(/Encontré \d+ opci/)).toBeVisible();
+
+    // preparar_reserva responde bien y el último paso del modelo falla (429).
+    await preguntar(page, 'Quiero reservar para 2 personas simular-fallo');
+    await expect(
+      dialogo.getByRole('link', { name: 'Completar reserva' }),
+    ).toBeVisible();
+    await expect(
+      dialogo.getByText('El asistente no pudo terminar la respuesta.'),
+    ).toBeVisible();
+    await expect(dialogo.getByRole('alert')).toHaveCount(0);
+    await expect(dialogo.getByRole('button', { name: 'Reintentar' })).toHaveCount(
+      0,
+    );
+  } finally {
+    await limpiar({ salidaIds: [salidaId] });
+  }
+});
+
 test('la API valida la entrada: mensaje de más de 500 caracteres, idioma inválido y cuerpo vacío', async ({
   request,
 }) => {

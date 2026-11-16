@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { quitarCodigoYJson } from '@/lib/asistente/reserva-escrita';
 
 /**
  * Markdown limitado y seguro: negrita, listas y enlaces internos. Nada de HTML crudo:
@@ -50,7 +51,7 @@ export function quitarUrls(texto: string) {
 
 function bloques(markdown: string): Bloque[] {
   const salida: Bloque[] = [];
-  for (const linea of quitarUrls(markdown).split('\n')) {
+  for (const linea of quitarUrls(quitarCodigoYJson(markdown)).split('\n')) {
     if (!linea.trim()) continue;
     const item = linea.match(/^\s*(?:([-*•])|(\d+)[.)])\s+(.*)$/);
     if (item) {

@@ -1,3 +1,4 @@
+import { APICallError } from 'ai';
 import { MockLanguageModelV2 } from 'ai/test';
 import { diaCR } from '@/lib/fechas';
 
@@ -107,6 +108,18 @@ export function crearModeloSimulado(locale: 'es' | 'en') {
       let partes: Parte[];
 
       if (ultimo?.role === 'tool' && typeof ultimo.content !== 'string') {
+        // Simula el 429 de Groq en el último paso, después de que la herramienta ya respondió.
+        const ultimoUsuario = [...mensajes]
+          .reverse()
+          .find((m) => m.role === 'user');
+        if (textoDe(ultimoUsuario).includes('simular-fallo'))
+          throw new APICallError({
+            message: 'Rate limit',
+            url: 'https://mock',
+            requestBodyValues: {},
+            statusCode: 429,
+            isRetryable: false,
+          });
         partes = responderTexto(resumir(ultimo.content, es));
       } else {
         const texto = textoDe(ultimo).toLowerCase();

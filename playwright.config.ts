@@ -39,5 +39,7 @@ export default defineConfig({
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 300_000,
+    // El asistente usa el modelo simulado: sin Groq, sin cuota y sin límites de uso.
+    env: { ASISTENTE_MOCK: '1' },
   },
 });

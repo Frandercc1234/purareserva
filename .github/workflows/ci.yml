@@ -44,6 +44,8 @@ jobs:
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
       EMAIL_FROM: PuraReserva <onboarding@resend.dev>
+      # El asistente responde con el modelo simulado: sin Groq ni cuota.
+      ASISTENTE_MOCK: '1'
     steps:
       - uses: actions/checkout@v4
 

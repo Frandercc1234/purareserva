@@ -156,6 +156,11 @@ export async function POST(request: Request) {
     // Por defecto el SDK imprime el error completo (con el texto enviado): el único
     // registro es codigoDeError, que solo guarda el código de estado.
     onError: () => undefined,
+    // Solo números: sirve para ajustar el límite global según la cuota de tokens.
+    onFinish: ({ totalUsage }) =>
+      console.log(
+        `asistente: tokens entrada=${totalUsage.inputTokens} salida=${totalUsage.outputTokens}`,
+      ),
     stopWhen: stepCountIs(4),
     temperature: 0.3,
     maxOutputTokens: 600,

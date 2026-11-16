@@ -28,7 +28,7 @@ describe('prompt del asistente', () => {
       tour: { nombre: 'Canopy en el Rincón' },
     });
     expect(p).toContain(
-      'El usuario está viendo Aventuras Rincón / Canopy en el Rincón. Priorizá sus tours.',
+      'El usuario está viendo Aventuras Rincón / Canopy en el Rincón. Priorizá sus tours;',
     );
     expect(p).toContain('+50688887777');
   });

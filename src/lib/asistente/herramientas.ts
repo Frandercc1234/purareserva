@@ -35,7 +35,14 @@ const DIAS_MAXIMOS = 60;
 const fecha = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 
 export const buscarToursSchema = z.object({
-  texto: z.string().trim().max(100).optional(),
+  texto: z
+    .string()
+    .trim()
+    .max(100)
+    .optional()
+    .describe(
+      'Una palabra de la actividad (canopy, snorkel, catamarán). Nunca el nombre del negocio ni del tour que el usuario está viendo: ya se filtra por el negocio. Omitila si pregunta por "este tour".',
+    ),
   fecha_desde: fecha.optional(),
   fecha_hasta: fecha.optional(),
   personas: z.number().int().min(1).max(50).optional(),
@@ -326,7 +333,7 @@ export function crearHerramientas(
     }),
     preparar_reserva: tool({
       description:
-        'Enlace para reservar una salida. No crea la reserva ni cobra.',
+        'Llamala siempre que el usuario quiera reservar ("quiero reservar", "book it"), justo después de buscar_tours, con el id de la salida y las personas. Es la única forma de mostrar el botón de reserva: sin esta llamada no hay botón. No crea la reserva ni cobra.',
       inputSchema: prepararReservaSchema,
       toModelOutput: vistaModelo,
       execute: (entrada) =>

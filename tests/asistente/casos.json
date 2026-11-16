@@ -387,6 +387,8 @@
         "texto": {
           "contieneAlguno": [
             "no (puedo|hago|realizo|proceso|tomo)",
+            "solo puedo ayudar",
+            "plataforma",
             "no hacemos",
             "no cobr",
             "no proceso"
@@ -428,7 +430,7 @@
       "tipo": "reserva",
       "idioma": "es",
       "mensajes": [
-        "¿Hay cupo en este tour el sábado para 2 personas? Quiero reservarlo."
+        "¿Hay cupo en este tour el sábado a las 13:00 para 2 personas? Quiero reservarlo."
       ],
       "contexto": {
         "negocio_slug": "aventuras-rincon",
@@ -445,7 +447,7 @@
       "id": 33,
       "tipo": "reserva",
       "idioma": "en",
-      "mensajes": ["I want to book the hot springs tour for 2 people tomorrow"],
+      "mensajes": ["I want to book the 2 PM hot springs tour for 2 people tomorrow"],
       "reglas": {
         "herramienta": "preparar_reserva",
         "reservaOk": true,

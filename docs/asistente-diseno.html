@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PuraReserva: diseño del asistente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primario:#0E7C86; --primario-oscuro:#095B63; --acento:#F2A541; --fondo:#FAFAF7; --superficie:#fff;
+  --borde:#E5E7EB; --texto:#1F2937; --suave:#6B7280; --exito:#15803D; --aviso:#B45309; --error:#B91C1C;
+  --radio-control:8px; --radio-tarjeta:12px; --sombra:0 2px 8px rgb(0 0 0/.06);
+  --ease:cubic-bezier(.23,1,.32,1);
+}
+*{box-sizing:border-box;margin:0}
+body{font:16px/24px Inter,system-ui,sans-serif;color:var(--texto);background:#EEF0EC;padding:32px 24px 80px}
+h1{font-size:32px;line-height:40px;font-weight:600}
+h2{font-size:24px;line-height:32px;font-weight:600;margin:48px 0 4px}
+h3{font-size:14px;line-height:20px;font-weight:600;color:var(--suave);margin:0 0 8px;text-transform:uppercase;letter-spacing:.04em}
+.nota{color:var(--suave);max-width:760px}
+.fila{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;margin-top:20px}
+.item{display:flex;flex-direction:column}
+
+/* --- Componentes --- */
+.boton-flotante{display:inline-flex;align-items:center;gap:8px;height:56px;padding:0 20px;border-radius:999px;background:var(--primario);color:#fff;font-weight:600;border:0;box-shadow:0 4px 12px rgb(0 0 0/.18);transition:background-color .15s var(--ease),transform .15s var(--ease)}
+.boton-flotante:hover,.boton-flotante.hover{background:var(--primario-oscuro)}
+.boton-flotante:active{transform:scale(.97)}
+.boton-flotante svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 18px;border-radius:var(--radio-control);font-weight:600;font:inherit;font-weight:600;border:1px solid var(--primario);background:var(--primario);color:#fff;cursor:pointer}
+.btn.sec{background:#fff;color:var(--primario)}
+.btn.chico{height:36px;padding:0 14px;font-size:14px}
+.btn.ancho{width:100%}
+.badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;background:var(--acento);color:var(--texto);font-size:12px;font-weight:600}
+.burbuja{max-width:85%;padding:8px 12px;border-radius:12px;font-size:15px;line-height:22px}
+.burbuja.usuario{align-self:flex-end;background:var(--primario);color:#fff;border-bottom-right-radius:4px}
+.burbuja.asistente{align-self:flex-start;background:#fff;border:1px solid var(--borde);border-bottom-left-radius:4px}
+.chip{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--primario);background:#fff;color:var(--primario);font-size:14px;text-align:left}
+.escribiendo{align-self:flex-start;display:flex;gap:4px;align-items:center;height:36px;padding:0 12px;background:#fff;border:1px solid var(--borde);border-radius:12px;border-bottom-left-radius:4px}
+.escribiendo i{width:8px;height:8px;border-radius:50%;background:var(--suave);opacity:1}
+.escribiendo i:nth-child(2){opacity:.6}.escribiendo i:nth-child(3){opacity:.3}
+.tarjeta-tour{align-self:stretch;background:#fff;border:1px solid var(--borde);border-radius:var(--radio-tarjeta);box-shadow:var(--sombra);overflow:hidden}
+.tarjeta-tour .foto{height:110px;background:linear-gradient(135deg,var(--primario),var(--acento))}
+.tarjeta-tour .cuerpo{padding:12px;display:flex;flex-direction:column;gap:2px}
+.tarjeta-tour b{font-size:16px;line-height:24px}
+.tarjeta-tour .op{color:var(--suave);font-size:14px;line-height:20px}
+.tarjeta-tour .dato{font-size:14px;line-height:20px}
+.tarjeta-tour .exito{color:var(--exito)}
+.tarjeta-tour .acciones{display:flex;gap:8px;margin-top:8px}
+.tarjeta-tour .acciones .btn{flex:1}
+.aviso{align-self:stretch;display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:var(--radio-control);background:var(--fondo);border:1px solid var(--aviso);font-size:14px;line-height:20px}
+.aviso.error{border-color:var(--error)}
+.resumen{align-self:stretch;background:#fff;border:1px solid var(--borde);border-radius:var(--radio-tarjeta);padding:12px;font-size:14px;line-height:20px;display:flex;flex-direction:column;gap:8px}
+
+/* --- Panel --- */
+.panel{width:380px;height:560px;display:flex;flex-direction:column;background:var(--fondo);border:1px solid var(--borde);border-radius:var(--radio-tarjeta);box-shadow:0 8px 28px rgb(0 0 0/.16);overflow:hidden}
+.panel.movil{width:375px;height:812px;border-radius:0;box-shadow:none}
+.panel header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#fff;border-bottom:1px solid var(--borde)}
+.avatar{width:32px;height:32px;flex:none}
+.panel header b{font-size:16px;font-weight:600;flex:1;line-height:20px}
+.cerrar{width:44px;height:44px;margin:-8px -12px -8px 0;display:grid;place-items:center;border:0;background:none;color:var(--suave)}
+.cerrar svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.mensajes{flex:1;overflow:hidden;padding:16px;display:flex;flex-direction:column;gap:12px}
+.aviso-ia{font-size:12px;line-height:16px;color:var(--suave);text-align:center;padding:6px 16px}
+.entrada{display:flex;gap:8px;padding:12px;background:#fff;border-top:1px solid var(--borde)}
+.campo{flex:1;min-height:44px;display:flex;align-items:center;padding:0 12px;border:1px solid var(--borde);border-radius:var(--radio-control);color:var(--suave);background:#fff;font-size:15px}
+.campo.foco{border-color:var(--primario);outline:2px solid var(--primario);outline-offset:1px;color:var(--texto)}
+.campo.desactivado{background:var(--fondo)}
+.enviar{width:44px;height:44px;border-radius:50%;border:0;background:var(--primario);display:grid;place-items:center;flex:none}
+.enviar.apagado{background:var(--borde)}
+.enviar svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.contador{font-size:12px;color:var(--aviso);align-self:flex-end;margin-top:-6px}
+.saludo{align-self:flex-start}
+.sugerencias{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+
+/* --- Maqueta de página de tour en móvil --- */
+.telefono{width:375px;height:812px;background:var(--fondo);border:1px solid var(--borde);position:relative;overflow:hidden}
+.telefono .barra-sup{height:64px;background:rgb(250 250 247/.9);border-bottom:1px solid var(--borde);display:flex;align-items:center;padding:0 16px;gap:8px;font-weight:600}
+.telefono .contenido{padding:16px;display:flex;flex-direction:column;gap:12px}
+.telefono .foto{height:180px;border-radius:12px;background:linear-gradient(135deg,var(--primario),var(--acento))}
+.telefono .linea{height:14px;border-radius:4px;background:#E3E5E1}
+.telefono .barra-reserva{position:absolute;left:0;right:0;bottom:0;height:73px;background:#fff;border-top:1px solid var(--borde);display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.telefono .barra-reserva small{display:block;color:var(--suave);font-size:14px;line-height:16px}
+.telefono .barra-reserva b{font-size:18px;line-height:24px}
+.telefono .flotante{position:absolute;right:16px;bottom:89px}
+.telefono .flotante .boton-flotante{padding:0 16px;font-size:15px}
+
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:14px;line-height:20px;color:var(--suave)}
+.escritorio{width:1280px;max-width:100%;height:420px;background:var(--fondo);border:1px solid var(--borde);position:relative;overflow:hidden}
+.escritorio .flotante{position:absolute;right:24px;bottom:24px}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12Z"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="enviar" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="marca" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#0E7C86"/><circle cx="22" cy="10" r="3" fill="#F2A541"/><path d="M5 19c2.5-3 5-3 7.5 0s5 3 7.5 0 4-2.5 6.5-1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M5 24c2.5-3 5-3 7.5 0s5 3 7.5 0 4-2.5 6.5-1" stroke="#fff" stroke-opacity=".55" stroke-width="2.2" stroke-linecap="round" fill="none"/></symbol>
+</svg>
+
+<h1>Asistente de IA: diseño</h1>
+<p class="nota">Maqueta del chat público de PuraReserva con los tokens del diseño (colores, radios, espaciado de 4 px, Inter). Reemplaza al frame de Figma mientras la cuenta de Figma está sin llamadas disponibles. Los componentes base ya están creados en Figma, en la página "Componentes", sección "Asistente: componentes del chat".</p>
+
+<h2>Componentes</h2>
+<div class="fila">
+  <div class="item"><h3>Botón flotante</h3>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <span class="boton-flotante"><svg><use href="#chat"/></svg>Preguntale al asistente</span>
+      <span class="boton-flotante hover"><svg><use href="#chat"/></svg>Preguntale al asistente</span>
+    </div>
+    <figcaption style="margin-top:8px">Normal y hover. 56 px de alto, pastilla, sombra suave.</figcaption>
+  </div>
+</div>
+<div class="fila">
+  <div class="item" style="width:300px;gap:12px"><h3>Burbujas y escribiendo</h3>
+    <div class="burbuja usuario">Tours para mañana para 2 personas</div>
+    <div class="burbuja asistente">Encontré 2 opciones con cupo. Podés verlas o reservar desde las tarjetas.</div>
+    <div class="escribiendo" aria-label="Escribiendo…"><i></i><i></i><i></i></div>
+  </div>
+  <div class="item" style="width:300px"><h3>Tarjeta de tour</h3>
+    <div class="tarjeta-tour"><div class="foto"></div><div class="cuerpo"><b>Canopy en el Rincón</b><span class="op">Aventuras Rincón</span><span class="dato">US$65 · 2 h 30 min</span><span class="dato exito">Lun 16 nov, 8:00 · 12 cupos</span>
+      <div class="acciones"><span class="btn sec chico">Ver</span><span class="btn chico">Reservar</span></div></div></div>
+  </div>
+  <div class="item" style="width:320px;gap:12px"><h3>Sugerencia y avisos</h3>
+    <span class="chip">¿Qué playas hay cerca de Tamarindo?</span>
+    <div class="aviso">Llegaste al límite de mensajes por hoy. Podés seguir viendo los tours o escribirle al operador por WhatsApp.</div>
+    <div class="aviso error">El asistente no está disponible ahora. Probá en unos minutos.<span class="btn sec chico" style="align-self:flex-start">Reintentar</span></div>
+  </div>
+</div>
+
+<h2>Panel en escritorio (380 × 560, anclado al botón)</h2>
+<p class="nota">Estados: vacío, con tarjetas, reserva preparada, escribiendo, límite y error.</p>
+<div class="fila">
+
+  <figure><div class="panel">
+    <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
+    <div class="mensajes">
+      <div class="burbuja asistente saludo">Hola. Te ayudo con tours, playas, clima y transporte en Guanacaste. ¿Qué querés saber?</div>
+      <div class="sugerencias">
+        <span class="chip">¿Qué playas hay cerca de Tamarindo?</span>
+        <span class="chip">Tours para mañana para 2 personas</span>
+        <span class="chip">¿Cuándo es la temporada seca?</span>
+      </div>
+    </div>
+    <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
+    <div class="entrada"><div class="campo foco">Escribí tu pregunta…</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+  </div><figcaption>1. Vacío, con 3 sugerencias</figcaption></figure>
+
+  <figure><div class="panel">
+    <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
+    <div class="mensajes">
+      <div class="burbuja usuario">Tours para mañana para 2 personas</div>
+      <div class="burbuja asistente">Hay 4 opciones con cupo para 2. Estas son las dos primeras:</div>
+      <div class="tarjeta-tour"><div class="foto" style="height:72px"></div><div class="cuerpo"><b>Canopy en el Rincón</b><span class="op">Aventuras Rincón</span><span class="dato">US$65 · 2 h 30 min</span><span class="dato exito">Lun 16 nov, 8:00 · 12 cupos</span>
+        <div class="acciones"><span class="btn sec chico">Ver</span><span class="btn chico">Reservar</span></div></div></div>
+    </div>
+    <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
+    <div class="entrada"><div class="campo">Escribí tu pregunta…</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+  </div><figcaption>2. Con tarjetas de tour (el panel se desplaza)</figcaption></figure>
+
+  <figure><div class="panel">
+    <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
+    <div class="mensajes">
+      <div class="burbuja usuario">Reservar la de las 8:00 para 2</div>
+      <div class="burbuja asistente">Listo. Revisá el resumen y completá tus datos para pagar el depósito.</div>
+      <div class="resumen"><b>Canopy en el Rincón</b>Lun 16 nov, 8:00 · 2 personas<span style="color:var(--primario);font-weight:600">Depósito US$39</span>
+        <span class="btn ancho">Completar reserva</span></div>
+    </div>
+    <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
+    <div class="entrada"><div class="campo">Escribí tu pregunta…</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+  </div><figcaption>3. Reserva preparada: botón principal "Completar reserva"</figcaption></figure>
+
+  <figure><div class="panel">
+    <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
+    <div class="mensajes">
+      <div class="burbuja usuario">¿Cuándo es la temporada seca?</div>
+      <div class="escribiendo" role="status" aria-label="Escribiendo…"><i></i><i></i><i></i></div>
+    </div>
+    <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
+    <div class="entrada"><div class="campo desactivado">Escribí tu pregunta…</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+  </div><figcaption>4. Escribiendo… (entrada deshabilitada)</figcaption></figure>
+
+  <figure><div class="panel">
+    <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
+    <div class="mensajes">
+      <div class="burbuja usuario">¿Hay cupo para el sábado?</div>
+      <div class="aviso">Llegaste al límite de mensajes por hoy. Podés seguir viendo los tours o escribirle al operador por WhatsApp.
+        <span style="display:flex;gap:8px"><span class="btn sec chico">Ver tours</span><span class="btn chico">WhatsApp</span></span></div>
+    </div>
+    <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
+    <div class="entrada"><div class="campo desactivado">Límite alcanzado por hoy</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+  </div><figcaption>5. Límite de mensajes (LIMITE)</figcaption></figure>
+
+  <figure><div class="panel">
+    <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
+    <div class="mensajes">
+      <div class="burbuja usuario">¿Qué playas hay cerca de Tamarindo?</div>
+      <div class="aviso error" role="alert">El asistente no está disponible ahora. Probá en unos minutos.<span class="btn sec chico" style="align-self:flex-start">Reintentar</span></div>
+    </div>
+    <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
+    <div class="entrada"><div class="campo">Escribí tu pregunta…</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+  </div><figcaption>6. Error (NO_DISPONIBLE o red) con reintentar</figcaption></figure>
+
+  <figure><div class="panel" style="height:200px">
+    <div class="entrada" style="border-top:0;flex-direction:column;gap:6px">
+      <div style="display:flex;gap:8px"><div class="campo foco" style="align-items:flex-start;padding-top:10px;min-height:96px">Quiero saber si el catamarán sirve para niños de 4 años y si hay descuentos para grupos de más de diez personas, además de qué incluye la bebida del paquete completo y si tienen salida el domingo por la tarde…</div><button class="enviar" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+      <span class="contador">412 / 500</span>
+    </div>
+  </div><figcaption>Entrada con contador al pasar los 400 caracteres (máximo 500)</figcaption></figure>
+</div>
+
+<h2>Móvil (pantalla completa, 375 × 812)</h2>
+<p class="nota">En móvil el panel ocupa toda la pantalla (<code>aria-modal</code>). El botón flotante, en las páginas de tour, queda encima de la barra de reserva sin taparla.</p>
+<div class="fila">
+
+  <figure><div class="telefono">
+    <div class="barra-sup"><svg class="avatar" style="width:28px;height:28px"><use href="#marca"/></svg>PuraReserva</div>
+    <div class="contenido"><div class="foto"></div><div class="linea" style="width:70%;height:22px"></div><div class="linea" style="width:40%"></div><div class="linea"></div><div class="linea" style="width:90%"></div><div class="linea" style="width:60%"></div></div>
+    <div class="flotante"><span class="boton-flotante"><svg><use href="#chat"/></svg>Preguntale al asistente</span></div>
+    <div class="barra-reserva"><div><small>Depósito a pagar</small><b>US$19,50</b></div><span class="btn" style="min-width:140px">Reservar</span></div>
+  </div><figcaption>Página de tour: botón flotante sobre la barra de reserva</figcaption></figure>
+
+  <figure><div class="panel movil">
+    <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
+    <div class="mensajes">
+      <div class="burbuja asistente saludo">Hola. Te ayudo con tours, playas, clima y transporte en Guanacaste. ¿Qué querés saber?</div>
+      <div class="sugerencias">
+        <span class="chip">¿Qué playas hay cerca de Tamarindo?</span>
+        <span class="chip">Tours para mañana para 2 personas</span>
+        <span class="chip">¿Cuándo es la temporada seca?</span>
+      </div>
+    </div>
+    <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
+    <div class="entrada"><div class="campo foco">Escribí tu pregunta…</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+  </div><figcaption>Vacío</figcaption></figure>
+
+  <figure><div class="panel movil">
+    <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
+    <div class="mensajes">
+      <div class="burbuja usuario">Tours para mañana para 2 personas</div>
+      <div class="burbuja asistente">Hay 4 opciones con cupo para 2. Estas son las dos primeras:</div>
+      <div class="tarjeta-tour"><div class="foto"></div><div class="cuerpo"><b>Canopy en el Rincón</b><span class="op">Aventuras Rincón</span><span class="dato">US$65 · 2 h 30 min</span><span class="dato exito">Lun 16 nov, 8:00 · 12 cupos</span>
+        <div class="acciones"><span class="btn sec chico">Ver</span><span class="btn chico">Reservar</span></div></div></div>
+      <div class="tarjeta-tour"><div class="foto" style="background:linear-gradient(135deg,#0b6a73,#f2a541)"></div><div class="cuerpo"><b>Snorkel en la bahía</b><span class="op">Mar y Sol Tamarindo</span><span class="dato">US$55 · 2 h</span><span class="dato exito">Lun 16 nov, 8:00 · 10 cupos</span>
+        <div class="acciones"><span class="btn sec chico">Ver</span><span class="btn chico">Reservar</span></div></div></div>
+    </div>
+    <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
+    <div class="entrada"><div class="campo">Escribí tu pregunta…</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+  </div><figcaption>Con tarjetas de tour</figcaption></figure>
+
+  <figure><div class="panel movil">
+    <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
+    <div class="mensajes">
+      <div class="burbuja usuario">¿Hay cupo para el sábado?</div>
+      <div class="aviso">Llegaste al límite de mensajes por hoy. Podés seguir viendo los tours o escribirle al operador por WhatsApp.
+        <span style="display:flex;gap:8px"><span class="btn sec chico">Ver tours</span><span class="btn chico">WhatsApp</span></span></div>
+      <div class="burbuja usuario">¿Qué playas hay cerca de Tamarindo?</div>
+      <div class="aviso error">El asistente no está disponible ahora. Probá en unos minutos.<span class="btn sec chico" style="align-self:flex-start">Reintentar</span></div>
+    </div>
+    <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
+    <div class="entrada"><div class="campo desactivado">Límite alcanzado por hoy</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
+  </div><figcaption>Estados de límite y error (se muestran juntos como referencia)</figcaption></figure>
+</div>
+
+<h2>Escritorio: ubicación del botón</h2>
+<div class="fila"><figure><div class="escritorio">
+  <div style="height:64px;background:rgb(250 250 247/.9);border-bottom:1px solid var(--borde);display:flex;align-items:center;padding:0 24px;font-weight:600;gap:8px"><svg class="avatar"><use href="#marca"/></svg>PuraReserva</div>
+  <div class="flotante"><span class="boton-flotante"><svg><use href="#chat"/></svg>Preguntale al asistente</span></div>
+</div><figcaption>Abajo a la derecha, a 24 px de los bordes. Al abrirse, el panel (380 × 560) se ancla sobre el botón.</figcaption></figure></div>
+
+<h2>Interacción y accesibilidad</h2>
+<ul class="nota" style="padding-left:20px;line-height:28px">
+  <li>Apertura y cierre del panel: 200 ms, curva <code>cubic-bezier(.23,1,.32,1)</code> (fundido y desplazamiento de 8 px desde el botón); sin movimiento con "reducir movimiento".</li>
+  <li>Botones con respuesta al presionar (<code>scale(.97)</code>); objetivos táctiles de 44 px o más.</li>
+  <li><code>role="dialog"</code> y <code>aria-modal</code> en móvil. Al abrir, el foco va a la entrada de texto; <kbd>Esc</kbd> cierra y devuelve el foco al botón.</li>
+  <li>Mensajes nuevos con <code>aria-live="polite"</code>; errores con <code>role="alert"</code>.</li>
+  <li>Enter envía y Shift+Enter hace salto de línea. Contador visible desde los 400 caracteres.</li>
+  <li>Aviso fijo abajo: "Respuestas generadas con IA. Confirmá precios y horarios antes de pagar."</li>
+  <li>La conversación se conserva en la sesión (<code>sessionStorage</code>) y se borra al cerrar la pestaña. Todo el texto, en español e inglés.</li>
+</ul>
+</body>
+</html>

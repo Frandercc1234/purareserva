@@ -24,8 +24,9 @@ export const limiteVisitante = () =>
   entero(process.env.ASISTENTE_LIMITE_VISITANTE, 20);
 /**
  * Tope del día para todos los visitantes. El plan gratuito de Groq permite 200.000 tokens
- * por día y cada mensaje gasta unos 2.400 (1 turno) a 3.000 (con historial):
- * floor(200.000 × 0,8 / 3.200) = 50. Las solicitudes (1.000 por día) no limitan antes.
+ * por día. En la evaluación de 30 casos cada mensaje gastó unos 2.100 tokens de media y
+ * hasta unos 3.000 con historial: floor(200.000 × 0,8 / 3.200) = 50. Las solicitudes
+ * (1.000 por día) no limitan antes.
  */
 export const limiteGlobal = () =>
   entero(process.env.ASISTENTE_LIMITE_GLOBAL, 50);

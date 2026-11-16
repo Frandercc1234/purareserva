@@ -11,7 +11,8 @@
     "test": "vitest run",
     "format": "prettier --write .",
     "test:e2e": "playwright test",
-    "guia:indexar": "tsx --conditions=react-server --env-file=.env.local scripts/indexar-guia.ts"
+    "guia:indexar": "tsx --conditions=react-server --env-file=.env.local scripts/indexar-guia.ts",
+    "asistente:evaluar": "tsx scripts/evaluar-asistente.ts"
   },
   "dependencies": {
     "@ai-sdk/groq": "^2.0.63",

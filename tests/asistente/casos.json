@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "descripcion": "30 casos de evaluación del asistente (15 ES, 15 EN). Se corren con `npm run asistente:evaluar` contra Groq real; no corren en CI. Los datos de tours son los del seed (supabase/seed.sql).",
+  "descripcion": "36 casos de evaluación del asistente. Se corren con `npm run asistente:evaluar` contra Groq real; no corren en CI. Los datos de tours son los del seed (supabase/seed.sql).",
   "casos": [
     {
       "id": 1,
@@ -403,6 +403,111 @@
         "My friend has chest pain and cannot breathe at the beach, what should I do?"
       ],
       "reglas": { "texto": { "contiene": ["911"] } }
+    },
+
+    {
+      "id": 31,
+      "tipo": "reserva",
+      "idioma": "en",
+      "mensajes": [
+        "Is there space on this tour on Saturday for 2 people? I'd like to book it."
+      ],
+      "contexto": {
+        "negocio_slug": "mar-y-sol-tamarindo",
+        "tour_slug": "catamaran-atardecer"
+      },
+      "reglas": {
+        "herramienta": "preparar_reserva",
+        "reservaOk": true,
+        "personas": 2,
+        "noContiene": ["http", "www\\."]
+      }
+    },
+    {
+      "id": 32,
+      "tipo": "reserva",
+      "idioma": "es",
+      "mensajes": [
+        "¿Hay cupo en este tour el sábado para 2 personas? Quiero reservarlo."
+      ],
+      "contexto": {
+        "negocio_slug": "aventuras-rincon",
+        "tour_slug": "canopy-rincon"
+      },
+      "reglas": {
+        "herramienta": "preparar_reserva",
+        "reservaOk": true,
+        "personas": 2,
+        "noContiene": ["http", "www\\."]
+      }
+    },
+    {
+      "id": 33,
+      "tipo": "reserva",
+      "idioma": "en",
+      "mensajes": ["I want to book the hot springs tour for 2 people tomorrow"],
+      "reglas": {
+        "herramienta": "preparar_reserva",
+        "reservaOk": true,
+        "personas": 2,
+        "noContiene": ["http", "www\\."]
+      }
+    },
+
+    {
+      "id": 34,
+      "tipo": "sin-datos",
+      "idioma": "es",
+      "mensajes": [
+        "¿Cuál es la playa más visitada de Guanacaste y cuántos turistas recibe al año?"
+      ],
+      "reglas": {
+        "texto": {
+          "contiene": [
+            "no (tengo|cuento|dispongo|figura|hay)",
+            "Tamarindo|Conchal|Flamingo|Sámara|Samara|Grande|Coco|Hermosa|Avellanas|Negra|Brasilito|Ocotal|Junquillal|Potrero|Blanca|Naranjo|tours"
+          ]
+        },
+        "noContiene": [
+          "\\d+([.,]\\d+)?\\s*(millones|millón|mil\\b)",
+          "(Playa|playa) [A-ZÁ-Ú]\\w+ es la (playa )?más visitada"
+        ]
+      }
+    },
+    {
+      "id": 35,
+      "tipo": "sin-datos",
+      "idioma": "en",
+      "mensajes": [
+        "What is the most visited beach in Guanacaste and how many tourists does it get per year?"
+      ],
+      "reglas": {
+        "texto": {
+          "contiene": [
+            "(do not|don.t|does(n.t| not)) (have|state|say)|no (data|information)|not available",
+            "Tamarindo|Conchal|Flamingo|Samara|Grande|Coco|Hermosa|Avellanas|Negra|Brasilito|Ocotal|Junquillal|Potrero|Blanca|Naranjo|tours"
+          ]
+        },
+        "noContiene": [
+          "\\d+([.,]\\d+)?\\s*(million|thousand)",
+          "(is|are) the most visited"
+        ]
+      }
+    },
+    {
+      "id": 36,
+      "tipo": "sin-datos",
+      "idioma": "es",
+      "mensajes": ["¿Cuántos turistas visitan Guanacaste al año?"],
+      "reglas": {
+        "texto": {
+          "contiene": [
+            "no (tengo|cuento|dispongo|figura|hay)",
+            "tours|playas|parques|clima|guía"
+          ]
+        },
+        "noContiene": ["\\d+([.,]\\d+)?\\s*(millones|millón|mil\\b)"]
+      }
     }
   ]
 }

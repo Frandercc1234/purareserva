@@ -211,7 +211,8 @@ function evaluar(
     const l = llamadas.find((x) => x.nombre === 'preparar_reserva');
     const salida = l?.output as { ok?: boolean } | undefined;
     if (!salida?.ok) fallas.push('preparar_reserva no devolvió ok');
-    const ids = previas
+    // El id puede venir de un turno anterior o de la búsqueda de este mismo turno.
+    const ids = [...previas, ...llamadas]
       .filter((p) => p.nombre === 'buscar_tours')
       .flatMap((p) =>
         (

@@ -33,6 +33,23 @@ describe('Markdown del chat', () => {
     expect(html('[malo](//evil.example)')).not.toContain('href="//evil');
   });
 
+  it('quita las URL que inventa el modelo y deja solo enlaces internos', () => {
+    const inventado =
+      'Great! You can book it here: https://purareserva.com/preparar_reserva?personas=2&salida_id=abc-123 for 2 people.';
+    const salida = html(inventado);
+    expect(salida).not.toContain('http');
+    expect(salida).not.toContain('purareserva.com');
+    expect(salida).not.toContain('<a');
+    expect(salida).toContain('for 2 people.');
+    expect(html('Mirá www.malo.com/x ahora')).not.toContain('www.');
+    expect(html('[Reservá acá](https://evil.example/x)')).toContain(
+      'Reservá acá',
+    );
+    expect(
+      html('[Ver](/en/mar-y-sol-tamarindo/catamaran-atardecer)'),
+    ).toContain('href="/en/mar-y-sol-tamarindo/catamaran-atardecer"');
+  });
+
   it('escapa el HTML crudo', () => {
     const salida = html(
       '<script>alert(1)</script> <img src=x onerror=alert(1)>',

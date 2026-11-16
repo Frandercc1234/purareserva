@@ -220,7 +220,7 @@ export function AsistentePanel({
             </div>
           ) : (
             <div key={m.id} className="flex flex-col gap-3">
-              {m.parts.map((parte, i) => {
+              {m.parts.map((parte, i, partes) => {
                 if (parte.type === 'text') {
                   return parte.text ? (
                     <div
@@ -234,8 +234,25 @@ export function AsistentePanel({
                 const h = parte as ParteHerramienta;
                 if (h.state !== 'output-available') return null;
                 if (h.type === 'tool-buscar_tours') {
-                  const tours =
-                    (h.output as { tours?: TourParaChat[] })?.tours ?? [];
+                  // Un tour sale una sola vez por mensaje, aunque se haya buscado dos veces.
+                  const yaMostrados = new Set(
+                    partes
+                      .slice(0, i)
+                      .map((p) => p as ParteHerramienta)
+                      .filter(
+                        (p) =>
+                          p.type === 'tool-buscar_tours' &&
+                          p.state === 'output-available',
+                      )
+                      .flatMap(
+                        (p) =>
+                          (p.output as { tours?: TourParaChat[] })?.tours ?? [],
+                      )
+                      .map((t) => t.url),
+                  );
+                  const tours = (
+                    (h.output as { tours?: TourParaChat[] })?.tours ?? []
+                  ).filter((t) => !yaMostrados.has(t.url));
                   return tours.map((tour) => (
                     <TarjetaTourChat
                       key={`${i}-${tour.url}`}

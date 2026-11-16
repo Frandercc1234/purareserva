@@ -36,9 +36,21 @@ function inline(texto: string, clave: string): ReactNode[] {
 type Bloque =
   { tipo: 'p'; texto: string } | { tipo: 'ul' | 'ol'; items: string[] };
 
+/**
+ * El asistente no debe escribir enlaces externos (el modelo puede inventarlos): se quita
+ * toda URL http, https o www. De los enlaces Markdown queda solo el texto.
+ */
+export function quitarUrls(texto: string) {
+  return texto
+    .replace(/\[([^\]]*)\]\((?:https?:\/\/|www\.)[^)\s]*\)/gi, '$1')
+    .replace(/(?:https?:\/\/|www\.)[^\s)]+/gi, '')
+    .replace(/[ \t]+([.,;:!?])/g, '$1')
+    .replace(/[ \t]{2,}/g, ' ');
+}
+
 function bloques(markdown: string): Bloque[] {
   const salida: Bloque[] = [];
-  for (const linea of markdown.split('\n')) {
+  for (const linea of quitarUrls(markdown).split('\n')) {
     if (!linea.trim()) continue;
     const item = linea.match(/^\s*(?:([-*•])|(\d+)[.)])\s+(.*)$/);
     if (item) {

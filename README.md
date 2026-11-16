@@ -51,6 +51,7 @@ Panel del dueño y versión móvil:
 - Correos de confirmación y cancelación, en el idioma del turista.
 - Página de la reserva por enlace secreto. Si se cancela antes del límite, el depósito se reembolsa solo.
 - Panel con ingresos del mes, ocupación de los próximos 30 días, próximas salidas y reservas con filtros.
+- Asistente de IA en el chat: responde sobre tours, cupos y turismo en Guanacaste (ver más abajo).
 
 ## Stack
 
@@ -63,6 +64,8 @@ Panel del dueño y versión móvil:
 | next-intl                          | Rutas `/es` y `/en`                                          |
 | Stripe                             | Checkout del depósito, webhooks y reembolsos                 |
 | Resend                             | Correos transaccionales                                      |
+| Vercel AI SDK y Groq               | Asistente de IA con herramientas (plan gratis)               |
+| pgvector                           | Búsqueda semántica en la guía de turismo                     |
 | Zod                                | Validación de todas las entradas del servidor                |
 | Vitest y Playwright                | Pruebas unitarias y end-to-end                               |
 | GitHub Actions y Vercel            | CI y despliegue                                              |
@@ -96,6 +99,35 @@ Al reservar se genera un token aleatorio de 32 bytes. El turista lo recibe en su
 - Dinero en centavos de USD, siempre como entero.
 - Fechas en `timestamptz`, mostradas en `America/Costa_Rica`.
 - Si falla el envío de un correo, se registra el error y el flujo sigue.
+
+## Asistente de IA
+
+Un chat flotante responde preguntas de turistas en español e inglés. Busca tours y salidas reales, responde sobre turismo en Guanacaste y arma el enlace para reservar. No crea reservas ni cobra: el turista siempre completa el pago en el formulario normal.
+
+### Cómo funciona
+
+- **Herramientas:** el modelo no tiene datos propios. Para responder llama a tres herramientas del servidor: `buscar_tours` (tours y próximas salidas con cupos, de la base), `buscar_guia` (fichas de turismo) y `preparar_reserva` (arma el enlace con la salida y las personas ya cargadas).
+- **Guía con fuentes:** 25 fichas escritas a mano en `contenido/guia/` (playas, parques, pueblos, clima, transporte y consejos), cada una con su fuente oficial y revisada por una persona. Se indexan con embeddings (modelo `gte-small`, vectores de 384) en pgvector y se buscan por similitud. Si no hay una ficha lo bastante parecida, el asistente dice que no tiene el dato. Cuando usa una ficha, cita la fuente.
+- **Por qué no inventa:** el prompt le prohíbe responder precios, horarios, cupos o rankings que no vengan de una herramienta. Fuera de turismo en Guanacaste, rechaza la pregunta.
+- **Privacidad:** no se guarda el texto de las conversaciones. Solo se cuentan mensajes por visitante (hash de la IP con sal) y por día.
+
+### Costo
+
+Corre en el plan gratis de Groq (`openai/gpt-oss-120b`). El límite que manda es el de tokens por día (200.000), así que el consumo está acotado:
+
+- Historial de los últimos 6 mensajes, máximo 3 tours por respuesta y fichas recortadas a 600 caracteres.
+- Unos 2.100 tokens por mensaje en promedio.
+- 20 mensajes por visitante por día y 50 en total (`ASISTENTE_LIMITE_VISITANTE` y `ASISTENTE_LIMITE_GLOBAL`). Al llegar al límite, el chat ofrece ver los tours o escribir por WhatsApp al operador.
+
+### Evaluación
+
+`tests/asistente/casos.json` tiene 30 casos (15 en español y 15 en inglés): tours, guía, preguntas sin dato, reservas y seguridad. Se corren contra el modelo real:
+
+```bash
+npm run asistente:evaluar
+```
+
+La primera corrida completa dio 27 de 30. Tras ajustar el prompt, los 3 que fallaban y otros 5 pasaron (8 de 8). Los otros 22 no se repitieron para no gastar la cuota diaria. No corre en CI: ahí las pruebas e2e usan un modelo simulado (`ASISTENTE_MOCK=1`).
 
 ## Correrlo en local
 
@@ -137,6 +169,8 @@ Necesitás:
    | `STRIPE_WEBHOOK_SECRET`         | Lo imprime `stripe listen` (paso 4)                        |
    | `RESEND_API_KEY`                | Resend, API Keys                                           |
    | `EMAIL_FROM`                    | Ya viene con el remitente de prueba de Resend              |
+   | `GROQ_API_KEY`                  | [console.groq.com](https://console.groq.com), gratis. Sin ella el chat no responde |
+   | `ASISTENTE_SALT`                | Cualquier texto aleatorio (sal del hash de visitantes)     |
 
    Con `onboarding@resend.dev`, Resend solo entrega correos al dueño de la cuenta. Con los correos de prueba de la demo, el envío falla y se registra, y la reserva sigue igual. Para entregar a cualquier destinatario hay que verificar un dominio en Resend y cambiar `EMAIL_FROM`.
 
@@ -153,6 +187,15 @@ Necesitás:
    ```
 
    Abrí http://localhost:3000. Los usuarios de prueba son los mismos de la demo.
+
+6. Opcional, para el asistente de IA: indexar la guía de turismo. Necesita `GROQ_API_KEY` en `.env.local` y la función de embeddings en otra terminal:
+
+   ```bash
+   supabase functions serve embed
+   npm run guia:indexar
+   ```
+
+   Sin este paso el chat responde sobre tours, pero no sobre playas, parques ni clima.
 
 ## Pruebas
 

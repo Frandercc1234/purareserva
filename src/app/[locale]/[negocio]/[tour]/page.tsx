@@ -173,6 +173,8 @@ export default async function TourPage({
         <Card className="flex h-fit min-w-0 flex-col gap-4 lg:sticky lg:top-24">
           {disponibles.length ? (
             <ReservaForm
+              // Se reinicia si el enlace cambia de salida o de personas (por ejemplo, desde el asistente).
+              key={`${salidaInicial?.id ?? ''}-${personasInicial}`}
               salidas={disponibles}
               salidaInicialId={salidaInicial?.id ?? null}
               personasInicial={personasInicial}

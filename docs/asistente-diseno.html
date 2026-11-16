@@ -24,6 +24,8 @@ h3{font-size:14px;line-height:20px;font-weight:600;color:var(--suave);margin:0 0
 
 /* --- Componentes --- */
 .boton-flotante{display:inline-flex;align-items:center;gap:8px;height:56px;padding:0 20px;border-radius:999px;background:var(--primario);color:#fff;font-weight:600;border:0;box-shadow:0 4px 12px rgb(0 0 0/.18);transition:background-color .15s var(--ease),transform .15s var(--ease)}
+.boton-flotante.redondo{width:56px;padding:0;justify-content:center}
+.boton-flotante.redondo .etiqueta{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .boton-flotante:hover,.boton-flotante.hover{background:var(--primario-oscuro)}
 .boton-flotante:active{transform:scale(.97)}
 .boton-flotante svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -191,7 +193,7 @@ figcaption{font-size:14px;line-height:20px;color:var(--suave)}
     </div>
     <div class="aviso-ia">Respuestas generadas con IA. Confirmá precios y horarios antes de pagar.</div>
     <div class="entrada"><div class="campo desactivado">Límite alcanzado por hoy</div><button class="enviar apagado" aria-label="Enviar"><svg><use href="#enviar"/></svg></button></div>
-  </div><figcaption>5. Límite de mensajes (LIMITE)</figcaption></figure>
+  </div><figcaption>5. Límite de mensajes (LIMITE) <b>con negocio en contexto</b>: "Ver tours" y "WhatsApp". <b>Sin contexto</b>: solo "Ver tours".</figcaption></figure>
 
   <figure><div class="panel">
     <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
@@ -218,9 +220,9 @@ figcaption{font-size:14px;line-height:20px;color:var(--suave)}
   <figure><div class="telefono">
     <div class="barra-sup"><svg class="avatar" style="width:28px;height:28px"><use href="#marca"/></svg>PuraReserva</div>
     <div class="contenido"><div class="foto"></div><div class="linea" style="width:70%;height:22px"></div><div class="linea" style="width:40%"></div><div class="linea"></div><div class="linea" style="width:90%"></div><div class="linea" style="width:60%"></div></div>
-    <div class="flotante"><span class="boton-flotante"><svg><use href="#chat"/></svg>Preguntale al asistente</span></div>
+    <div class="flotante"><span class="boton-flotante redondo" role="img" aria-label="Preguntale al asistente"><svg><use href="#chat"/></svg><span class="etiqueta">Preguntale al asistente</span></span></div>
     <div class="barra-reserva"><div><small>Depósito a pagar</small><b>US$19,50</b></div><span class="btn" style="min-width:140px">Reservar</span></div>
-  </div><figcaption>Página de tour: botón flotante sobre la barra de reserva</figcaption></figure>
+  </div><figcaption>Móvil (&lt;640 px): botón redondo de 56 px solo con ícono y aria-label, sobre la barra de reserva. La pastilla con texto es solo de escritorio.</figcaption></figure>
 
   <figure><div class="panel movil">
     <header><svg class="avatar"><use href="#marca"/></svg><b>Asistente PuraReserva</b><span class="badge">Beta</span><button class="cerrar" aria-label="Cerrar"><svg><use href="#x"/></svg></button></header>
@@ -272,6 +274,8 @@ figcaption{font-size:14px;line-height:20px;color:var(--suave)}
 
 <h2>Interacción y accesibilidad</h2>
 <ul class="nota" style="padding-left:20px;line-height:28px">
+  <li>Sugerencias según la página. En un tour: "¿Hay cupo el sábado?", "¿Qué incluye este tour?" y "¿Cómo llego al punto de encuentro?" (en inglés: "Are there spots on Saturday?", "What does this tour include?", "How do I get to the meeting point?"). En el resto: las 3 actuales.</li>
+  <li>La tarjeta de tour usa la foto real del tour (<code>imagen_url</code>, con <code>next/image</code>); el degradado de la maqueta solo reemplaza la foto.</li>
   <li>Apertura y cierre del panel: 200 ms, curva <code>cubic-bezier(.23,1,.32,1)</code> (fundido y desplazamiento de 8 px desde el botón); sin movimiento con "reducir movimiento".</li>
   <li>Botones con respuesta al presionar (<code>scale(.97)</code>); objetivos táctiles de 44 px o más.</li>
   <li><code>role="dialog"</code> y <code>aria-modal</code> en móvil. Al abrir, el foco va a la entrada de texto; <kbd>Esc</kbd> cierra y devuelve el foco al botón.</li>

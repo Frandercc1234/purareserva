@@ -67,3 +67,38 @@ body {
     padding-bottom: 6rem;
   }
 }
+
+/* Asistente: el panel entra con un fundido corto y sube 8 px (se apaga si el usuario lo pide). */
+@keyframes panel-asistente {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.asistente-panel {
+  animation: panel-asistente 200ms var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .asistente-panel {
+    animation: none;
+  }
+}
+
+/* En las páginas de tour la barra de reserva es fija: el botón y el panel quedan encima. */
+@media (max-width: 1023px) {
+  body:has(#barra-reserva) .asistente-boton {
+    bottom: 5.6rem;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  body:has(#barra-reserva) .asistente-panel {
+    bottom: 10rem;
+  }
+}

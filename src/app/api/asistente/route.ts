@@ -106,7 +106,23 @@ export async function POST(request: Request) {
     }
     try {
       const permitido = await registrarMensaje(claveVisitante(ipDe(request)));
-      if (!permitido) return error('LIMITE', 429);
+      if (!permitido) {
+        // Con un negocio en contexto, el panel ofrece su WhatsApp.
+        let whatsapp: string | null = null;
+        if (contexto?.negocio_slug) {
+          const { data } = await createAdminClient()
+            .from('negocios')
+            .select('whatsapp')
+            .eq('slug', contexto.negocio_slug)
+            .eq('activo', true)
+            .maybeSingle();
+          whatsapp = data?.whatsapp ?? null;
+        }
+        return NextResponse.json(
+          { error: 'LIMITE', whatsapp },
+          { status: 429 },
+        );
+      }
     } catch (e) {
       console.error(
         'asistente: falló el control de uso',

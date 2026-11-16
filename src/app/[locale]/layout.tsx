@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { HtmlLang } from '@/components/publico/HtmlLang';
+import { Asistente } from '@/components/asistente/Asistente';
 import { Footer } from '@/components/publico/Footer';
 import { Header } from '@/components/publico/Header';
 
@@ -28,6 +29,7 @@ export default async function LocaleLayout({
       <Header />
       {children}
       <Footer />
+      <Asistente />
     </NextIntlClientProvider>
   );
 }

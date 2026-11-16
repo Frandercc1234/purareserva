@@ -60,6 +60,11 @@ export default async function LandingPage({
       .order('creado_en'),
   ]);
 
+  // Un negocio sin tours activos no se enlaza desde la landing (su página sigue existiendo).
+  const negociosVisibles = (negocios ?? []).filter(
+    (n) => (n.tours[0]?.count ?? 0) > 0,
+  );
+
   const primeraImagenPorNegocio = new Map<string, string>();
   for (const tour of tours ?? []) {
     if (tour.imagen_url && !primeraImagenPorNegocio.has(tour.negocio_id))
@@ -177,11 +182,11 @@ export default async function LandingPage({
           <h2 className="text-3xl font-semibold tracking-tight">
             {t('operadores')}
           </h2>
-          {!negocios?.length ? (
+          {!negociosVisibles.length ? (
             <EmptyState titulo={t('vacio')} />
           ) : (
             <ul className="grid gap-6 sm:grid-cols-2">
-              {negocios.map((n, i) => {
+              {negociosVisibles.map((n, i) => {
                 const cantidad = n.tours[0]?.count ?? 0;
                 const descripcion =
                   locale === 'en' ? n.descripcion_en : n.descripcion_es;

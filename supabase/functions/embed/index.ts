@@ -1,5 +1,5 @@
 // Edge Function: texto -> vector de 384 dimensiones con el modelo gte-small de Supabase.
-// Solo acepta llamadas con la service role key (la usa el servidor de la app).
+// Solo acepta llamadas con un token de rol service_role (la usa el servidor de la app).
 
 // deno-lint-ignore no-explicit-any
 const Supabase = (globalThis as any).Supabase;
@@ -14,16 +14,28 @@ function json(cuerpo: unknown, status = 200) {
   });
 }
 
+/** Rol del token (el payload del JWT, ya validado por la plataforma). */
+function rolDe(jwt: string) {
+  try {
+    const carga = jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(carga)).role as string | undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method !== 'POST') return json({ error: 'METODO' }, 405);
 
-  const clave = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  // La plataforma ya verificó la firma del token (verify_jwt = true); aquí solo se acepta
+  // el rol service_role (la anon key y los tokens de usuarios quedan fuera).
   const recibida = (req.headers.get('Authorization') ?? '').replace(
     /^Bearer /,
     '',
   );
-  if (!clave || recibida !== clave)
+  if (rolDe(recibida) !== 'service_role') {
     return json({ error: 'NO_AUTORIZADO' }, 401);
+  }
 
   let texto: unknown;
   try {

@@ -425,6 +425,6 @@ enabled = true
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
 
-# La función valida ella misma que la llamada traiga la service role key.
+# La plataforma verifica la firma del token y la función exige el rol service_role.
 [functions.embed]
-verify_jwt = false
+verify_jwt = true

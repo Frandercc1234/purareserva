@@ -6,6 +6,7 @@ import {
   buscarTours,
   buscarToursSchema,
   prepararReserva,
+  vistaModelo,
   prepararReservaSchema,
 } from '@/lib/asistente/herramientas';
 import { diaCR } from '@/lib/fechas';
@@ -269,11 +270,26 @@ describe.skipIf(!hayBase)('asistente: herramientas', () => {
       });
     });
 
-    it('busca por texto en el idioma activo y devuelve un máximo de 5 tours', async () => {
+    it('busca por texto en el idioma activo y devuelve un máximo de 3 tours', async () => {
       const r = await buscarTours(admin, { texto: 'snorkel' }, ES);
-      expect(r.tours.length).toBeLessThanOrEqual(5);
+      expect(r.tours.length).toBeLessThanOrEqual(3);
       for (const t of r.tours)
         expect(t.tour.toLowerCase()).toContain('snorkel');
+    });
+
+    it('al modelo le llegan solo los campos que usa, sin imagen ni enlaces', async () => {
+      const r = await buscar({ fecha_desde: dia(3), fecha_hasta: dia(3) });
+      const vista = vistaModelo(r) as unknown as {
+        value: { tours: Record<string, unknown>[] };
+      };
+      const t = vista.value.tours[0];
+      expect(Object.keys(t).sort()).toEqual(
+        ['duracion', 'negocio', 'precio', 'salidas', 'tour'].sort(),
+      );
+      expect(JSON.stringify(vista)).not.toContain('imagen');
+      expect(JSON.stringify(vista)).not.toContain('/es/aventuras');
+      // La pantalla sí recibe el resultado completo, con la imagen para la tarjeta.
+      expect(r.tours[0].imagen_url).toBeTruthy();
     });
 
     it('valida la entrada con Zod', () => {
@@ -415,6 +431,20 @@ describe.skipIf(!hayBase)('asistente: herramientas', () => {
         EN,
       );
       expect(en.fichas.map((f) => f.titulo)).toContain('Tamarindo Beach');
+    });
+
+    it('recorta cada ficha a unos 600 caracteres y al modelo no le manda la URL', async () => {
+      const r = await buscarGuia(
+        admin,
+        { consulta_en: 'What to expect month by month in Guanacaste weather' },
+        EN,
+      );
+      expect(r.fichas.length).toBeGreaterThan(0);
+      for (const f of r.fichas)
+        expect(f.contenido.length).toBeLessThanOrEqual(601);
+      const vista = JSON.stringify(vistaModelo(r));
+      expect(vista).not.toContain('https://');
+      expect(vista).toContain('fuente_nombre');
     });
 
     it('no devuelve nada si la consulta no se parece a ninguna ficha', async () => {

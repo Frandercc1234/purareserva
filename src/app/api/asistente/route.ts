@@ -23,7 +23,7 @@ export const runtime = 'nodejs';
 export const maxDuration = 30;
 
 const MAX_CARACTERES = 500;
-const MAX_MENSAJES = 10;
+const MAX_MENSAJES = 6;
 const MODELO_POR_DEFECTO = 'openai/gpt-oss-120b';
 
 const entradaSchema = z.object({
@@ -142,17 +142,21 @@ export async function POST(request: Request) {
     }
   }
 
+  const herramientas = crearHerramientas(
+    {
+      locale,
+      negocioSlug: negocio ? contexto?.negocio_slug : undefined,
+    },
+    db,
+  );
   const resultado = streamText({
     model: await modelo(locale),
     system: construirPrompt({ locale, negocio, tour }),
-    messages: await convertToModelMessages(mensajes as UIMessage[]),
-    tools: crearHerramientas(
-      {
-        locale,
-        negocioSlug: negocio ? contexto?.negocio_slug : undefined,
-      },
-      db,
-    ),
+    // Con `tools`, el historial también usa la vista reducida de cada resultado.
+    messages: await convertToModelMessages(mensajes as UIMessage[], {
+      tools: herramientas,
+    }),
+    tools: herramientas,
     // Por defecto el SDK imprime el error completo (con el texto enviado): el único
     // registro es codigoDeError, que solo guarda el código de estado.
     onError: () => undefined,

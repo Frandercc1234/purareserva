@@ -1,5 +1,5 @@
 import 'server-only';
-import { tool } from 'ai';
+import { tool, type JSONValue } from 'ai';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import { formatearUSD } from '@/lib/dinero';
@@ -10,6 +10,7 @@ import {
   formatearFechaHora,
 } from '@/lib/fechas';
 import { IMAGEN_RESPALDO } from '@/lib/imagenes';
+import { recortar } from '@/lib/texto';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { uuid } from '@/lib/validaciones';
 import type { Database } from '@/types/database';
@@ -25,7 +26,8 @@ export type ContextoHerramientas = {
 
 const HORA_MS = 3_600_000;
 const DIA_MS = 24 * HORA_MS;
-const MAX_TOURS = 5;
+const MAX_TOURS = 3;
+const MAX_CARACTERES_FICHA = 600;
 const MAX_SALIDAS = 3;
 const DIAS_POR_DEFECTO = 14;
 const DIAS_MAXIMOS = 60;
@@ -181,7 +183,10 @@ export async function buscarGuia(
   return {
     fichas: (data ?? []).slice(0, 4).map((f) => ({
       titulo: ctx.locale === 'en' ? f.titulo_en : f.titulo_es,
-      contenido: ctx.locale === 'en' ? f.contenido_en : f.contenido_es,
+      contenido: recortar(
+        ctx.locale === 'en' ? f.contenido_en : f.contenido_es,
+        MAX_CARACTERES_FICHA,
+      ),
       fuente_nombre: f.fuente_nombre,
       fuente_url: f.fuente_url,
     })),
@@ -242,6 +247,48 @@ export async function prepararReserva(
   };
 }
 
+/**
+ * Lo que el modelo necesita de cada resultado. La pantalla recibe el resultado completo
+ * (imagen y enlaces para la tarjeta); al modelo se le quita lo que no usa, para gastar
+ * menos tokens.
+ */
+export function vistaModelo(salida: unknown): {
+  type: 'json';
+  value: JSONValue;
+} {
+  const s = salida as {
+    tours?: TourParaChat[];
+    fichas?: FichaParaChat[];
+  } | null;
+  if (s?.tours) {
+    return {
+      type: 'json' as const,
+      value: {
+        tours: s.tours.map((t) => ({
+          tour: t.tour,
+          negocio: t.negocio,
+          precio: t.precio_texto,
+          duracion: t.duracion_texto,
+          salidas: t.salidas,
+        })),
+      },
+    };
+  }
+  if (s?.fichas) {
+    return {
+      type: 'json' as const,
+      value: {
+        fichas: s.fichas.map((f) => ({
+          titulo: f.titulo,
+          contenido: f.contenido,
+          fuente_nombre: f.fuente_nombre,
+        })),
+      },
+    };
+  }
+  return { type: 'json' as const, value: s ?? null };
+}
+
 /** Ejecuta una herramienta sin romper la conversación si algo falla (sin registrar el texto del usuario). */
 async function seguro<T>(nombre: string, accion: () => Promise<T>) {
   try {
@@ -263,22 +310,25 @@ export function crearHerramientas(
   return {
     buscar_tours: tool({
       description:
-        'Busca tours activos con salidas y cupos disponibles. Úsala SIEMPRE para tours, precios, horarios o cupos. Por defecto busca desde hoy y por 14 días, para 1 persona.',
+        'Tours activos con salidas y cupos. Úsala siempre para tours, precios, horarios o cupos. Por defecto: hoy a 14 días, 1 persona.',
       inputSchema: buscarToursSchema,
+      toModelOutput: vistaModelo,
       execute: (entrada) =>
         seguro('buscar_tours', () => buscarTours(db, entrada, ctx)),
     }),
     buscar_guia: tool({
       description:
-        'Busca en la guía de Guanacaste (playas, parques, pueblos, clima, transporte y consejos). La consulta debe estar en inglés. Responde solo con lo que devuelva.',
+        'Guía de Guanacaste (playas, parques, pueblos, clima, transporte, consejos). Consulta en inglés.',
       inputSchema: buscarGuiaSchema,
+      toModelOutput: vistaModelo,
       execute: (entrada) =>
         seguro('buscar_guia', () => buscarGuia(db, entrada, ctx)),
     }),
     preparar_reserva: tool({
       description:
-        'Prepara el enlace para reservar una salida concreta. No crea la reserva ni cobra: el turista completa sus datos y paga el depósito en la página.',
+        'Enlace para reservar una salida. No crea la reserva ni cobra.',
       inputSchema: prepararReservaSchema,
+      toModelOutput: vistaModelo,
       execute: (entrada) =>
         seguro('preparar_reserva', () => prepararReserva(db, entrada, ctx)),
     }),

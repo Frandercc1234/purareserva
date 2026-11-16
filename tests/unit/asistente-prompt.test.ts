@@ -8,14 +8,15 @@ describe('prompt del asistente', () => {
   it('lleva las reglas, la fecha de hoy y el idioma de la conversación', () => {
     const es = construirPrompt({ locale: 'es', ahora: AHORA });
     expect(es).toContain('Sos el asistente de PuraReserva');
-    expect(es).toContain('usá siempre `buscar_tours`');
+    expect(es).toContain('siempre `buscar_tours`');
     expect(es).toContain('llamar al 911');
+    expect(es.length).toBeLessThan(2200);
     expect(es).toContain('16 de noviembre (2026-11-16)');
     expect(es).not.toContain('The user is viewing');
 
     const en = construirPrompt({ locale: 'en', ahora: AHORA });
     expect(en).toContain('You are the PuraReserva assistant');
-    expect(en).toContain('ALWAYS use `buscar_tours`');
+    expect(en).toContain('always `buscar_tours`');
     expect(en).toContain('November 16 (2026-11-16)');
   });
 

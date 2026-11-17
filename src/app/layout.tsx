@@ -14,8 +14,7 @@ const hanken = Hanken_Grotesk({
 const bigShoulders = Big_Shoulders({
   variable: '--font-big-shoulders',
   subsets: ['latin'],
-  weight: 'variable',
-  axes: ['opsz'],
+  weight: '800',
   display: 'swap',
   adjustFontFallback: false,
 });

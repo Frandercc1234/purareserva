@@ -26,14 +26,14 @@ export function TourCard({
   return (
     <Link
       href={`/${negocioSlug}/${tourSlug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-tarjeta border border-borde bg-superficie shadow-tarjeta transition-[transform,border-color] duration-200 ease-[var(--ease-out)] hover:border-primario motion-safe:hover:-translate-y-0.5"
+      className="group flex h-full flex-col overflow-hidden rounded-tarjeta border border-borde bg-superficie shadow-tarjeta transition-[transform,border-color] duration-200 ease-[var(--ease-out)] hover:border-primario motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.98]"
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <Imagen
           src={imagenUrl ?? IMAGEN_RESPALDO}
           alt={nombre}
           sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw"
-          className="object-cover transition-transform duration-500 ease-[var(--ease-out)] motion-safe:group-hover:scale-[1.03]"
+          className="object-cover transition-transform duration-300 ease-[var(--ease-out)] motion-safe:group-hover:scale-[1.03]"
         />
       </div>
       <div className="flex flex-col gap-1 p-4">

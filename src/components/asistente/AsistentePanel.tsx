@@ -107,6 +107,24 @@ export function AsistentePanel({
   const t = useTranslations('Asistente');
   const esMovil = useEsMovil();
   const [texto, setTexto] = useState('');
+  // Cierre con animación de salida (más corta que la entrada); sin animación si el usuario pide menos movimiento.
+  const [saliendo, setSaliendo] = useState(false);
+  const salidaRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (salidaRef.current) clearTimeout(salidaRef.current);
+    },
+    [],
+  );
+  function cerrar() {
+    if (saliendo) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      onCerrar();
+      return;
+    }
+    setSaliendo(true);
+    salidaRef.current = setTimeout(onCerrar, 150);
+  }
   const entradaRef = useRef<HTMLTextAreaElement>(null);
   const finRef = useRef<HTMLDivElement>(null);
   const limite = error?.tipo === 'limite';
@@ -166,18 +184,20 @@ export function AsistentePanel({
       {/* Móvil: telón detrás de la hoja; tocarlo la cierra. */}
       <div
         aria-hidden="true"
-        onClick={onCerrar}
-        className="fixed inset-0 z-50 bg-carbon/50 sm:hidden"
+        onClick={cerrar}
+        data-saliendo={saliendo ? '' : undefined}
+        className="asistente-telon fixed inset-0 z-50 bg-carbon/50 sm:hidden"
       />
       <div
         id="asistente-panel"
         role="dialog"
         aria-modal={esMovil}
         aria-label={t('titulo')}
+        data-saliendo={saliendo ? '' : undefined}
         onKeyDown={(e) => {
           if (e.key === 'Escape') {
             e.stopPropagation();
-            onCerrar();
+            cerrar();
           }
         }}
         className="asistente-panel fixed inset-x-0 bottom-0 z-50 flex h-[92dvh] flex-col overflow-hidden rounded-t-tarjeta border-t border-borde bg-fondo sm:inset-auto sm:right-6 sm:bottom-24 sm:h-[560px] sm:w-[380px] sm:rounded-tarjeta sm:border sm:shadow-[0_8px_28px_rgb(0_0_0/0.16)]"
@@ -192,7 +212,7 @@ export function AsistentePanel({
           </Badge>
           <button
             type="button"
-            onClick={onCerrar}
+            onClick={cerrar}
             aria-label={t('cerrar')}
             className="-mr-3 inline-flex size-11 items-center justify-center rounded-control text-texto-suave transition-colors duration-150 hover:bg-fondo hover:text-texto"
           >

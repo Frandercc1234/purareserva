@@ -44,10 +44,11 @@
   /* Movimiento: curvas y duraciones como tokens. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --duration-rapida: 150ms;
   --duration-base: 200ms;
   --duration-lenta: 320ms;
-  --duration-entrada: 520ms;
+  --duration-entrada: 400ms;
 }
 
 p {
@@ -107,12 +108,23 @@ body {
 
 .entrar {
   animation: entrar var(--duration-entrada) var(--ease-out) both;
-  animation-delay: calc(var(--i, 0) * 70ms);
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Movimiento reducido: solo un fundido corto, sin desplazamiento ni escalonado. */
+@keyframes entrar-reducido {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .entrar {
-    animation: none;
+    animation: entrar-reducido var(--duration-base) ease both;
+    animation-delay: 0ms;
   }
 }
 
@@ -123,25 +135,109 @@ body {
   }
 }
 
-/* Asistente: el panel entra con un fundido corto y sube 8 px (se apaga si el usuario lo pide). */
-@keyframes panel-asistente {
-  from {
+/*
+ * Asistente: el panel se anima con transiciones (se pueden interrumpir y retoman desde el estado
+ * actual). Nace desde el botón, sale más rápido de lo que entra y en móvil sube como una hoja.
+ */
+.asistente-panel {
+  transform-origin: bottom right;
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    opacity var(--duration-base) var(--ease-out);
+}
+
+@starting-style {
+  .asistente-panel {
     opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
+    transform: scale(0.96) translateY(8px);
   }
 }
 
-.asistente-panel {
-  animation: panel-asistente var(--duration-base) var(--ease-out) both;
+.asistente-panel[data-saliendo] {
+  opacity: 0;
+  transform: scale(0.96) translateY(8px);
+  transition-duration: var(--duration-rapida);
+}
+
+@media (max-width: 639px) {
+  .asistente-panel {
+    transform-origin: bottom center;
+    transition:
+      transform var(--duration-lenta) var(--ease-drawer),
+      opacity var(--duration-base) var(--ease-out);
+  }
+
+  @starting-style {
+    .asistente-panel {
+      opacity: 1;
+      transform: translateY(100%);
+    }
+  }
+
+  .asistente-panel[data-saliendo] {
+    opacity: 1;
+    transform: translateY(100%);
+    transition-duration: var(--duration-base);
+  }
+}
+
+.asistente-telon {
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+@starting-style {
+  .asistente-telon {
+    opacity: 0;
+  }
+}
+
+.asistente-telon[data-saliendo] {
+  opacity: 0;
+  transition-duration: var(--duration-rapida);
+}
+
+/* Movimiento reducido: solo opacidad, sin desplazamiento ni escala. */
+@media (prefers-reduced-motion: reduce) {
+  .asistente-panel,
+  .asistente-panel[data-saliendo] {
+    transform: none;
+  }
+
+  @starting-style {
+    .asistente-panel {
+      transform: none;
+    }
+  }
+}
+
+/*
+ * Barra de pago móvil: baja fuera de la vista mientras un campo tiene el foco y la ventana quedó
+ * baja (teclado abierto). Si el teclado se cierra pero el campo sigue enfocado, la altura vuelve
+ * y la barra reaparece.
+ */
+@media (max-width: 1023px) {
+  #barra-reserva {
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+}
+
+@media (max-width: 1023px) and (max-height: 520px) {
+  body:has(#tarjeta-reserva :is(input, select, textarea):focus) #barra-reserva {
+    transform: translateY(100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .asistente-panel {
-    animation: none;
+  #barra-reserva {
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 1023px) and (max-height: 520px) {
+  body:has(#tarjeta-reserva :is(input, select, textarea):focus) #barra-reserva {
+    transform: none;
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
@@ -157,6 +253,12 @@ body {
   body:has(#tarjeta-reserva) .asistente-boton {
     right: auto;
     left: 1.5rem;
+  }
+
+  body:has(#tarjeta-reserva) .asistente-panel {
+    right: auto;
+    left: 1.5rem;
+    transform-origin: bottom left;
   }
 }
 

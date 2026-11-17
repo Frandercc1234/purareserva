@@ -127,14 +127,14 @@ export default async function LandingPage({
                   <li key={n.slug}>
                     <Link
                       href={`/${n.slug}`}
-                      className="group flex h-full flex-col overflow-hidden rounded-tarjeta border border-borde bg-superficie shadow-tarjeta transition-[transform,border-color] duration-200 ease-[var(--ease-out)] hover:border-primario motion-safe:hover:-translate-y-0.5"
+                      className="group flex h-full flex-col overflow-hidden rounded-tarjeta border border-borde bg-superficie shadow-tarjeta transition-[transform,border-color] duration-200 ease-[var(--ease-out)] hover:border-primario motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.98]"
                     >
                       <div className="relative aspect-[4/3] overflow-hidden">
                         <Imagen
                           src={portada}
                           alt={n.nombre}
                           sizes="(min-width: 1024px) 480px, (min-width: 640px) 45vw, 100vw"
-                          className="object-cover transition-transform duration-500 ease-[var(--ease-out)] motion-safe:group-hover:scale-[1.03]"
+                          className="object-cover transition-transform duration-300 ease-[var(--ease-out)] motion-safe:group-hover:scale-[1.03]"
                         />
                       </div>
                       <div className="flex flex-1 flex-col gap-2 p-5">
@@ -150,7 +150,7 @@ export default async function LandingPage({
                           {t('cantidadTours', { count: cantidad })}
                           <span
                             aria-hidden="true"
-                            className="ml-1 inline-block transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-1"
+                            className="ml-1 inline-block transition-transform duration-200 ease-[var(--ease-out)] motion-safe:group-hover:translate-x-1"
                           >
                             →
                           </span>

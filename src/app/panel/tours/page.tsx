@@ -90,8 +90,8 @@ export default async function ToursPage() {
                       >
                         <span
                           className={cn(
-                            'absolute top-0.5 size-5 rounded-full bg-superficie shadow transition-all',
-                            t.activo ? 'left-[22px]' : 'left-0.5',
+                            'absolute top-0.5 left-0.5 size-5 rounded-full bg-superficie shadow transition-transform duration-150 ease-[var(--ease-out)] motion-reduce:transition-none',
+                            t.activo && 'translate-x-[22px]',
                           )}
                         />
                       </span>

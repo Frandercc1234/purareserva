@@ -17,6 +17,12 @@ const panel = (page: Page, idioma: 'es' | 'en' = 'es') =>
 async function abrir(page: Page, idioma: 'es' | 'en' = 'es') {
   await boton(page, idioma).click();
   await expect(panel(page, idioma)).toBeVisible();
+  // La entrada es una transición: se mide el panel cuando ya terminó de moverse.
+  await expect
+    .poll(() =>
+      panel(page, idioma).evaluate((el) => getComputedStyle(el).transform),
+    )
+    .toBe('none');
   return panel(page, idioma);
 }
 

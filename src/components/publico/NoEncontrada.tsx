@@ -13,9 +13,7 @@ export function NoEncontrada() {
       <p className="text-sm font-semibold tracking-wide text-aviso uppercase">
         {t('codigo')}
       </p>
-      <h1 className="text-3xl font-semibold tracking-tight text-balance md:text-4xl">
-        {t('titulo')}
-      </h1>
+      <h1 className="titulo-hero text-5xl md:text-6xl">{t('titulo')}</h1>
       <p className="text-texto-suave">{t('texto')}</p>
       <div className="mt-2 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
         <Link href="/#operadores" className={botonClases('primario')}>

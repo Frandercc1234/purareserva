@@ -36,7 +36,7 @@ export function TourCard({
         />
       </div>
       <div className="flex flex-col gap-1 p-4">
-        <h3 className="text-lg font-semibold group-hover:text-primario">
+        <h3 className="titulo text-3xl decoration-2 underline-offset-4 group-hover:underline">
           {nombre}
         </h3>
         <p className="text-sm text-texto-suave">

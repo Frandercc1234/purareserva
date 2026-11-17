@@ -49,13 +49,13 @@ export default function AuthLayout({
         >
           <path
             d="M0 100c100-60 200-60 300 0s200 60 300 0v100H0z"
-            fill="#0E7C86"
-            fillOpacity=".5"
+            fill="#C98E52"
+            fillOpacity=".2"
           />
           <path
             d="M0 140c100-50 200-50 300 0s200 50 300 0v60H0z"
-            fill="#0E7C86"
-            fillOpacity=".35"
+            fill="#C98E52"
+            fillOpacity=".12"
           />
         </svg>
       </aside>

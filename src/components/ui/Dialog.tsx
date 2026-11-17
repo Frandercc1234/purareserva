@@ -28,7 +28,7 @@ export function Dialog({
       ref={ref}
       onClose={onCerrar}
       aria-labelledby={tituloId}
-      className="m-auto w-[calc(100%-2rem)] max-w-md rounded-tarjeta border border-borde bg-superficie p-6 text-texto shadow-tarjeta backdrop:bg-black/40"
+      className="m-auto w-[calc(100%-2rem)] max-w-md rounded-tarjeta border border-borde bg-superficie p-6 text-texto shadow-tarjeta backdrop:bg-carbon/60"
     >
       <h2 id={tituloId} className="text-lg font-semibold">
         {titulo}

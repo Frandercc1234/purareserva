@@ -142,7 +142,7 @@ export default async function TourPage({
             alt={nombre}
             className="aspect-video w-full rounded-tarjeta object-cover"
           />
-          <h1 className="text-3xl font-semibold tracking-tight">{nombre}</h1>
+          <h1 className="titulo-hero text-5xl md:text-6xl">{nombre}</h1>
           <p>
             <span className="text-2xl font-semibold text-texto">
               {formatearUSD(tour.precio_cents, locale)}

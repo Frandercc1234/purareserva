@@ -97,9 +97,7 @@ export default async function NegocioPage({
           <p className="text-sm font-semibold tracking-wide text-aviso uppercase">
             {t('operador')}
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
-            {negocio.nombre}
-          </h1>
+          <h1 className="titulo-hero text-5xl md:text-7xl">{negocio.nombre}</h1>
           {descripcion && (
             <p className="max-w-2xl text-lg text-texto-suave">{descripcion}</p>
           )}
@@ -111,7 +109,7 @@ export default async function NegocioPage({
 
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-10 md:py-14">
         <section className="flex flex-col gap-4">
-          <h2 className="text-2xl font-semibold">{t('tours')}</h2>
+          <h2 className="titulo text-4xl">{t('tours')}</h2>
           {!tours?.length ? (
             <EmptyState titulo={t('sinTours')} />
           ) : (

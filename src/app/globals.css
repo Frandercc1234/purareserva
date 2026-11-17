@@ -1,24 +1,53 @@
 @import 'tailwindcss';
 
+/*
+ * Dirección de arte "Hierro" (ver DESIGN.md). Los nombres de los tokens se mantienen
+ * (primario, acento, fondo, superficie...) para que el panel herede sin tocar componentes.
+ * Los valores se calculan con scripts/contraste-paleta.mjs, que comprueba cada par.
+ */
 @theme {
-  --color-primario: #0e7c86;
-  --color-primario-oscuro: #095b63;
-  --color-acento: #f2a541;
-  --color-fondo: #fafaf7;
-  --color-superficie: #ffffff;
-  --color-borde: #e5e7eb;
-  --color-texto: #1f2937;
-  --color-texto-suave: #6b7280;
-  --color-exito: #15803d;
-  --color-aviso: #b45309;
-  --color-error: #b91c1c;
+  /* Tinta de marca: enlaces, estados activos y seleccionados, foco. */
+  --color-primario: #1b1410;
+  /* Fondo oscuro secundario (bloques sobre carbón, hover del carbón). */
+  --color-primario-oscuro: #2a2019;
+  /* Único color de acción: botones principales y nada más. */
+  --color-accion: #e8622a;
+  --color-accion-hover: #ea723f;
+  /* Cuero: destacados (badges), nunca texto sobre claro. */
+  --color-acento: #c98e52;
+  --color-fondo: #f2eadb;
+  --color-superficie: #fbf8f1;
+  /* Borde decorativo (tarjetas, divisores) y borde de controles (3:1). */
+  --color-borde: #d8cbb4;
+  --color-borde-control: #8c7f6b;
+  --color-texto: #1b1410;
+  --color-texto-suave: #706354;
+  --color-exito: #426d48;
+  --color-aviso: #8a5822;
+  --color-error: #b43629;
 
-  --radius-control: 8px;
-  --radius-tarjeta: 12px;
+  /* Superficies oscuras (header, hero, pie, parte alta del tour). */
+  --color-carbon: #1b1410;
+  --color-lena: #2a2019;
+  --color-hueso: #f2eadb;
+  --color-hueso-suave: #988c7d;
+  --color-cuero: #c98e52;
 
-  --shadow-tarjeta: 0 2px 8px rgb(0 0 0 / 0.06);
+  --radius-control: 4px;
+  --radius-tarjeta: 4px;
 
-  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --shadow-tarjeta: 0 1px 0 rgb(27 20 16 / 0.08);
+
+  --font-sans: var(--font-hanken), system-ui, sans-serif;
+  --font-display: var(--font-big-shoulders), 'Arial Narrow', sans-serif;
+
+  /* Movimiento: curvas y duraciones como tokens. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --duration-rapida: 150ms;
+  --duration-base: 200ms;
+  --duration-lenta: 320ms;
+  --duration-entrada: 520ms;
 }
 
 body {
@@ -34,9 +63,31 @@ body {
   outline-offset: 2px;
 }
 
-/* Movimiento: curva fuerte de salida, solo propiedades baratas, y reposo si el usuario lo pide. */
-:root {
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+/* Sobre carbón el foco va en hueso. */
+.sobre-carbon :focus-visible {
+  outline-color: var(--color-hueso);
+}
+
+/*
+ * Títulos de display: Big Shoulders en mayúsculas, solo para h1, h2 y el nombre del tour.
+ * Botones, etiquetas, datos, formularios y el panel van en la fuente de cuerpo.
+ */
+@utility titulo-hero {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+  text-wrap: balance;
+}
+
+@utility titulo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.98;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
 }
 
 @keyframes entrar {
@@ -51,7 +102,7 @@ body {
 }
 
 .entrar {
-  animation: entrar 520ms var(--ease-out) both;
+  animation: entrar var(--duration-entrada) var(--ease-out) both;
   animation-delay: calc(var(--i, 0) * 70ms);
 }
 
@@ -81,7 +132,7 @@ body {
 }
 
 .asistente-panel {
-  animation: panel-asistente 200ms var(--ease-out) both;
+  animation: panel-asistente var(--duration-base) var(--ease-out) both;
 }
 
 @media (prefers-reduced-motion: reduce) {

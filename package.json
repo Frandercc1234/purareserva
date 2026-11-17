@@ -12,7 +12,8 @@
     "format": "prettier --write .",
     "test:e2e": "playwright test",
     "guia:indexar": "tsx --conditions=react-server --env-file=.env.local scripts/indexar-guia.ts",
-    "asistente:evaluar": "tsx scripts/evaluar-asistente.ts"
+    "asistente:evaluar": "tsx scripts/evaluar-asistente.ts",
+    "diseno:contraste": "node scripts/contraste-paleta.mjs"
   },
   "dependencies": {
     "@ai-sdk/groq": "^2.0.63",

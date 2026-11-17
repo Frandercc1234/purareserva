@@ -136,13 +136,45 @@ export function AsistentePanel({
     entradaRef.current?.focus();
   }, []);
 
-  // Pantalla completa en móvil: la página de atrás no se desplaza.
+  // En móvil la hoja ocupa solo el área visible (por encima del teclado) y la página de atrás no se
+  // mueve. iOS no reduce el área de la página al abrir el teclado: se usa el visualViewport y se
+  // fija el cuerpo para que ni la página ni la hoja se desplacen.
   useEffect(() => {
     if (!esMovil) return;
-    const anterior = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const raiz = document.documentElement;
+    const cuerpo = document.body;
+    const scrollY = window.scrollY;
+    const previo = {
+      position: cuerpo.style.position,
+      top: cuerpo.style.top,
+      width: cuerpo.style.width,
+      overflow: cuerpo.style.overflow,
+    };
+    cuerpo.style.position = 'fixed';
+    cuerpo.style.top = `-${scrollY}px`;
+    cuerpo.style.width = '100%';
+    cuerpo.style.overflow = 'hidden';
+    const vv = window.visualViewport;
+    const aplicar = () => {
+      raiz.style.setProperty(
+        '--vv-alto',
+        `${vv?.height ?? window.innerHeight}px`,
+      );
+      raiz.style.setProperty('--vv-arriba', `${vv?.offsetTop ?? 0}px`);
+    };
+    aplicar();
+    vv?.addEventListener('resize', aplicar);
+    vv?.addEventListener('scroll', aplicar);
     return () => {
-      document.body.style.overflow = anterior;
+      vv?.removeEventListener('resize', aplicar);
+      vv?.removeEventListener('scroll', aplicar);
+      raiz.style.removeProperty('--vv-alto');
+      raiz.style.removeProperty('--vv-arriba');
+      cuerpo.style.position = previo.position;
+      cuerpo.style.top = previo.top;
+      cuerpo.style.width = previo.width;
+      cuerpo.style.overflow = previo.overflow;
+      window.scrollTo(0, scrollY);
     };
   }, [esMovil]);
 
@@ -187,7 +219,7 @@ export function AsistentePanel({
         aria-hidden="true"
         onClick={cerrar}
         data-saliendo={saliendo ? '' : undefined}
-        className="asistente-telon fixed inset-0 z-50 bg-carbon/50 sm:hidden"
+        className="asistente-telon fixed inset-x-0 top-[var(--vv-arriba,0px)] z-50 h-[var(--vv-alto,100dvh)] touch-none bg-carbon/50 sm:hidden"
       />
       <div
         id="asistente-panel"
@@ -201,7 +233,7 @@ export function AsistentePanel({
             cerrar();
           }
         }}
-        className="asistente-panel fixed inset-x-0 bottom-0 z-50 flex h-[92dvh] flex-col overflow-hidden rounded-t-tarjeta border-t border-borde bg-fondo sm:inset-auto sm:right-6 sm:bottom-24 sm:h-[560px] sm:w-[380px] sm:rounded-tarjeta sm:border sm:shadow-[0_8px_28px_rgb(0_0_0/0.16)]"
+        className="asistente-panel fixed inset-x-0 top-[calc(var(--vv-arriba,0px)+var(--vv-alto,100dvh)*0.08)] z-50 flex h-[calc(var(--vv-alto,100dvh)*0.92)] flex-col overflow-hidden rounded-t-tarjeta border-t border-borde bg-fondo sm:inset-auto sm:right-6 sm:bottom-24 sm:h-[560px] sm:w-[380px] sm:rounded-tarjeta sm:border sm:shadow-[0_8px_28px_rgb(0_0_0/0.16)]"
       >
         <header className="flex items-center gap-2 border-b border-borde bg-superficie px-4 py-3">
           <Marca className="size-8 shrink-0" />
@@ -233,7 +265,7 @@ export function AsistentePanel({
           role="log"
           aria-live="polite"
           aria-relevant="additions"
-          className="flex flex-1 flex-col gap-3 overflow-y-auto p-4"
+          className="flex flex-1 flex-col gap-3 overflow-y-auto overscroll-contain p-4"
         >
           {mensajes.length === 0 && (
             <>
@@ -427,7 +459,7 @@ export function AsistentePanel({
               }}
               onKeyDown={alTeclear}
               className={cn(
-                'max-h-28 min-h-11 flex-1 resize-none rounded-control border border-borde-control bg-superficie px-3 py-2.5 text-[15px] leading-6 placeholder:text-texto-suave disabled:bg-fondo',
+                'max-h-28 min-h-11 flex-1 resize-none rounded-control border border-borde-control bg-superficie px-3 py-2.5 text-base sm:text-[15px] leading-6 placeholder:text-texto-suave disabled:bg-fondo',
                 ocupado && 'bg-fondo',
               )}
             />

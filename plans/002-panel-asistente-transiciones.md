@@ -123,7 +123,7 @@ En `AsistentePanel.tsx`: un estado `saliendo`; una función `cerrar()` que, si h
 2. Reemplazar los `@keyframes panel-asistente` y la regla `.asistente-panel` de `globals.css` por el bloque Target.
 3. Agregar la clase `asistente-telon` al telón del móvil en `AsistentePanel.tsx` y `data-saliendo` a ambos elementos cuando `saliendo` es verdadero.
 4. Crear `cerrar()` y usarla en la X, el telón y Escape.
-5. En las páginas de tour a 1024 px o más, el botón está a la izquierda: el origen del panel pasa a `bottom left` y el panel se ancla a la izquierda (`left: 1.5rem; right: auto`) para nacer del botón.
+5. (Revisado en el paso 10b) En las páginas de tour el botón y el panel van siempre a la derecha: la tarjeta de reserva ocupa todo el ancho y el botón de pago queda en la columna izquierda.
 
 ## Boundaries
 

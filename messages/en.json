@@ -110,7 +110,9 @@
       "telefono": "phone",
       "personas": "guests"
     },
-    "telefonoEjemplo": "+506 8888 8888"
+    "telefonoEjemplo": "+1 555 123 4567",
+    "quitarUna": "Remove one guest",
+    "sumarUna": "Add one guest"
   },
   "Gracias": {
     "titulo": "We received your payment",

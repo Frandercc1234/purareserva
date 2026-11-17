@@ -85,7 +85,7 @@ export function SalidaPicker({
           aria-label={t('diasAnteriores')}
           disabled={inicio === 0}
           onClick={() => setInicio((i) => Math.max(0, i - DIAS_VISIBLES))}
-          className="hidden h-16 w-8 shrink-0 items-center justify-center rounded-control text-lg text-primario transition-colors duration-150 hover:bg-fondo disabled:text-borde sm:flex"
+          className="hidden h-16 w-11 shrink-0 items-center justify-center rounded-control text-lg text-primario transition-colors duration-150 hover:bg-fondo disabled:text-borde sm:flex"
         >
           <span aria-hidden="true">‹</span>
         </button>
@@ -111,7 +111,7 @@ export function SalidaPicker({
                 data-foco={activo ? '' : undefined}
                 onClick={() => setDia(d)}
                 className={cn(
-                  'flex h-16 w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-control border transition-[transform,scale] duration-150 ease-[var(--ease-out)] motion-safe:active:scale-[0.97] sm:w-auto sm:flex-1',
+                  'flex h-16 w-12 min-w-11 shrink-0 flex-col items-center justify-center gap-0.5 rounded-control border transition-[transform,scale] duration-150 ease-[var(--ease-out)] motion-safe:active:scale-[0.97] sm:w-auto sm:flex-1',
                   !visible && 'sm:hidden',
                   activo
                     ? 'border-primario bg-primario text-superficie'
@@ -144,7 +144,7 @@ export function SalidaPicker({
           onClick={() =>
             setInicio((i) => Math.min(maxInicio, i + DIAS_VISIBLES))
           }
-          className="hidden h-16 w-8 shrink-0 items-center justify-center rounded-control text-lg text-primario transition-colors duration-150 hover:bg-fondo disabled:text-borde sm:flex"
+          className="hidden h-16 w-11 shrink-0 items-center justify-center rounded-control text-lg text-primario transition-colors duration-150 hover:bg-fondo disabled:text-borde sm:flex"
         >
           <span aria-hidden="true">›</span>
         </button>

@@ -162,10 +162,10 @@ export default async function TourPage({
       </section>
 
       <div className="mx-auto max-w-5xl px-4 py-8 pb-28 md:py-10 lg:pb-12">
-        <div className="grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
-          <div className="flex min-w-0 flex-col gap-4">
+        <div className="flex flex-col gap-8">
+          <div className="flex min-w-0 flex-col gap-4 lg:grid lg:grid-cols-[2fr_1fr_1fr] lg:gap-8">
             {descripcion && <p className="text-lg">{descripcion}</p>}
-            <dl className="grid gap-4 sm:grid-cols-2">
+            <dl className="grid gap-4 sm:grid-cols-2 lg:order-none lg:col-start-2 lg:grid-cols-1 lg:content-start">
               <div>
                 <dt className="text-sm text-texto-suave">{t('duracion')}</dt>
                 <dd className="font-semibold">
@@ -181,7 +181,7 @@ export default async function TourPage({
                 </div>
               )}
             </dl>
-            <div className="flex flex-col gap-1 border-t border-borde pt-4 text-sm text-texto-suave">
+            <div className="flex flex-col gap-1 border-t border-borde pt-4 text-sm text-texto-suave lg:col-start-3 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
               <p>{t('deposito', { pct: negocio.deposito_pct })}</p>
               <p>{t('cancelacion', { horas: negocio.horas_cancelacion })}</p>
             </div>
@@ -189,7 +189,7 @@ export default async function TourPage({
 
           <Card
             id="tarjeta-reserva"
-            className="flex h-fit min-w-0 flex-col gap-4 lg:sticky lg:top-24"
+            className="flex h-fit min-w-0 flex-col gap-4"
           >
             {disponibles.length ? (
               <ReservaForm

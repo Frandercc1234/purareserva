@@ -110,7 +110,9 @@
       "telefono": "teléfono",
       "personas": "personas"
     },
-    "telefonoEjemplo": "+506 8888 8888"
+    "telefonoEjemplo": "+1 555 123 4567",
+    "quitarUna": "Quitar una persona",
+    "sumarUna": "Sumar una persona"
   },
   "Gracias": {
     "titulo": "Recibimos tu pago",

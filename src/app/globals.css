@@ -249,20 +249,6 @@ body {
   }
 }
 
-/* En escritorio, la tarjeta de pago es fija abajo a la derecha: el botón pasa a la izquierda. */
-@media (min-width: 1024px) {
-  body:has(#tarjeta-reserva) .asistente-boton {
-    right: auto;
-    left: 1.5rem;
-  }
-
-  body:has(#tarjeta-reserva) .asistente-panel {
-    right: auto;
-    left: 1.5rem;
-    transform-origin: bottom left;
-  }
-}
-
 @media (min-width: 640px) and (max-width: 1023px) {
   body:has(#barra-reserva) .asistente-panel {
     bottom: 10rem;

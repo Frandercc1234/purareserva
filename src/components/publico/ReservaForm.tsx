@@ -276,9 +276,11 @@ export function ReservaForm({
         </Button>
       </div>
 
-      {/* Móvil: barra fija abajo con el depósito y el botón. */}
+      {/* Móvil: barra fija abajo con el depósito y el botón, solo con una salida elegida. */}
       <div
         id="barra-reserva"
+        inert={!salida}
+        aria-hidden={!salida}
         className="fixed inset-x-0 bottom-0 z-20 flex flex-col gap-2 border-t border-borde bg-superficie px-4 py-3 lg:hidden"
       >
         {resumenErrores}
@@ -301,6 +303,8 @@ export function ReservaForm({
           </Button>
         </div>
       </div>
+      {/* Espacio para que la barra fija no tape el final de la página. */}
+      {salida && <div aria-hidden="true" className="h-28 lg:hidden" />}
     </form>
   );
 }

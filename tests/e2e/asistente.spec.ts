@@ -196,8 +196,17 @@ test('en móvil el botón es redondo, no tapa la barra de reserva y el panel va 
   page,
 }, info) => {
   test.skip(info.project.name !== 'mobile');
-  await irA(page, TOUR);
+  // La barra de reserva solo aparece con una salida elegida.
+  const salidaId = await crearSalida({ enMs: 3 * DIA_MS, cupo: 5 });
+  try {
+    await irA(page, `${TOUR}?salida=${salidaId}`);
+    await comprobarFabYHoja(page);
+  } finally {
+    await limpiar({ salidaIds: [salidaId] });
+  }
+});
 
+async function comprobarFabYHoja(page: Page) {
   const fab = boton(page);
   const cajaFab = (await fab.boundingBox())!;
   expect(Math.round(cajaFab.width)).toBe(56);
@@ -218,7 +227,7 @@ test('en móvil el botón es redondo, no tapa la barra de reserva y el panel va 
   ).toBeLessThanOrEqual(2);
   expect(Math.round(caja.y + caja.height)).toBe(vista.height);
   await expect(fab).toBeHidden();
-});
+}
 
 test('si se llega al límite se ofrece "Ver tours" y el WhatsApp solo con un negocio en contexto', async ({
   page,

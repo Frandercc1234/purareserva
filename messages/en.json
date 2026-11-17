@@ -84,6 +84,7 @@
     "depositoAhora": "Deposit to pay now",
     "saldo": "Balance to pay at the meeting point",
     "pagar": "Pay deposit {monto}",
+    "pagarCorto": "Pay deposit",
     "elegirPrimero": "Choose a departure to book",
     "procesando": "Redirecting to payment…",
     "errores": {

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Imagen } from '@/components/publico/Imagen';
 import { ReservaForm } from '@/components/publico/ReservaForm';
 import { WhatsAppButton } from '@/components/publico/WhatsAppButton';
 import { Card } from '@/components/ui/Card';
@@ -127,68 +128,88 @@ export default async function TourPage({
       : 1;
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8 pb-28 md:py-10 lg:pb-12">
-      <div className="grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
-        <div className="flex min-w-0 flex-col gap-4">
-          <Link
-            href={`/${negocio.slug}`}
-            className="inline-flex h-11 w-fit items-center text-primario underline"
-          >
-            {negocio.nombre}
-          </Link>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={tour.imagen_url ?? '/tour-default.svg'}
-            alt={nombre}
-            className="aspect-video w-full rounded-tarjeta object-cover"
-          />
-          <h1 className="titulo-hero text-5xl md:text-6xl">{nombre}</h1>
-          <p>
-            <span className="text-2xl font-semibold text-texto">
-              {formatearUSD(tour.precio_cents, locale)}
-            </span>{' '}
-            <span className="text-texto-suave">{c('porPersona')}</span>
-          </p>
-          {descripcion && <p className="text-texto-suave">{descripcion}</p>}
-          <dl className="grid gap-2 sm:grid-cols-2">
-            <div>
-              <dt className="text-sm text-texto-suave">{t('duracion')}</dt>
-              <dd>{formatearDuracion(tour.duracion_min)}</dd>
-            </div>
-            {punto && (
-              <div>
-                <dt className="text-sm text-texto-suave">
-                  {t('puntoEncuentro')}
-                </dt>
-                <dd>{punto}</dd>
-              </div>
-            )}
-          </dl>
-          <div className="flex flex-col gap-1 border-t border-borde pt-4 text-sm text-texto-suave">
-            <p>{t('deposito', { pct: negocio.deposito_pct })}</p>
-            <p>{t('cancelacion', { horas: negocio.horas_cancelacion })}</p>
+    <main>
+      <section className="sobre-carbon bg-carbon text-hueso">
+        <div className="mx-auto grid max-w-5xl lg:grid-cols-[3fr_2fr] lg:gap-8">
+          <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[420px]">
+            <Imagen
+              src={tour.imagen_url ?? IMAGEN_RESPALDO}
+              alt={nombre}
+              sizes="(min-width: 1024px) 600px, 100vw"
+              priority
+            />
+          </div>
+          <div className="flex min-w-0 flex-col justify-end gap-4 px-4 py-8 lg:px-0 lg:py-10">
+            <Link
+              href={`/${negocio.slug}`}
+              className="inline-flex h-11 w-fit items-center text-sm font-semibold text-hueso underline underline-offset-4"
+            >
+              {negocio.nombre}
+            </Link>
+            <h1
+              className={`titulo-hero break-words ${nombre.length > 40 ? 'text-4xl md:text-5xl' : 'text-5xl md:text-6xl'}`}
+            >
+              {nombre}
+            </h1>
+            <p>
+              <span className="text-2xl font-semibold">
+                {formatearUSD(tour.precio_cents, locale)}
+              </span>{' '}
+              <span className="text-hueso-suave">{c('porPersona')}</span>
+            </p>
           </div>
         </div>
+      </section>
 
-        <Card className="flex h-fit min-w-0 flex-col gap-4 lg:sticky lg:top-24">
-          {disponibles.length ? (
-            <ReservaForm
-              // Se reinicia si el enlace cambia de salida o de personas (por ejemplo, desde el asistente).
-              key={`${salidaInicial?.id ?? ''}-${personasInicial}`}
-              salidas={disponibles}
-              salidaInicialId={salidaInicial?.id ?? null}
-              personasInicial={personasInicial}
-              precioCents={tour.precio_cents}
-              depositoPct={negocio.deposito_pct}
-            />
-          ) : (
-            <EmptyState
-              titulo={t('sinSalidas')}
-              descripcion={t('sinSalidasAyuda')}
-              accion={<WhatsAppButton numero={negocio.whatsapp} />}
-            />
-          )}
-        </Card>
+      <div className="mx-auto max-w-5xl px-4 py-8 pb-28 md:py-10 lg:pb-12">
+        <div className="grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
+          <div className="flex min-w-0 flex-col gap-4">
+            {descripcion && <p className="text-lg">{descripcion}</p>}
+            <dl className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <dt className="text-sm text-texto-suave">{t('duracion')}</dt>
+                <dd className="font-semibold">
+                  {formatearDuracion(tour.duracion_min)}
+                </dd>
+              </div>
+              {punto && (
+                <div>
+                  <dt className="text-sm text-texto-suave">
+                    {t('puntoEncuentro')}
+                  </dt>
+                  <dd className="font-semibold">{punto}</dd>
+                </div>
+              )}
+            </dl>
+            <div className="flex flex-col gap-1 border-t border-borde pt-4 text-sm text-texto-suave">
+              <p>{t('deposito', { pct: negocio.deposito_pct })}</p>
+              <p>{t('cancelacion', { horas: negocio.horas_cancelacion })}</p>
+            </div>
+          </div>
+
+          <Card
+            id="tarjeta-reserva"
+            className="flex h-fit min-w-0 flex-col gap-4 lg:sticky lg:top-24"
+          >
+            {disponibles.length ? (
+              <ReservaForm
+                // Se reinicia si el enlace cambia de salida o de personas (por ejemplo, desde el asistente).
+                key={`${salidaInicial?.id ?? ''}-${personasInicial}`}
+                salidas={disponibles}
+                salidaInicialId={salidaInicial?.id ?? null}
+                personasInicial={personasInicial}
+                precioCents={tour.precio_cents}
+                depositoPct={negocio.deposito_pct}
+              />
+            ) : (
+              <EmptyState
+                titulo={t('sinSalidas')}
+                descripcion={t('sinSalidasAyuda')}
+                accion={<WhatsAppButton numero={negocio.whatsapp} />}
+              />
+            )}
+          </Card>
+        </div>
       </div>
     </main>
   );

@@ -243,7 +243,7 @@ export function ReservaForm({
             disabled={pendiente}
             className="min-w-36"
           >
-            {pendiente ? t('procesando') : t('reservar')}
+            {pendiente ? t('procesando') : t('pagarCorto')}
           </Button>
         </div>
       </div>

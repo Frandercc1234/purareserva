@@ -84,6 +84,7 @@
     "depositoAhora": "Depósito a pagar ahora",
     "saldo": "Saldo a pagar en el lugar",
     "pagar": "Pagar depósito {monto}",
+    "pagarCorto": "Pagar depósito",
     "elegirPrimero": "Elegí una salida para reservar",
     "procesando": "Redirigiendo al pago…",
     "errores": {

@@ -115,10 +115,10 @@ export function SalidaPicker({
                   !visible && 'sm:hidden',
                   activo
                     ? 'border-primario bg-primario text-superficie'
-                    : 'border-borde bg-superficie hover:border-primario',
+                    : 'border-borde-control bg-superficie hover:border-primario',
                 )}
               >
-                <span className="text-xs uppercase">{semana}</span>
+                <span className="text-xs">{semana}</span>
                 <span className="text-lg leading-none font-semibold">
                   {numero}
                 </span>
@@ -168,7 +168,7 @@ export function SalidaPicker({
                 !agotado && on && 'border-primario bg-primario text-superficie',
                 !agotado &&
                   !on &&
-                  'border-borde bg-superficie hover:border-primario',
+                  'border-borde-control bg-superficie hover:border-primario',
               )}
             >
               <input

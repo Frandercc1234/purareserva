@@ -22,13 +22,13 @@ describe('reserva escrita como texto por el modelo', () => {
     expect(salida).toContain('Great news!');
     expect(salida).toContain('See you there.');
 
-    expect(html(`Listo {"salida_id":"${ID}","personas":2} gracias`)).not.toContain(
-      'salida_id',
-    );
+    expect(
+      html(`Listo {"salida_id":"${ID}","personas":2} gracias`),
+    ).not.toContain('salida_id');
     // Bloque a medio escribir (streaming).
-    expect(quitarCodigoYJson('Hola\n```json\n{"personas": 2, "sal').trim()).toBe(
-      'Hola',
-    );
+    expect(
+      quitarCodigoYJson('Hola\n```json\n{"personas": 2, "sal').trim(),
+    ).toBe('Hola');
     expect(quitarCodigoYJson('Hola {"personas": 2, "sali')).not.toContain(
       'personas',
     );
@@ -41,7 +41,9 @@ describe('reserva escrita como texto por el modelo', () => {
     ).toBe(20);
     expect(reservaEscrita(`{"salida_id": "${ID}", "personas": 21}`)).toBeNull();
     expect(reservaEscrita(`{"salida_id": "${ID}", "personas": 0}`)).toBeNull();
-    expect(reservaEscrita(`{"salida_id": "${ID}", "personas": "2"}`)).toBeNull();
+    expect(
+      reservaEscrita(`{"salida_id": "${ID}", "personas": "2"}`),
+    ).toBeNull();
     expect(reservaEscrita('{"salida_id": "abc", "personas": 2}')).toBeNull();
     expect(reservaEscrita('{"salida_id": "<uuid>", "personas": 2}')).toBeNull();
     expect(reservaEscrita('Sin ningún JSON')).toBeNull();

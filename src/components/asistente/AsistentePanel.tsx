@@ -155,19 +155,42 @@ export function AsistentePanel({
     cuerpo.style.width = '100%';
     cuerpo.style.overflow = 'hidden';
     const vv = window.visualViewport;
-    const aplicar = () => {
+    let cuadro = 0;
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    const medir = () => {
+      // Con el cuerpo fijo, un desplazamiento del visual viewport es un resto de iOS:
+      // se devuelve la vista al origen para que el encabezado de la hoja se vea.
+      if (vv && vv.offsetTop > 0) window.scrollTo(0, 0);
       raiz.style.setProperty(
         '--vv-alto',
         `${vv?.height ?? window.innerHeight}px`,
       );
       raiz.style.setProperty('--vv-arriba', `${vv?.offsetTop ?? 0}px`);
     };
-    aplicar();
+    // Los eventos de iOS llegan en ráfagas: se aplica una vez por cuadro.
+    const aplicar = () => {
+      cancelAnimationFrame(cuadro);
+      cuadro = requestAnimationFrame(medir);
+    };
+    // iOS termina de desplazar la vista después del evento: se mide otra vez a los 100 y 300 ms.
+    const aplicarConRezago = () => {
+      aplicar();
+      timeouts.push(setTimeout(aplicar, 100), setTimeout(aplicar, 300));
+    };
+    medir();
+    aplicarConRezago();
     vv?.addEventListener('resize', aplicar);
     vv?.addEventListener('scroll', aplicar);
+    const campo = entradaRef.current;
+    campo?.addEventListener('focusin', aplicarConRezago);
+    campo?.addEventListener('focusout', aplicarConRezago);
     return () => {
+      cancelAnimationFrame(cuadro);
+      timeouts.forEach(clearTimeout);
       vv?.removeEventListener('resize', aplicar);
       vv?.removeEventListener('scroll', aplicar);
+      campo?.removeEventListener('focusin', aplicarConRezago);
+      campo?.removeEventListener('focusout', aplicarConRezago);
       raiz.style.removeProperty('--vv-alto');
       raiz.style.removeProperty('--vv-arriba');
       cuerpo.style.position = previo.position;
@@ -219,7 +242,13 @@ export function AsistentePanel({
         aria-hidden="true"
         onClick={cerrar}
         data-saliendo={saliendo ? '' : undefined}
-        className="asistente-telon fixed inset-x-0 top-[var(--vv-arriba,0px)] z-50 h-[var(--vv-alto,100dvh)] touch-none bg-carbon/50 sm:hidden"
+        className="asistente-telon fixed inset-x-0 top-0 z-50 h-[150lvh] touch-none bg-carbon/50 sm:hidden"
+      />
+      {/* Móvil: relleno bajo la hoja; tapa lo que se ve detrás de las barras translúcidas de iOS. */}
+      <div
+        aria-hidden="true"
+        data-saliendo={saliendo ? '' : undefined}
+        className="asistente-panel fixed inset-x-0 top-[calc(var(--vv-arriba,0px)+var(--vv-alto,100dvh))] z-50 h-[50lvh] bg-superficie sm:hidden"
       />
       <div
         id="asistente-panel"
@@ -235,7 +264,7 @@ export function AsistentePanel({
         }}
         className="asistente-panel fixed inset-x-0 top-[calc(var(--vv-arriba,0px)+var(--vv-alto,100dvh)*0.08)] z-50 flex h-[calc(var(--vv-alto,100dvh)*0.92)] flex-col overflow-hidden rounded-t-tarjeta border-t border-borde bg-fondo sm:inset-auto sm:right-6 sm:bottom-24 sm:h-[560px] sm:w-[380px] sm:rounded-tarjeta sm:border sm:shadow-[0_8px_28px_rgb(0_0_0/0.16)]"
       >
-        <header className="flex items-center gap-2 border-b border-borde bg-superficie px-4 py-3">
+        <header className="flex touch-none items-center gap-2 border-b border-borde bg-superficie px-4 py-3 sm:touch-auto">
           <Marca className="size-8 shrink-0" />
           <h2 className="flex-1 text-base leading-5 font-semibold">
             {t('titulo')}
@@ -435,7 +464,7 @@ export function AsistentePanel({
             e.preventDefault();
             enviar(texto);
           }}
-          className="flex flex-col gap-1 border-t border-borde bg-superficie p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+          className="flex touch-none flex-col gap-1 border-t border-borde bg-superficie p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:touch-auto"
         >
           {texto.length > AVISO_DESDE && (
             <span className="self-end text-xs text-aviso">

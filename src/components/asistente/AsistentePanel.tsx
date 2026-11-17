@@ -79,7 +79,7 @@ function Escribiendo({ etiqueta }: { etiqueta: string }) {
           key={o}
           aria-hidden="true"
           style={{ opacity: o }}
-          className="size-2 animate-pulse rounded-full bg-texto-suave"
+          className="size-2 animate-pulse rounded-full bg-texto-suave motion-reduce:animate-none"
         />
       ))}
     </div>
@@ -123,6 +123,7 @@ export function AsistentePanel({
       return;
     }
     setSaliendo(true);
+    // Debe coincidir con --duration-rapida (150 ms), la duración de la salida en globals.css.
     salidaRef.current = setTimeout(onCerrar, 150);
   }
   const entradaRef = useRef<HTMLTextAreaElement>(null);
@@ -245,7 +246,7 @@ export function AsistentePanel({
                     key={s}
                     type="button"
                     onClick={() => enviar(s)}
-                    className="min-h-11 rounded-full border border-primario bg-superficie px-4 text-left text-sm text-primario transition-[background-color,transform] duration-150 ease-[var(--ease-out)] hover:bg-fondo motion-safe:active:scale-[0.97]"
+                    className="min-h-11 rounded-full border border-primario bg-superficie px-4 text-left text-sm text-primario transition-[background-color,transform,scale] duration-150 ease-[var(--ease-out)] hover:bg-fondo motion-safe:active:scale-[0.97]"
                   >
                     {s}
                   </button>
@@ -434,7 +435,7 @@ export function AsistentePanel({
               type="submit"
               aria-label={t('enviar')}
               disabled={!texto.trim() || ocupado || limite}
-              className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-accion text-texto transition-[background-color,transform] duration-150 ease-[var(--ease-out)] hover:bg-accion-hover disabled:bg-borde disabled:text-texto-suave motion-safe:active:scale-[0.97]"
+              className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-accion text-texto transition-[background-color,transform,scale] duration-150 ease-[var(--ease-out)] hover:bg-accion-hover disabled:bg-borde disabled:text-texto-suave motion-safe:active:scale-[0.97]"
             >
               <svg
                 aria-hidden="true"

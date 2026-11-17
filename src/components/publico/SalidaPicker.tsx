@@ -111,7 +111,7 @@ export function SalidaPicker({
                 data-foco={activo ? '' : undefined}
                 onClick={() => setDia(d)}
                 className={cn(
-                  'flex h-16 w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-control border transition-[background-color,border-color,color,transform] duration-150 ease-[var(--ease-out)] motion-safe:active:scale-[0.97] sm:w-auto sm:flex-1',
+                  'flex h-16 w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-control border transition-[transform,scale] duration-150 ease-[var(--ease-out)] motion-safe:active:scale-[0.97] sm:w-auto sm:flex-1',
                   !visible && 'sm:hidden',
                   activo
                     ? 'border-primario bg-primario text-superficie'
@@ -162,7 +162,7 @@ export function SalidaPicker({
             <label
               key={s.id}
               className={cn(
-                'flex min-h-11 cursor-pointer flex-col justify-center rounded-control border px-4 py-2 transition-colors duration-150 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primario',
+                'flex min-h-11 cursor-pointer flex-col justify-center rounded-control border px-4 py-2 transition-colors duration-150 ease-[var(--ease-out)] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primario',
                 agotado &&
                   'cursor-not-allowed border-borde bg-fondo text-texto-suave',
                 !agotado && on && 'border-primario bg-primario text-superficie',

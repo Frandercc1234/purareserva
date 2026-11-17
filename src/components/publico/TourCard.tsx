@@ -26,7 +26,7 @@ export function TourCard({
   return (
     <Link
       href={`/${negocioSlug}/${tourSlug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-tarjeta border border-borde bg-superficie shadow-tarjeta transition-[transform,border-color] duration-200 ease-[var(--ease-out)] hover:border-primario motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.98]"
+      className="group flex h-full flex-col overflow-hidden rounded-tarjeta border border-borde bg-superficie shadow-tarjeta transition-[transform,translate,scale,border-color] duration-150 ease-[var(--ease-out)] hover:border-primario motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.98]"
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <Imagen

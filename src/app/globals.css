@@ -177,7 +177,7 @@ body {
   .asistente-panel[data-saliendo] {
     opacity: 1;
     transform: translateY(100%);
-    transition-duration: var(--duration-base);
+    transition-duration: var(--duration-rapida);
   }
 }
 
@@ -205,6 +205,7 @@ body {
 
   @starting-style {
     .asistente-panel {
+      opacity: 0;
       transform: none;
     }
   }
@@ -221,7 +222,7 @@ body {
   }
 }
 
-@media (max-width: 1023px) and (max-height: 520px) {
+@media (max-width: 1023px) and (max-height: 600px) {
   body:has(#tarjeta-reserva :is(input, select, textarea):focus) #barra-reserva {
     transform: translateY(100%);
   }
@@ -233,7 +234,7 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: reduce) and (max-width: 1023px) and (max-height: 520px) {
+@media (prefers-reduced-motion: reduce) and (max-width: 1023px) and (max-height: 600px) {
   body:has(#tarjeta-reserva :is(input, select, textarea):focus) #barra-reserva {
     transform: none;
     opacity: 0;

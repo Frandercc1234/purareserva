@@ -32,7 +32,7 @@ export function AsistenteBoton({
       onPointerEnter={onPrecarga}
       onFocus={onPrecarga}
       className={cn(
-        'asistente-boton fixed right-4 bottom-4 z-40 inline-flex h-14 w-14 items-center justify-center gap-2 rounded-full border-2 border-primario bg-superficie font-semibold text-primario shadow-[0_4px_12px_rgb(0_0_0/0.18)] transition-[background-color,transform] duration-150 ease-[var(--ease-out)] hover:bg-fondo motion-safe:active:scale-[0.97] sm:right-6 sm:bottom-6 sm:w-auto sm:px-5',
+        'asistente-boton fixed right-4 bottom-4 z-40 inline-flex h-14 w-14 items-center justify-center gap-2 rounded-full border-2 border-primario bg-superficie font-semibold text-primario shadow-[0_4px_12px_rgb(0_0_0/0.18)] transition-[background-color,transform,scale] duration-150 ease-[var(--ease-out)] hover:bg-fondo motion-safe:active:scale-[0.97] sm:right-6 sm:bottom-6 sm:w-auto sm:px-5',
         abierto && 'max-sm:hidden',
       )}
     >

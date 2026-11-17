@@ -20,7 +20,7 @@ En móvil la barra de pago es fija abajo. Con el teclado abierto (el layout se r
 
 ## Target
 
-La barra baja fuera de la vista mientras un campo del formulario tiene el foco **y** la ventana mide 520 px de alto o menos (teclado abierto). Si el teclado se cierra pero el campo conserva el foco, la altura vuelve y la barra reaparece. Solo `transform`, con la curva de salida:
+La barra baja fuera de la vista mientras un campo del formulario tiene el foco **y** la ventana mide 600 px de alto o menos (teclado abierto). Si el teclado se cierra pero el campo conserva el foco, la altura vuelve y la barra reaparece. Solo `transform`, con la curva de salida:
 
 ```css
 @media (max-width: 1023px) {

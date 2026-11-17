@@ -38,11 +38,15 @@ function interpretarError(error: Error | undefined): ErrorChat | null {
 }
 
 /** Chat flotante del asistente: botón, panel y conversación (vive mientras dure la sesión). */
-export function Asistente() {
+export function Asistente({
+  abiertoInicial = false,
+}: {
+  abiertoInicial?: boolean;
+}) {
   const locale = useLocale();
   const ruta = usePathname();
   const contexto = useMemo(() => contextoDeRuta(ruta), [ruta]);
-  const [abierto, setAbierto] = useState(false);
+  const [abierto, setAbierto] = useState(abiertoInicial);
   const botonRef = useRef<HTMLButtonElement>(null);
 
   // El transporte lee el idioma y el contexto más recientes en cada pedido.

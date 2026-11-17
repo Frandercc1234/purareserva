@@ -101,17 +101,14 @@ export default async function LandingPage({
             className="entrar mt-6"
             style={{ '--i': 3 } as React.CSSProperties}
           >
-            <a
-              href="#operadores"
-              className={botonClases('primario', 'w-full sm:w-auto')}
-            >
+            <a href="#operadores" className={botonClases('primario')}>
               {c('verTours')}
             </a>
           </div>
         </div>
       </section>
 
-      <div className="mx-auto flex max-w-5xl flex-col gap-20 px-4 py-12 md:py-16">
+      <div className="mx-auto flex max-w-5xl flex-col gap-20 px-4 pt-12 pb-0 md:pt-16">
         <section id="operadores" className="flex scroll-mt-24 flex-col gap-6">
           <h2 className="titulo text-4xl md:text-5xl">{t('operadores')}</h2>
           {!negociosVisibles.length ? (
@@ -141,7 +138,9 @@ export default async function LandingPage({
                         />
                       </div>
                       <div className="flex flex-1 flex-col gap-2 p-5">
-                        <span className="text-xl font-bold">{n.nombre}</span>
+                        <span className="text-xl font-semibold">
+                          {n.nombre}
+                        </span>
                         {descripcion && (
                           <span className="text-texto-suave">
                             {descripcion}
@@ -173,7 +172,9 @@ export default async function LandingPage({
           <ol className="grid gap-6 md:grid-cols-3">
             {PASOS.map((p) => (
               <li key={p} className="border-t-2 border-primario pt-4">
-                <h3 className="text-lg font-bold">{t(`pasos.${p}.titulo`)}</h3>
+                <h3 className="text-lg font-semibold">
+                  {t(`pasos.${p}.titulo`)}
+                </h3>
                 <p className="mt-1 text-texto-suave">{t(`pasos.${p}.texto`)}</p>
               </li>
             ))}

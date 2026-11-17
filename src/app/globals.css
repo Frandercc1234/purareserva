@@ -21,7 +21,7 @@
   --color-borde: #d8cbb4;
   --color-borde-control: #8c7f6b;
   --color-texto: #1b1410;
-  --color-texto-suave: #706354;
+  --color-texto-suave: #564a3f;
   --color-exito: #426d48;
   --color-aviso: #8a5822;
   --color-error: #b43629;
@@ -30,7 +30,7 @@
   --color-carbon: #1b1410;
   --color-lena: #2a2019;
   --color-hueso: #f2eadb;
-  --color-hueso-suave: #988c7d;
+  --color-hueso-suave: #b6ac9c;
   --color-cuero: #c98e52;
 
   --radius-control: 4px;
@@ -149,6 +149,14 @@ body {
 @media (max-width: 1023px) {
   body:has(#barra-reserva) .asistente-boton {
     bottom: 5.6rem;
+  }
+}
+
+/* En escritorio, la tarjeta de pago es fija abajo a la derecha: el botón pasa a la izquierda. */
+@media (min-width: 1024px) {
+  body:has(#tarjeta-reserva) .asistente-boton {
+    right: auto;
+    left: 1.5rem;
   }
 }
 

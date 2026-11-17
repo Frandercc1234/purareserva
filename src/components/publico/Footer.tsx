@@ -13,7 +13,7 @@ export function Footer() {
   const t = useTranslations('Comun');
   const f = useTranslations('Footer');
   return (
-    <footer className="sobre-carbon mt-20 bg-carbon text-hueso">
+    <footer className="sobre-carbon mt-16 bg-carbon text-hueso">
       <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 sm:grid-cols-3">
         <div className="flex flex-col gap-3">
           <span className="flex items-center gap-2 font-semibold">

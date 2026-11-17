@@ -42,10 +42,10 @@ const BRASA = '#E8622A';
 const CUERO = '#C98E52';
 
 // Colores derivados: se calculan para cumplir el contraste.
-const TEXTO_SUAVE = ajustar('#8A7A68', CARBON, [HUESO, SUPERFICIE], 4.8);
+const TEXTO_SUAVE = ajustar('#8A7A68', CARBON, [HUESO, SUPERFICIE], 7.1);
 const BORDE_CONTROL = ajustar('#B8A98F', CARBON, [HUESO, SUPERFICIE], 3.2);
 const BORDE = '#D8CBB4';
-const HUESO_SUAVE = ajustar('#8E8272', HUESO, [CARBON, LENA], 4.8);
+const HUESO_SUAVE = ajustar('#8E8272', HUESO, [CARBON, LENA], 7.1);
 const CUERO_TEXTO = ajustar(CUERO, HUESO, [CARBON, LENA], 4.8); // etiquetas sobre carbón
 const EXITO = ajustar('#4F8A5B', CARBON, [HUESO, SUPERFICIE, '#FFFFFF'], 5);
 const AVISO = ajustar('#B8742A', CARBON, [HUESO, SUPERFICIE, '#FFFFFF'], 5);
@@ -82,15 +82,15 @@ export const PALETA = {
 const PARES = [
   ['texto carbón sobre fondo hueso', CARBON, HUESO, 4.5],
   ['texto carbón sobre superficie', CARBON, SUPERFICIE, 4.5],
-  ['texto suave sobre fondo hueso', TEXTO_SUAVE, HUESO, 4.5],
-  ['texto suave sobre superficie', TEXTO_SUAVE, SUPERFICIE, 4.5],
+  ['texto suave sobre fondo hueso', TEXTO_SUAVE, HUESO, 7],
+  ['texto suave sobre superficie', TEXTO_SUAVE, SUPERFICIE, 7],
   ['texto carbón sobre botón brasa', CARBON, BRASA, 4.5],
   ['texto carbón sobre brasa en hover', CARBON, brasaHover, 4.5],
   ['texto carbón sobre cuero (badge)', CARBON, CUERO, 4.5],
   ['texto hueso sobre carbón', HUESO, CARBON, 4.5],
   ['texto hueso sobre leña', HUESO, LENA, 4.5],
-  ['texto hueso suave sobre carbón', HUESO_SUAVE, CARBON, 4.5],
-  ['texto hueso suave sobre leña', HUESO_SUAVE, LENA, 4.5],
+  ['texto hueso suave sobre carbón', HUESO_SUAVE, CARBON, 7],
+  ['texto hueso suave sobre leña', HUESO_SUAVE, LENA, 7],
   ['etiqueta cuero sobre carbón', CUERO_TEXTO, CARBON, 4.5],
   ['etiqueta cuero sobre leña', CUERO_TEXTO, LENA, 4.5],
   ['superficie sobre carbón (botón carbón)', SUPERFICIE, CARBON, 4.5],

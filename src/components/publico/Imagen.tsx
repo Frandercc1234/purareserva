@@ -24,6 +24,7 @@ export function Imagen({
       fill
       sizes={sizes}
       priority={priority}
+      fetchPriority={priority ? 'high' : undefined}
       unoptimized={src.startsWith('http')}
       className={className ?? 'object-cover'}
     />

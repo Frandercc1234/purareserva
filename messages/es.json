@@ -18,26 +18,13 @@
     "lema": "Reservas de tours en Guanacaste"
   },
   "Landing": {
-    "titulo": "Reservá tours en Guanacaste",
-    "subtitulo": "Tours de operadores locales, con cupo confirmado y depósito en línea.",
-    "operadores": "Operadores",
+    "titulo": "Tours con el cupo a la vista",
+    "subtitulo": "Tours de operadores locales de Guanacaste. Elegí el día, mirá el cupo y pagá un depósito en línea. El resto, en el lugar.",
+    "heroAlt": "Costa del Pacífico de Guanacaste vista desde el aire",
+    "operadores": "Elegí un operador",
     "vacio": "Todavía no hay operadores publicados",
     "cantidadTours": "{count, plural, one {# tour} other {# tours}}",
     "etiqueta": "Guanacaste, Costa Rica",
-    "hechos": {
-      "cupo": {
-        "valor": "30 min",
-        "texto": "de cupo retenido mientras pagás"
-      },
-      "deposito": {
-        "valor": "Depósito",
-        "texto": "en línea, el resto se paga en el lugar"
-      },
-      "idiomas": {
-        "valor": "ES · EN",
-        "texto": "reservá sin crear cuenta"
-      }
-    },
     "comoTitulo": "Cómo funciona",
     "pasos": {
       "uno": {

@@ -18,26 +18,13 @@
     "lema": "Tour bookings in Guanacaste"
   },
   "Landing": {
-    "titulo": "Book tours in Guanacaste",
-    "subtitulo": "Tours from local operators, with confirmed spots and an online deposit.",
-    "operadores": "Operators",
+    "titulo": "Tours with the spots in plain sight",
+    "subtitulo": "Tours from local Guanacaste operators. Pick the day, see the spots left and pay a deposit online. The rest on site.",
+    "heroAlt": "Aerial view of the Pacific coast of Guanacaste",
+    "operadores": "Pick an operator",
     "vacio": "No operators published yet",
     "cantidadTours": "{count, plural, one {# tour} other {# tours}}",
     "etiqueta": "Guanacaste, Costa Rica",
-    "hechos": {
-      "cupo": {
-        "valor": "30 min",
-        "texto": "spot held while you pay"
-      },
-      "deposito": {
-        "valor": "Deposit",
-        "texto": "online, the rest is paid on site"
-      },
-      "idiomas": {
-        "valor": "ES · EN",
-        "texto": "book without an account"
-      }
-    },
     "comoTitulo": "How it works",
     "pasos": {
       "uno": {

@@ -209,7 +209,7 @@ export function TourForm({ tour }: { tour?: TourEditable }) {
           name="imagen"
           type="file"
           accept="image/jpeg,image/png,image/webp"
-          className="h-auto py-2"
+          className="h-auto min-h-11 py-2"
           error={campos.imagen}
           onChange={(e) => {
             const f = e.target.files?.[0];

@@ -18,26 +18,13 @@
     "lema": "Tour bookings in Guanacaste"
   },
   "Landing": {
-    "titulo": "Book tours in Guanacaste",
-    "subtitulo": "Tours from local operators, with confirmed spots and an online deposit.",
-    "operadores": "Operators",
+    "titulo": "Tours with the spots in plain sight",
+    "subtitulo": "Tours from local Guanacaste operators. Pick the day, see the spots left and pay a deposit online. The rest on site.",
+    "heroAlt": "Aerial view of the Pacific coast of Guanacaste",
+    "operadores": "Pick an operator",
     "vacio": "No operators published yet",
     "cantidadTours": "{count, plural, one {# tour} other {# tours}}",
     "etiqueta": "Guanacaste, Costa Rica",
-    "hechos": {
-      "cupo": {
-        "valor": "30 min",
-        "texto": "spot held while you pay"
-      },
-      "deposito": {
-        "valor": "Deposit",
-        "texto": "online, the rest is paid on site"
-      },
-      "idiomas": {
-        "valor": "ES · EN",
-        "texto": "book without an account"
-      }
-    },
     "comoTitulo": "How it works",
     "pasos": {
       "uno": {
@@ -97,6 +84,7 @@
     "depositoAhora": "Deposit to pay now",
     "saldo": "Balance to pay at the meeting point",
     "pagar": "Pay deposit {monto}",
+    "pagarCorto": "Pay deposit",
     "elegirPrimero": "Choose a departure to book",
     "procesando": "Redirecting to payment…",
     "errores": {
@@ -122,7 +110,9 @@
       "telefono": "phone",
       "personas": "guests"
     },
-    "telefonoEjemplo": "+506 8888 8888"
+    "telefonoEjemplo": "+1 555 123 4567",
+    "quitarUna": "Remove one guest",
+    "sumarUna": "Add one guest"
   },
   "Gracias": {
     "titulo": "We received your payment",
@@ -130,6 +120,8 @@
     "demora": "We'll email you as soon as it's confirmed.",
     "confirmada": "Your booking is confirmed!",
     "confirmadaAyuda": "Keep your booking link: you can see the details and cancel there.",
+    "correo": "We emailed you these details and your booking link. You can view or cancel it there.",
+    "contacto": "Operator contact",
     "verReserva": "View my booking",
     "noConfirmada": "We couldn't confirm your booking. If you were charged, the payment is refunded automatically.",
     "volverInicio": "Back to home"

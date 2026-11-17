@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T02:54:44.690157Z",
+  "title": "Design System: PuraReserva",
+  "extensions": {
+    "colorMeta": {
+      "carbon": {
+        "role": "primary",
+        "displayName": "Carbón",
+        "canonical": "#1B1410",
+        "tonalRamp": [
+          "#1B1410",
+          "#2A2019",
+          "#3B2E25"
+        ]
+      },
+      "brasa": {
+        "role": "secondary",
+        "displayName": "Brasa",
+        "canonical": "#E8622A",
+        "tonalRamp": [
+          "#E8622A",
+          "#EA723F"
+        ]
+      },
+      "cuero": {
+        "role": "tertiary",
+        "displayName": "Cuero",
+        "canonical": "#C98E52",
+        "tonalRamp": [
+          "#C98E52"
+        ]
+      },
+      "hueso": {
+        "role": "neutral",
+        "displayName": "Hueso",
+        "canonical": "#F2EADB",
+        "tonalRamp": [
+          "#F2EADB",
+          "#FBF8F1",
+          "#D8CBB4",
+          "#8C7F6B",
+          "#564A3F"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "h1 y portadas, Big Shoulders 800 en mayúsculas."
+      },
+      "titulo": {
+        "displayName": "Título",
+        "purpose": "h2 y nombre del tour."
+      }
+    },
+    "shadows": [
+      {
+        "name": "tarjeta",
+        "value": "0 1px 0 rgb(27 20 16 / 0.08)",
+        "purpose": "Línea inferior casi invisible en tarjetas."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Entradas y respuestas."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.77, 0, 0.175, 1)",
+        "purpose": "Movimientos entre posiciones."
+      },
+      {
+        "name": "duration-rapida",
+        "value": "150ms",
+        "purpose": "Hover y press."
+      },
+      {
+        "name": "duration-base",
+        "value": "200ms",
+        "purpose": "Paneles."
+      },
+      {
+        "name": "duration-lenta",
+        "value": "320ms",
+        "purpose": "Transiciones largas."
+      },
+      {
+        "name": "duration-entrada",
+        "value": "520ms",
+        "purpose": "Coreografía de carga."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Única acción en brasa.",
+      "html": "<button class=\"ds-btn\">Reservar</button>",
+      "css": ".ds-btn{background:#E8622A;color:#1B1410;height:44px;padding:0 20px;border:0;border-radius:4px;font:600 16px 'Hanken Grotesk',system-ui,sans-serif}"
+    }
+  ],
+  "narrative": {
+    "northStar": "El hierro y la sabana",
+    "overview": "Carbón y hueso, brasa como único color de acción, títulos condensados y fotos reales a sangre.",
+    "keyCharacteristics": [
+      "Carbón y hueso",
+      "Brasa solo para actuar",
+      "Títulos en Big Shoulders mayúsculas",
+      "Esquinas de 4px y bordes finos"
+    ],
+    "rules": [
+      {
+        "name": "La regla de la brasa",
+        "body": "Brasa solo en la acción principal.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla de lo oscuro",
+        "body": "Carbón solo en header, hero, pie y parte alta del tour.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla de las mayúsculas",
+        "body": "Big Shoulders en mayúsculas solo para títulos.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Usar brasa solo en el botón principal",
+      "Probar cada color con npm run diseno:contraste"
+    ],
+    "donts": [
+      "No usar degradados ni ondas",
+      "No dibujar marcas por operador",
+      "No inventar reseñas ni cifras"
+    ]
+  }
+}

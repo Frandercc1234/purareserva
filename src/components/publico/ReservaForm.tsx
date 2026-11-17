@@ -5,10 +5,13 @@ import {
   startTransition,
   useActionState,
   useEffect,
+  useId,
   useRef,
   useState,
 } from 'react';
 import { Button } from '@/components/ui/Button';
+import { cn } from '@/components/ui/cn';
+import { Field, claseBorde, controlClases } from '@/components/ui/Field';
 import { Input } from '@/components/ui/Input';
 import {
   SalidaPicker,
@@ -41,6 +44,10 @@ function enfocarCampo(form: HTMLFormElement | null, campo: string) {
   el.focus({ preventScroll: true });
 }
 
+/** Botones − y + del stepper de personas: área táctil de 44 px. */
+const botonPaso =
+  'inline-flex size-11 shrink-0 items-center justify-center rounded-control border border-borde-control bg-superficie text-lg font-semibold transition-[background-color,border-color,transform,scale] duration-150 ease-[var(--ease-out)] hover:border-primario motion-safe:active:scale-[0.97] disabled:cursor-not-allowed disabled:text-texto-suave disabled:hover:border-borde-control';
+
 export function ReservaForm({
   salidas,
   salidaInicialId,
@@ -66,6 +73,7 @@ export function ReservaForm({
   );
   const [personas, setPersonas] = useState(String(personasInicial));
   const [erroresCliente, setErroresCliente] = useState<string[]>([]);
+  const idPersonas = useId();
 
   const campos = estado?.campos ?? {};
   const err = (campo: string) =>
@@ -133,66 +141,112 @@ export function ReservaForm({
         const nombre = (e.target as HTMLInputElement).name;
         setErroresCliente((c) => c.filter((x) => x !== nombre));
       }}
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8"
       noValidate
     >
       <input type="hidden" name="idioma" value={locale} />
-      <SalidaPicker
-        salidas={salidas}
-        seleccionadaId={salida?.id ?? null}
-        onSeleccionar={(s) => {
-          setSalida(s);
-          setErroresCliente((c) => c.filter((x) => x !== 'salida_id'));
-          guardarSalidaEnUrl(s.id);
-          if (Number(personas) > s.libres) setPersonas(String(s.libres));
-        }}
-        error={err('salida_id')}
-      />
-
-      <h2 className="text-lg font-semibold">{t('titulo')}</h2>
-      <Input
-        label={t('nombre')}
-        name="nombre"
-        autoComplete="name"
-        required
-        minLength={2}
-        error={err('nombre')}
-      />
-      <Input
-        label={t('email')}
-        name="email"
-        type="email"
-        autoComplete="email"
-        required
-        error={err('email')}
-      />
-      <div className="grid gap-4 sm:grid-cols-[3fr_2fr]">
-        <Input
-          label={t('telefono')}
-          name="telefono"
-          type="tel"
-          autoComplete="tel"
-          inputMode="tel"
-          required
-          placeholder={t('telefonoEjemplo')}
-          error={err('telefono')}
-        />
-        <Input
-          label={t('personas')}
-          name="personas"
-          type="number"
-          inputMode="numeric"
-          required
-          min={1}
-          max={salida?.libres ?? 50}
-          value={personas}
-          onChange={(e) => setPersonas(e.target.value)}
-          hint={salida ? t('personasAyuda', { max: salida.libres }) : undefined}
-          error={err('personas')}
+      <div className="min-w-0 lg:col-start-1">
+        <SalidaPicker
+          salidas={salidas}
+          seleccionadaId={salida?.id ?? null}
+          onSeleccionar={(s) => {
+            setSalida(s);
+            setErroresCliente((c) => c.filter((x) => x !== 'salida_id'));
+            guardarSalidaEnUrl(s.id);
+            if (Number(personas) > s.libres) setPersonas(String(s.libres));
+          }}
+          error={err('salida_id')}
         />
       </div>
 
-      <dl className="flex flex-col gap-1 rounded-control bg-fondo p-3 text-sm">
+      <div className="flex min-w-0 flex-col gap-4 lg:col-start-2 lg:row-span-4 lg:row-start-1">
+        <h2 className="text-lg font-semibold">{t('titulo')}</h2>
+        <Input
+          label={t('nombre')}
+          name="nombre"
+          autoComplete="name"
+          required
+          minLength={2}
+          error={err('nombre')}
+        />
+        <Input
+          label={t('email')}
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+          error={err('email')}
+        />
+        <div className="grid gap-4 sm:grid-cols-[3fr_2fr]">
+          <Input
+            label={t('telefono')}
+            name="telefono"
+            type="tel"
+            autoComplete="tel"
+            inputMode="tel"
+            required
+            placeholder={t('telefonoEjemplo')}
+            error={err('telefono')}
+          />
+          <Field
+            id={idPersonas}
+            label={t('personas')}
+            hint={
+              salida ? t('personasAyuda', { max: salida.libres }) : undefined
+            }
+            error={err('personas')}
+          >
+            <div className="flex gap-1">
+              <button
+                type="button"
+                aria-label={t('quitarUna')}
+                disabled={n <= 1}
+                onClick={() => {
+                  setPersonas(String(Math.max(1, n - 1)));
+                  setErroresCliente((c) => c.filter((x) => x !== 'personas'));
+                }}
+                className={botonPaso}
+              >
+                <span aria-hidden="true">−</span>
+              </button>
+              <input
+                id={idPersonas}
+                name="personas"
+                type="number"
+                inputMode="numeric"
+                required
+                min={1}
+                max={salida?.libres ?? 50}
+                value={personas}
+                onChange={(e) => setPersonas(e.target.value)}
+                aria-invalid={err('personas') ? true : undefined}
+                aria-describedby={
+                  err('personas') || salida ? `${idPersonas}-desc` : undefined
+                }
+                className={cn(
+                  controlClases,
+                  'h-11 min-w-0 flex-1 px-1 text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none',
+                  claseBorde(err('personas')),
+                )}
+              />
+              <button
+                type="button"
+                aria-label={t('sumarUna')}
+                disabled={n >= (salida?.libres ?? 50)}
+                onClick={() => {
+                  setPersonas(String(Math.min(salida?.libres ?? 50, n + 1)));
+                  setErroresCliente((c) => c.filter((x) => x !== 'personas'));
+                }}
+                className={botonPaso}
+              >
+                <span aria-hidden="true">+</span>
+              </button>
+            </div>
+          </Field>
+        </div>
+      </div>
+
+      <dl className="flex flex-col gap-1 rounded-control bg-fondo p-3 text-sm lg:col-start-1">
         <div className="flex justify-between">
           <dt>{t('total')}</dt>
           <dd>{formatearUSD(total, locale)}</dd>
@@ -208,12 +262,12 @@ export function ReservaForm({
       </dl>
 
       {errorGeneral && (
-        <p role="alert" className="text-error">
+        <p role="alert" className="text-error lg:col-start-1">
           {errorGeneral}
         </p>
       )}
 
-      <div className="hidden flex-col gap-3 lg:flex">
+      <div className="hidden flex-col gap-3 lg:col-start-1 lg:flex">
         {resumenErrores}
         <Button type="submit" disabled={pendiente} className="w-full">
           {pendiente
@@ -243,7 +297,7 @@ export function ReservaForm({
             disabled={pendiente}
             className="min-w-36"
           >
-            {pendiente ? t('procesando') : t('reservar')}
+            {pendiente ? t('procesando') : t('pagarCorto')}
           </Button>
         </div>
       </div>

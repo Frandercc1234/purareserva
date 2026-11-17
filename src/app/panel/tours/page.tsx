@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/Badge';
 import { botonClases } from '@/components/ui/Button';
@@ -7,6 +8,8 @@ import { Table, Td, Th } from '@/components/ui/Table';
 import { formatearUSD } from '@/lib/dinero';
 import { contextoPanel } from '@/lib/panel';
 import { cambiarEstadoTour } from './actions';
+
+export const metadata: Metadata = { title: 'Tours' };
 
 export default async function ToursPage() {
   const { supabase, negocio } = await contextoPanel();
@@ -42,8 +45,8 @@ export default async function ToursPage() {
           <thead>
             <tr>
               <Th>Nombre</Th>
-              <Th>Precio</Th>
-              <Th>Cupo</Th>
+              <Th className="hidden sm:table-cell">Precio</Th>
+              <Th className="hidden sm:table-cell">Cupo</Th>
               <Th>Activo</Th>
               <Th>Acciones</Th>
             </tr>
@@ -51,9 +54,16 @@ export default async function ToursPage() {
           <tbody>
             {tours.map((t) => (
               <tr key={t.id}>
-                <Td className="font-semibold">{t.nombre_es}</Td>
-                <Td>{formatearUSD(t.precio_cents, 'en')}</Td>
-                <Td>{t.cupo_default}</Td>
+                <Td className="font-semibold">
+                  {t.nombre_es}
+                  <span className="block text-sm font-normal text-texto-suave sm:hidden">
+                    {formatearUSD(t.precio_cents, 'en')} · cupo {t.cupo_default}
+                  </span>
+                </Td>
+                <Td className="hidden sm:table-cell">
+                  {formatearUSD(t.precio_cents, 'en')}
+                </Td>
+                <Td className="hidden sm:table-cell">{t.cupo_default}</Td>
                 <Td>
                   <form
                     action={cambiarEstadoTour}
@@ -75,33 +85,36 @@ export default async function ToursPage() {
                       <span
                         className={cn(
                           'relative inline-block h-6 w-11 rounded-full transition-colors',
-                          t.activo ? 'bg-primario' : 'bg-borde',
+                          t.activo ? 'bg-primario' : 'bg-borde-control',
                         )}
                       >
                         <span
                           className={cn(
-                            'absolute top-0.5 size-5 rounded-full bg-superficie shadow transition-all',
-                            t.activo ? 'left-[22px]' : 'left-0.5',
+                            'absolute top-0.5 left-0.5 size-5 rounded-full bg-superficie shadow transition-transform duration-150 ease-[var(--ease-out)] motion-reduce:transition-none',
+                            t.activo && 'translate-x-[22px]',
                           )}
                         />
                       </span>
                     </button>
-                    <Badge tono={t.activo ? 'exito' : 'neutro'}>
+                    <Badge
+                      tono={t.activo ? 'exito' : 'neutro'}
+                      className="hidden sm:inline-flex"
+                    >
                       {t.activo ? 'Activo' : 'Inactivo'}
                     </Badge>
                   </form>
                 </Td>
                 <Td>
-                  <div className="flex gap-3">
+                  <div className="flex flex-col sm:flex-row sm:gap-3">
                     <Link
                       href={`/panel/tours/${t.id}`}
-                      className="inline-flex h-11 items-center text-primario underline"
+                      className="inline-flex h-11 min-w-11 items-center text-primario underline"
                     >
                       Editar
                     </Link>
                     <Link
                       href={`/panel/tours/${t.id}/salidas`}
-                      className="inline-flex h-11 items-center text-primario underline"
+                      className="inline-flex h-11 min-w-11 items-center text-primario underline"
                     >
                       Salidas
                     </Link>

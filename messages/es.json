@@ -18,26 +18,13 @@
     "lema": "Reservas de tours en Guanacaste"
   },
   "Landing": {
-    "titulo": "Reservá tours en Guanacaste",
-    "subtitulo": "Tours de operadores locales, con cupo confirmado y depósito en línea.",
-    "operadores": "Operadores",
+    "titulo": "Tours con el cupo a la vista",
+    "subtitulo": "Tours de operadores locales de Guanacaste. Elegí el día, mirá el cupo y pagá un depósito en línea. El resto, en el lugar.",
+    "heroAlt": "Costa del Pacífico de Guanacaste vista desde el aire",
+    "operadores": "Elegí un operador",
     "vacio": "Todavía no hay operadores publicados",
     "cantidadTours": "{count, plural, one {# tour} other {# tours}}",
     "etiqueta": "Guanacaste, Costa Rica",
-    "hechos": {
-      "cupo": {
-        "valor": "30 min",
-        "texto": "de cupo retenido mientras pagás"
-      },
-      "deposito": {
-        "valor": "Depósito",
-        "texto": "en línea, el resto se paga en el lugar"
-      },
-      "idiomas": {
-        "valor": "ES · EN",
-        "texto": "reservá sin crear cuenta"
-      }
-    },
     "comoTitulo": "Cómo funciona",
     "pasos": {
       "uno": {
@@ -97,6 +84,7 @@
     "depositoAhora": "Depósito a pagar ahora",
     "saldo": "Saldo a pagar en el lugar",
     "pagar": "Pagar depósito {monto}",
+    "pagarCorto": "Pagar depósito",
     "elegirPrimero": "Elegí una salida para reservar",
     "procesando": "Redirigiendo al pago…",
     "errores": {
@@ -122,7 +110,9 @@
       "telefono": "teléfono",
       "personas": "personas"
     },
-    "telefonoEjemplo": "+506 8888 8888"
+    "telefonoEjemplo": "+1 555 123 4567",
+    "quitarUna": "Quitar una persona",
+    "sumarUna": "Sumar una persona"
   },
   "Gracias": {
     "titulo": "Recibimos tu pago",
@@ -130,6 +120,8 @@
     "demora": "Te enviaremos un correo apenas se confirme.",
     "confirmada": "¡Tu reserva está confirmada!",
     "confirmadaAyuda": "Guardá el enlace de tu reserva: ahí podés ver los datos y cancelar.",
+    "correo": "Te enviamos un correo con estos datos y el enlace de tu reserva. Ahí podés verla y cancelarla.",
+    "contacto": "Contacto del operador",
     "verReserva": "Ver mi reserva",
     "noConfirmada": "No pudimos confirmar tu reserva. Si te cobraron, el pago se reembolsa automáticamente.",
     "volverInicio": "Volver al inicio"

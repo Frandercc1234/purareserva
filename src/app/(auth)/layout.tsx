@@ -15,10 +15,10 @@ export default function AuthLayout({
 }) {
   return (
     <div className="grid min-h-screen lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-      <aside className="relative hidden overflow-hidden bg-primario-oscuro text-superficie lg:flex lg:flex-col lg:justify-between lg:p-12">
+      <aside className="relative hidden overflow-hidden border-r border-borde bg-superficie text-texto lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Link
           href="/es"
-          className="flex w-fit items-center gap-2 rounded-control text-lg font-semibold"
+          className="flex min-h-11 w-fit items-center gap-2 rounded-control text-lg font-semibold"
         >
           <Marca className="size-8" />
           PuraReserva
@@ -41,28 +41,11 @@ export default function AuthLayout({
             ))}
           </ul>
         </div>
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 600 200"
-          preserveAspectRatio="none"
-          className="absolute inset-x-0 bottom-0 h-40 w-full"
-        >
-          <path
-            d="M0 100c100-60 200-60 300 0s200 60 300 0v100H0z"
-            fill="#0E7C86"
-            fillOpacity=".5"
-          />
-          <path
-            d="M0 140c100-50 200-50 300 0s200 50 300 0v60H0z"
-            fill="#0E7C86"
-            fillOpacity=".35"
-          />
-        </svg>
       </aside>
       <div className="flex flex-col px-4 py-6">
         <Link
           href="/es"
-          className="flex w-fit items-center gap-2 rounded-control font-semibold lg:hidden"
+          className="flex min-h-11 w-fit items-center gap-2 rounded-control font-semibold lg:hidden"
         >
           <Marca className="size-8" />
           PuraReserva

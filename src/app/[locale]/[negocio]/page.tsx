@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { Imagen } from '@/components/publico/Imagen';
 import { TourCard } from '@/components/publico/TourCard';
 import { WhatsAppButton } from '@/components/publico/WhatsAppButton';
 import { Link } from '@/i18n/routing';
@@ -65,7 +66,9 @@ export default async function NegocioPage({
 
   const { data: negocio } = await supabase
     .from('negocios')
-    .select('id, slug, nombre, descripcion_es, descripcion_en, whatsapp')
+    .select(
+      'id, slug, nombre, descripcion_es, descripcion_en, whatsapp, portada_url',
+    )
     .eq('slug', slug)
     .maybeSingle();
   if (!negocio) notFound();
@@ -80,11 +83,19 @@ export default async function NegocioPage({
 
   const descripcion =
     locale === 'en' ? negocio.descripcion_en : negocio.descripcion_es;
+  // Portada del negocio; si no tiene, la foto de su primer tour; si no, la de respaldo.
+  const portada =
+    negocio.portada_url ??
+    tours?.find((t) => t.imagen_url)?.imagen_url ??
+    IMAGEN_RESPALDO;
 
   return (
     <main>
-      <header className="border-b border-borde bg-gradient-to-br from-primario/10 via-fondo to-acento/10">
-        <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-10 md:py-16">
+      <header className="border-b border-borde">
+        <div className="relative aspect-[16/9] max-h-[440px] w-full md:aspect-[21/9]">
+          <Imagen src={portada} alt={negocio.nombre} sizes="100vw" priority />
+        </div>
+        <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-8 md:py-12">
           <Link
             href="/"
             className="inline-flex h-11 w-fit items-center text-sm font-semibold text-primario underline-offset-4 hover:underline"
@@ -94,12 +105,10 @@ export default async function NegocioPage({
             </span>
             {t('volver')}
           </Link>
-          <p className="text-sm font-semibold tracking-wide text-aviso uppercase">
+          <p className="text-sm font-semibold text-texto-suave">
             {t('operador')}
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
-            {negocio.nombre}
-          </h1>
+          <h1 className="titulo-hero text-5xl md:text-7xl">{negocio.nombre}</h1>
           {descripcion && (
             <p className="max-w-2xl text-lg text-texto-suave">{descripcion}</p>
           )}
@@ -111,7 +120,7 @@ export default async function NegocioPage({
 
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-10 md:py-14">
         <section className="flex flex-col gap-4">
-          <h2 className="text-2xl font-semibold">{t('tours')}</h2>
+          <h2 className="titulo text-4xl">{t('tours')}</h2>
           {!tours?.length ? (
             <EmptyState titulo={t('sinTours')} />
           ) : (

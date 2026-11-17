@@ -1,14 +1,27 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { getLocale } from 'next-intl/server';
-import { Inter } from 'next/font/google';
+import { Big_Shoulders, Hanken_Grotesk } from 'next/font/google';
 import { SITIO_URL } from '@/lib/sitio';
 import './globals.css';
 
-const inter = Inter({
-  variable: '--font-inter',
+const hanken = Hanken_Grotesk({
+  variable: '--font-hanken',
   subsets: ['latin'],
   weight: ['400', '600'],
+  display: 'swap',
 });
+
+const bigShoulders = Big_Shoulders({
+  variable: '--font-big-shoulders',
+  subsets: ['latin'],
+  weight: '800',
+  display: 'swap',
+  adjustFontFallback: false,
+});
+
+export const viewport: Viewport = {
+  interactiveWidget: 'resizes-content',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITIO_URL),
@@ -27,7 +40,10 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
   return (
-    <html lang={locale} className={inter.variable}>
+    <html
+      lang={locale}
+      className={`${hanken.variable} ${bigShoulders.variable}`}
+    >
       <body>{children}</body>
     </html>
   );

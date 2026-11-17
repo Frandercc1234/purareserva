@@ -1,7 +1,10 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { TourForm } from '@/components/panel/TourForm';
 import { centavosATexto } from '@/lib/dinero';
 import { contextoPanel } from '@/lib/panel';
+
+export const metadata: Metadata = { title: 'Editar tour' };
 
 export default async function EditarTourPage({
   params,

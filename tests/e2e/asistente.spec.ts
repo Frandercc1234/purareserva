@@ -17,6 +17,12 @@ const panel = (page: Page, idioma: 'es' | 'en' = 'es') =>
 async function abrir(page: Page, idioma: 'es' | 'en' = 'es') {
   await boton(page, idioma).click();
   await expect(panel(page, idioma)).toBeVisible();
+  // La entrada es una transición: se mide el panel cuando ya terminó de moverse.
+  await expect
+    .poll(() =>
+      panel(page, idioma).evaluate((el) => getComputedStyle(el).transform),
+    )
+    .toBe('none');
   return panel(page, idioma);
 }
 
@@ -186,7 +192,7 @@ test('en escritorio el botón es una pastilla con texto y el panel mide 380 x 56
   expect(Math.round(caja!.height)).toBe(560);
 });
 
-test('en móvil el botón es redondo, no tapa la barra de reserva y el panel va a pantalla completa', async ({
+test('en móvil el botón es redondo, no tapa la barra de reserva y el panel va como hoja inferior', async ({
   page,
 }, info) => {
   test.skip(info.project.name !== 'mobile');
@@ -206,7 +212,11 @@ test('en móvil el botón es redondo, no tapa la barra de reserva y el panel va 
   const vista = page.viewportSize()!;
   const caja = (await dialogo.boundingBox())!;
   expect(Math.round(caja.width)).toBe(vista.width);
-  expect(Math.round(caja.height)).toBe(vista.height);
+  // Hoja inferior: ocupa el 92 % de la altura y deja ver la página (con telón) arriba.
+  expect(
+    Math.abs(Math.round(caja.height) - Math.round(vista.height * 0.92)),
+  ).toBeLessThanOrEqual(2);
+  expect(Math.round(caja.y + caja.height)).toBe(vista.height);
   await expect(fab).toBeHidden();
 });
 
@@ -301,9 +311,9 @@ test('si el modelo falla después de dejar lista la reserva, queda el botón y n
       dialogo.getByText('El asistente no pudo terminar la respuesta.'),
     ).toBeVisible();
     await expect(dialogo.getByRole('alert')).toHaveCount(0);
-    await expect(dialogo.getByRole('button', { name: 'Reintentar' })).toHaveCount(
-      0,
-    );
+    await expect(
+      dialogo.getByRole('button', { name: 'Reintentar' }),
+    ).toHaveCount(0);
   } finally {
     await limpiar({ salidaIds: [salidaId] });
   }

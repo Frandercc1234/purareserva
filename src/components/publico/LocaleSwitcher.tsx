@@ -15,7 +15,7 @@ export function LocaleSwitcher() {
       {routing.locales.map((l, i) => (
         <span key={l} className="flex items-center">
           {i > 0 && (
-            <span aria-hidden="true" className="text-borde sm:hidden">
+            <span aria-hidden="true" className="text-hueso-suave sm:hidden">
               |
             </span>
           )}
@@ -28,8 +28,8 @@ export function LocaleSwitcher() {
             className={cn(
               'inline-flex h-11 min-w-9 items-center justify-center rounded-control px-1.5 transition-colors duration-150 sm:ml-1 sm:px-3',
               l === actual
-                ? 'font-semibold text-primario sm:bg-primario sm:text-superficie'
-                : 'text-primario underline sm:underline',
+                ? 'font-semibold text-hueso underline decoration-2 underline-offset-8'
+                : 'text-hueso-suave underline-offset-8 hover:text-hueso hover:underline',
             )}
           >
             <span aria-hidden="true" className="sm:hidden">

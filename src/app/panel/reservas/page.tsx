@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
@@ -13,6 +14,8 @@ import { formatearCorto } from '@/lib/fechas';
 import { contextoPanel } from '@/lib/panel';
 import { aFechaCR } from '@/lib/salidas';
 import { uuid } from '@/lib/validaciones';
+
+export const metadata: Metadata = { title: 'Reservas' };
 
 const POR_PAGINA = 20;
 
@@ -246,16 +249,16 @@ export default async function ReservasPage({
                     {r.salida} · {r.tour} · {r.personas} personas
                   </p>
                   <p className="text-sm text-texto-suave">
-                    Depósito {r.deposito} ·{' '}
-                    <a
-                      href={whatsapp(r.telefono)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primario underline"
-                    >
-                      {r.telefono}
-                    </a>
+                    Depósito {r.deposito}
                   </p>
+                  <a
+                    href={whatsapp(r.telefono)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-11 w-fit items-center text-sm text-primario underline"
+                  >
+                    {r.telefono}
+                  </a>
                 </Card>
               </li>
             ))}

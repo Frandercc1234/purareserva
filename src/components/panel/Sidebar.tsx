@@ -26,7 +26,10 @@ export function Sidebar({
   return (
     <aside className="sticky top-0 z-20 border-b border-borde bg-superficie md:h-screen md:w-64 md:shrink-0 md:border-r md:border-b-0">
       <div className="flex items-center justify-between gap-3 px-4 py-3 md:flex-col md:items-stretch md:gap-4 md:px-5 md:py-6">
-        <Link href="/panel" className="flex items-center gap-2 font-semibold">
+        <Link
+          href="/panel"
+          className="flex min-h-11 items-center gap-2 font-semibold"
+        >
           <Marca className="size-8" />
           PuraReserva
         </Link>
@@ -52,7 +55,7 @@ export function Sidebar({
             href={e.href}
             aria-current={activo(e.href) ? 'page' : undefined}
             className={cn(
-              'inline-flex h-11 shrink-0 items-center rounded-control px-3 font-semibold transition-[background-color,color] duration-150',
+              'inline-flex h-11 shrink-0 items-center rounded-control px-2.5 text-sm font-semibold transition-[background-color,color] duration-150 md:px-3 md:text-base',
               activo(e.href)
                 ? 'bg-primario text-superficie'
                 : 'text-texto-suave hover:bg-fondo hover:text-texto',

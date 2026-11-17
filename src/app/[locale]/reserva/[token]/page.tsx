@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { CancelarReserva } from '@/components/publico/CancelarReserva';
+import { ResumenReserva } from '@/components/publico/ResumenReserva';
 import { WhatsAppButton } from '@/components/publico/WhatsAppButton';
 import { Badge, type TonoBadge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
@@ -50,18 +51,8 @@ export default async function ReservaPage({
   const puedeCancelar =
     r.estado === 'confirmada' && iniciaEn.getTime() > Date.now();
 
-  const filas: [string, string][] = [
-    [t('tour'), locale === 'en' ? tour.nombre_en : tour.nombre_es],
-    [t('fecha'), formatearFechaHora(salida.inicia_en, locale)],
-    [t('personas'), String(r.personas)],
-    [t('total'), formatearUSD(r.total_cents, locale)],
-    [t('deposito'), formatearUSD(r.deposito_cents, locale)],
-    [t('saldo'), formatearUSD(r.total_cents - r.deposito_cents, locale)],
-  ];
   const punto =
     (locale === 'en' && tour.punto_encuentro_en) || tour.punto_encuentro;
-  if (punto) filas.push([t('punto'), punto]);
-  filas.push([t('operador'), negocio.nombre]);
 
   const nota: Record<string, string> = {
     cancelada: t('notaCancelada'),
@@ -73,7 +64,7 @@ export default async function ReservaPage({
   return (
     <main className="mx-auto flex max-w-xl flex-col gap-6 px-4 py-8 md:py-12">
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-3xl font-semibold">{r.nombre}</h1>
+        <h1 className="titulo text-4xl break-words md:text-5xl">{r.nombre}</h1>
         <Badge tono={TONOS[r.estado] ?? 'neutro'}>
           {t(`estados.${r.estado}` as 'estados.confirmada')}
         </Badge>
@@ -82,14 +73,18 @@ export default async function ReservaPage({
       {nota[r.estado] && <p className="text-texto-suave">{nota[r.estado]}</p>}
 
       <Card>
-        <dl className="flex flex-col gap-3">
-          {filas.map(([etiqueta, valor]) => (
-            <div key={etiqueta}>
-              <dt className="text-sm text-texto-suave">{etiqueta}</dt>
-              <dd>{valor}</dd>
-            </div>
-          ))}
-        </dl>
+        <ResumenReserva
+          datos={{
+            tour: locale === 'en' ? tour.nombre_en : tour.nombre_es,
+            fecha: formatearFechaHora(salida.inicia_en, locale),
+            personas: r.personas,
+            total: formatearUSD(r.total_cents, locale),
+            deposito: formatearUSD(r.deposito_cents, locale),
+            saldo: formatearUSD(r.total_cents - r.deposito_cents, locale),
+            punto,
+            operador: negocio.nombre,
+          }}
+        />
       </Card>
 
       {puedeCancelar && (

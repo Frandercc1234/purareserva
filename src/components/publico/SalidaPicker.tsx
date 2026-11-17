@@ -85,7 +85,7 @@ export function SalidaPicker({
           aria-label={t('diasAnteriores')}
           disabled={inicio === 0}
           onClick={() => setInicio((i) => Math.max(0, i - DIAS_VISIBLES))}
-          className="hidden h-16 w-8 shrink-0 items-center justify-center rounded-control text-lg text-primario transition-colors duration-150 hover:bg-fondo disabled:text-borde sm:flex"
+          className="hidden h-16 w-11 shrink-0 items-center justify-center rounded-control text-lg text-primario transition-colors duration-150 hover:bg-fondo disabled:text-borde sm:flex"
         >
           <span aria-hidden="true">‹</span>
         </button>
@@ -111,14 +111,14 @@ export function SalidaPicker({
                 data-foco={activo ? '' : undefined}
                 onClick={() => setDia(d)}
                 className={cn(
-                  'flex h-16 w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-control border transition-[background-color,border-color,color,transform] duration-150 ease-[var(--ease-out)] motion-safe:active:scale-[0.97] sm:w-auto sm:flex-1',
+                  'flex h-16 w-12 min-w-11 shrink-0 flex-col items-center justify-center gap-0.5 rounded-control border transition-[transform,scale] duration-150 ease-[var(--ease-out)] motion-safe:active:scale-[0.97] sm:w-auto sm:flex-1',
                   !visible && 'sm:hidden',
                   activo
                     ? 'border-primario bg-primario text-superficie'
-                    : 'border-borde bg-superficie hover:border-primario',
+                    : 'border-borde-control bg-superficie hover:border-primario',
                 )}
               >
-                <span className="text-xs uppercase">{semana}</span>
+                <span className="text-xs">{semana}</span>
                 <span className="text-lg leading-none font-semibold">
                   {numero}
                 </span>
@@ -144,7 +144,7 @@ export function SalidaPicker({
           onClick={() =>
             setInicio((i) => Math.min(maxInicio, i + DIAS_VISIBLES))
           }
-          className="hidden h-16 w-8 shrink-0 items-center justify-center rounded-control text-lg text-primario transition-colors duration-150 hover:bg-fondo disabled:text-borde sm:flex"
+          className="hidden h-16 w-11 shrink-0 items-center justify-center rounded-control text-lg text-primario transition-colors duration-150 hover:bg-fondo disabled:text-borde sm:flex"
         >
           <span aria-hidden="true">›</span>
         </button>
@@ -162,13 +162,13 @@ export function SalidaPicker({
             <label
               key={s.id}
               className={cn(
-                'flex min-h-11 cursor-pointer flex-col justify-center rounded-control border px-4 py-2 transition-colors duration-150 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primario',
+                'flex min-h-11 cursor-pointer flex-col justify-center rounded-control border px-4 py-2 transition-colors duration-150 ease-[var(--ease-out)] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primario',
                 agotado &&
                   'cursor-not-allowed border-borde bg-fondo text-texto-suave',
                 !agotado && on && 'border-primario bg-primario text-superficie',
                 !agotado &&
                   !on &&
-                  'border-borde bg-superficie hover:border-primario',
+                  'border-borde-control bg-superficie hover:border-primario',
               )}
             >
               <input

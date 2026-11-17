@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
@@ -10,6 +11,8 @@ import { Table, Td, Th } from '@/components/ui/Table';
 import { formatearCorto } from '@/lib/fechas';
 import { contextoPanel } from '@/lib/panel';
 import { eliminarSalida } from './actions';
+
+export const metadata: Metadata = { title: 'Salidas del tour' };
 
 export default async function SalidasPage({
   params,

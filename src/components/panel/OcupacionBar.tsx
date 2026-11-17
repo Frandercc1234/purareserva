@@ -27,7 +27,7 @@ export function OcupacionBar({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={pct}
-        className="h-2 overflow-hidden rounded-full bg-borde"
+        className="h-2 overflow-hidden rounded-full bg-borde ring-1 ring-borde-control ring-inset"
       >
         <div
           className="h-full rounded-full bg-primario"

@@ -1,6 +1,9 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { ConfiguracionForm } from '@/components/panel/ConfiguracionForm';
 import { createClient } from '@/lib/supabase/server';
+
+export const metadata: Metadata = { title: 'Configuración' };
 
 export default async function ConfiguracionPage() {
   const supabase = await createClient();

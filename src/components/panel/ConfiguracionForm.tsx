@@ -101,7 +101,7 @@ export function ConfiguracionForm({ negocio }: { negocio: NegocioForm }) {
           name="portada"
           type="file"
           accept="image/jpeg,image/png,image/webp"
-          className="h-auto py-2"
+          className="h-auto min-h-11 py-2"
           error={campos.portada}
           onChange={(e) => {
             const f = e.target.files?.[0];

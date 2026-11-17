@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { KpiCard } from '@/components/panel/KpiCard';
 import { OcupacionBar, porcentaje } from '@/components/panel/OcupacionBar';
@@ -7,6 +8,8 @@ import { Card } from '@/components/ui/Card';
 import { formatearUSD } from '@/lib/dinero';
 import { formatearCorto, rangoMesCR } from '@/lib/fechas';
 import { contextoPanel } from '@/lib/panel';
+
+export const metadata: Metadata = { title: 'Resumen' };
 
 const PASOS = [
   {

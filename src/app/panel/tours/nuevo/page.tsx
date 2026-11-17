@@ -1,4 +1,7 @@
+import type { Metadata } from 'next';
 import { TourForm } from '@/components/panel/TourForm';
+
+export const metadata: Metadata = { title: 'Nuevo tour' };
 
 export default function NuevoTourPage() {
   return (

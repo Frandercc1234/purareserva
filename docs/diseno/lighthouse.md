@@ -65,6 +65,17 @@ Mediana de 3 corridas, perfil móvil, con las fuentes estáticas ya aplicadas. L
 
 El elemento LCP es la foto de la parte alta en las dos páginas (`img.object-cover` de la sección en carbón). Performance, accesibilidad, mejores prácticas, SEO y CLS cumplen el blueprint. El LCP simulado queda sobre 2,5 s en ambas, por las razones y los experimentos de arriba (el LCP real, sin simulación, es de 0,22 s en inicio).
 
+## Producción (`https://purareserva.vercel.app`, después del merge del PR 1)
+
+Mediana de 3 corridas, perfil móvil de Lighthouse (simulación de 4G lenta y CPU 4x) contra producción, sin protección. Fecha: 17-nov-2026, sobre el commit `286ab7c`.
+
+| Página                                    | Performance | Accesibilidad | Mejores prácticas | SEO | LCP simulado (corridas)         | CLS | TBT   |
+| ----------------------------------------- | ----------- | ------------- | ----------------- | --- | ------------------------------- | --- | ----- |
+| Inicio `/es`                              | 99          | 100           | 100               | 100 | **2,05 s** (2,06 / 2,05 / 2,05) | 0   | 84 ms |
+| Tour `/es/aventuras-rincon/canopy-rincon` | 96          | 100           | 100               | 100 | 2,57 s (2,57 / 2,54 / 2,59)     | 0   | 88 ms |
+
+En producción el inicio cumple el objetivo de LCP (menor de 2,5 s) y el tour queda a 0,07 s. Las mediciones locales daban 2,9 y 3,0 s: producción sirve con HTTP/2, compresión y CDN de Vercel, y el servidor local no. El LCP del tour sigue siendo la foto de la parte alta.
+
 ## Pendiente
 
-- Medir Lighthouse sobre producción (`https://purareserva.vercel.app`, sin protección) en el paso 11, después del merge, y agregarlo aquí.
+- Bajar el LCP del tour (2,57 s en producción) por debajo de 2,5 s: reducir el peso de la foto del tour o sacar next-intl del cliente (ver la conclusión de arriba).

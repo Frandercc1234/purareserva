@@ -118,6 +118,8 @@
     "demora": "We'll email you as soon as it's confirmed.",
     "confirmada": "Your booking is confirmed!",
     "confirmadaAyuda": "Keep your booking link: you can see the details and cancel there.",
+    "correo": "We emailed you these details and your booking link. You can view or cancel it there.",
+    "contacto": "Operator contact",
     "verReserva": "View my booking",
     "noConfirmada": "We couldn't confirm your booking. If you were charged, the payment is refunded automatically.",
     "volverInicio": "Back to home"

@@ -118,6 +118,8 @@
     "demora": "Te enviaremos un correo apenas se confirme.",
     "confirmada": "¡Tu reserva está confirmada!",
     "confirmadaAyuda": "Guardá el enlace de tu reserva: ahí podés ver los datos y cancelar.",
+    "correo": "Te enviamos un correo con estos datos y el enlace de tu reserva. Ahí podés verla y cancelarla.",
+    "contacto": "Contacto del operador",
     "verReserva": "Ver mi reserva",
     "noConfirmada": "No pudimos confirmar tu reserva. Si te cobraron, el pago se reembolsa automáticamente.",
     "volverInicio": "Volver al inicio"

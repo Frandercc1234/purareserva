@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { getLocale } from 'next-intl/server';
 import { Big_Shoulders, Hanken_Grotesk } from 'next/font/google';
 import { SITIO_URL } from '@/lib/sitio';
@@ -19,6 +19,10 @@ const bigShoulders = Big_Shoulders({
   display: 'swap',
   adjustFontFallback: false,
 });
+
+export const viewport: Viewport = {
+  interactiveWidget: 'resizes-content',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITIO_URL),

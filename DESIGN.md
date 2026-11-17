@@ -40,6 +40,11 @@ typography:
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.5
+  chat:
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
+    fontSize: "0.9375rem"
+    fontWeight: 400
+    lineHeight: 1.375
   label:
     fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "0.875rem"
@@ -184,6 +189,7 @@ Una paleta de madera quemada y papel de sabana. Los valores se calculan con `scr
 - **Display** (800, 3.25rem en móvil, 4.5rem desde 640px, 6rem desde 1024px, 0.92): h1 del hero y de las portadas. Clase `titulo-hero`.
 - **Título** (800, 2.5rem a 4rem, 0.98): h2 y el nombre del tour en tarjetas y detalle. Clase `titulo`. Siempre en mayúsculas.
 - **Body** (400, 16px, 24px): texto corrido, máximo 65 a 75 caracteres por línea.
+- **Chat** (400, 15px, 22px): burbujas, sugerencias y campo de texto del asistente.
 - **Label** (600, 14px, sin mayúsculas forzadas): etiquetas de campo, datos, botones, tabs.
 
 ### Named Rules

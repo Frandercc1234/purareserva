@@ -6,12 +6,12 @@ Cada negocio se registra, publica sus tours y programa salidas con cupo. Los tur
 
 Es un proyecto de portafolio. Todo funciona de punta a punta en modo prueba. No se cobra dinero real.
 
-v1.1: mejoras de experiencia, SEO y accesibilidad.
+v1.1: mejoras de experiencia, SEO y accesibilidad. v3: dirección de arte nueva y movimiento (ver `DESIGN.md` y `plans/`).
 
 ## Demo
 
 - Sitio: https://purareserva.vercel.app
-- Diseño en Figma: https://www.figma.com/design/O9gzDxeKp1ITpZY2mcMG03
+- Diseño original en Figma (v1): https://www.figma.com/design/O9gzDxeKp1ITpZY2mcMG03
 
 Para entrar al panel del dueño, usá uno de estos usuarios en `/login`:
 
@@ -26,19 +26,18 @@ Las salidas de la demo se cargaron con 14 días por delante. Pasado ese plazo ha
 
 ## Capturas
 
-Diseño en Figma y resultado en la app:
+Dirección de arte v3 ("Hierro", ver `DESIGN.md`): carbón y hueso, brasa como único color de acción, títulos en Big Shoulders y fotos reales de Guanacaste a sangre. Las capturas de antes y después están en `docs/capturas/v3-antes` y `docs/capturas/v3-despues`.
 
-![Landing en Figma](docs/capturas/figma-landing.png)
-![Landing](docs/capturas/landing.png)
-
-![Detalle del tour en Figma](docs/capturas/figma-tour.png)
-![Detalle del tour](docs/capturas/tour.png)
+![Inicio](docs/capturas/v3-despues/inicio-1280.png)
+![Detalle del tour](docs/capturas/v3-despues/tour-1280.png)
 
 Panel del dueño y versión móvil:
 
 ![Panel](docs/capturas/panel.png)
 
-<img src="docs/capturas/landing-movil.png" alt="Landing en móvil" width="260"> <img src="docs/capturas/tour-movil.png" alt="Tour en móvil" width="260">
+<img src="docs/capturas/v3-despues/inicio-375.png" alt="Inicio en móvil" width="220"> <img src="docs/capturas/v3-despues/tour-375.png" alt="Tour en móvil" width="220"> <img src="docs/capturas/v3-despues/asistente-375.png" alt="Asistente en móvil" width="220">
+
+El diseño de Figma (`docs/figma.md`) corresponde a la primera versión visual.
 
 ## Qué incluye
 

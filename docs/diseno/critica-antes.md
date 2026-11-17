@@ -4,19 +4,19 @@ Method: dual-agent (A: revisión de diseño sobre capturas y código · B: detec
 
 ## Puntaje de salud de diseño
 
-| # | Heurística | Inicio (Persuade) | Tour | Gracias | Problema clave |
-|---|---|---|---|---|---|
-| 1 | Estado del sistema | 3 | 3 | 3 | |
-| 2 | Lenguaje real | 3 | 3 | 3 | "Operadores" como título para turistas es jerga del lado oferta |
-| 3 | Control y libertad | 3 | 3 | 2 | Gracias sin salida al tour ni al negocio |
-| 4 | Consistencia | 3 | 3 | 3 | "Español" activo es botón relleno y "English" es enlace: se lee como CTA |
-| 5 | Prevención de errores | n/a | 3 | n/a | |
-| 6 | Reconocimiento | 3 | 3 | 1 | Gracias no repite tour, fecha, hora, personas, depósito ni punto de encuentro |
-| 7 | Flexibilidad | n/a | 2 | n/a | Personas es campo de texto; el teléfono pide código de país a mano |
-| 8 | Minimalismo | 2 | 3 | 3 | Hero, cifras, operadores, pasos y CTA pesan parecido |
-| 9 | Recuperación de errores | n/a | 2 | 2 | Gracias "no confirmada": un párrafo y volver al inicio |
-| 10 | Ayuda | n/a | 3 | 1 | Gracias sin contacto del negocio ni qué hacer si no llega el correo |
-| | **Total** | **17/24 (28/40)** | **28/40** | **18/32 (22/40)** | **Global 26/40: Aceptable** |
+| #   | Heurística              | Inicio (Persuade) | Tour      | Gracias           | Problema clave                                                                |
+| --- | ----------------------- | ----------------- | --------- | ----------------- | ----------------------------------------------------------------------------- |
+| 1   | Estado del sistema      | 3                 | 3         | 3                 |                                                                               |
+| 2   | Lenguaje real           | 3                 | 3         | 3                 | "Operadores" como título para turistas es jerga del lado oferta               |
+| 3   | Control y libertad      | 3                 | 3         | 2                 | Gracias sin salida al tour ni al negocio                                      |
+| 4   | Consistencia            | 3                 | 3         | 3                 | "Español" activo es botón relleno y "English" es enlace: se lee como CTA      |
+| 5   | Prevención de errores   | n/a               | 3         | n/a               |                                                                               |
+| 6   | Reconocimiento          | 3                 | 3         | 1                 | Gracias no repite tour, fecha, hora, personas, depósito ni punto de encuentro |
+| 7   | Flexibilidad            | n/a               | 2         | n/a               | Personas es campo de texto; el teléfono pide código de país a mano            |
+| 8   | Minimalismo             | 2                 | 3         | 3                 | Hero, cifras, operadores, pasos y CTA pesan parecido                          |
+| 9   | Recuperación de errores | n/a               | 2         | 2                 | Gracias "no confirmada": un párrafo y volver al inicio                        |
+| 10  | Ayuda                   | n/a               | 3         | 1                 | Gracias sin contacto del negocio ni qué hacer si no llega el correo           |
+|     | **Total**               | **17/24 (28/40)** | **28/40** | **18/32 (22/40)** | **Global 26/40: Aceptable**                                                   |
 
 ## Veredicto de especificidad
 

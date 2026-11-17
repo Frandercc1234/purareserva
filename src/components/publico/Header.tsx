@@ -19,7 +19,9 @@ export function Header() {
           className="flex shrink-0 items-center gap-2 rounded-control font-semibold tracking-tight"
         >
           <Marca className="size-8" sobreCarbon />
-          <span className="text-base sm:text-lg">{t('nombreApp')}</span>
+          <span className="text-base max-[359px]:hidden sm:text-lg">
+            {t('nombreApp')}
+          </span>
         </LinkI18n>
         <nav
           aria-label={t('principal')}

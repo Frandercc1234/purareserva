@@ -54,6 +54,17 @@ El ruido entre corridas es de unos 0,2 s.
 
 Con las fuentes recortadas y sin posibilidad de diferir JS dentro del alcance, el LCP simulado se queda en unos 3,0 s. Ni quitando todo el JS (2,45 s) ni todas las fuentes (2,44 s) por separado se baja de 2,4 s en el modelo simulado; el LCP real es de 0,22 s. Para pasar de 2,5 s harían falta cambios de arquitectura (sacar next-intl del cliente y partir el bundle) que quedan fuera de este paso. Se sigue con el paso 10.
 
+## Medición del paso 10 (inicio y tour, contra `next start` local)
+
+Mediana de 3 corridas, perfil móvil, con las fuentes estáticas ya aplicadas. La vista previa de Vercel no se midió (está protegida): la medición sobre producción queda para el paso 11.
+
+| Página                                    | Performance | Accesibilidad | Mejores prácticas | SEO | LCP simulado (corridas)     | CLS    | TBT    |
+| ----------------------------------------- | ----------- | ------------- | ----------------- | --- | --------------------------- | ------ | ------ |
+| Inicio `/es`                              | 95          | 100           | 100               | 100 | 2,88 s (3,07 / 2,88 / 2,84) | 0      | 56 ms  |
+| Tour `/es/aventuras-rincon/canopy-rincon` | 90          | 100           | 100               | 100 | 3,04 s (3,18 / 2,65 / 3,04) | 0,0001 | 229 ms |
+
+El elemento LCP es la foto de la parte alta en las dos páginas (`img.object-cover` de la sección en carbón). Performance, accesibilidad, mejores prácticas, SEO y CLS cumplen el blueprint. El LCP simulado queda sobre 2,5 s en ambas, por las razones y los experimentos de arriba (el LCP real, sin simulación, es de 0,22 s en inicio).
+
 ## Pendiente
 
 - Medir Lighthouse sobre producción (`https://purareserva.vercel.app`, sin protección) en el paso 11, después del merge, y agregarlo aquí.

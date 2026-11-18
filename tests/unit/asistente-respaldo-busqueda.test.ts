@@ -15,6 +15,7 @@ const TOUR = {
   duracion_min: 120,
   imagen_url: null,
 };
+const SNORKEL = { ...TOUR, id: 't2', slug: 'snorkel', nombre_en: 'Snorkel' };
 const SALIDA = {
   id: 's1',
   tour_id: 't1',
@@ -24,16 +25,25 @@ const SALIDA = {
 };
 
 /** Constructor de consultas falso: registra los filtros y responde según la tabla. */
-function dbFalsa() {
+function dbFalsa(tours = [TOUR]) {
   const filtrosOr: string[] = [];
   const respuestas: Record<string, unknown[]> = {
     negocios: [NEGOCIO],
-    salidas_ocupacion: [SALIDA],
+    salidas_ocupacion: [SALIDA, { ...SALIDA, id: 's2', tour_id: 't2' }],
   };
   const from = (tabla: string) => {
     const q: Record<string, unknown> = {};
-    for (const m of ['select', 'eq', 'in', 'gte', 'lte', 'order', 'limit'])
-      q[m] = () => q;
+    for (const m of ['select', 'gte', 'lte', 'order', 'limit']) q[m] = () => q;
+    let soloSlug: string | undefined;
+    let ids: string[] | undefined;
+    q.in = (col: string, valores: string[]) => {
+      if (col === 'tour_id') ids = valores;
+      return q;
+    };
+    q.eq = (col: string, valor: string) => {
+      if (tabla === 'tours' && col === 'slug') soloSlug = valor;
+      return q;
+    };
     let conTexto = false;
     q.or = (filtro: string) => {
       filtrosOr.push(filtro);
@@ -47,8 +57,10 @@ function dbFalsa() {
           tabla === 'tours'
             ? conTexto
               ? []
-              : [TOUR]
-            : (respuestas[tabla] ?? []),
+              : tours.filter((t) => !soloSlug || t.slug === soloSlug)
+            : ((respuestas[tabla] ?? []) as { tour_id?: string }[]).filter(
+                (r) => !ids || !r.tour_id || ids.includes(r.tour_id),
+              ),
       });
     return q;
   };
@@ -80,6 +92,30 @@ describe('buscarTours: respaldo sin texto', () => {
       { locale: 'en' },
     );
     expect(tours).toHaveLength(1);
+  });
+
+  it('con un tour en contexto el respaldo devuelve solo ese tour', async () => {
+    const { db } = dbFalsa([SNORKEL, TOUR]);
+    const { tours } = await buscarTours(
+      db,
+      { texto: 'sunset catamaran', personas: 2 },
+      {
+        locale: 'en',
+        negocioSlug: 'mar-y-sol-tamarindo',
+        tourSlug: 'catamaran-atardecer',
+      },
+    );
+    expect(tours.map((t) => t.tour)).toEqual(['Sunset catamaran']);
+  });
+
+  it('sin tour en contexto el respaldo devuelve todo el negocio', async () => {
+    const { db } = dbFalsa([SNORKEL, TOUR]);
+    const { tours } = await buscarTours(
+      db,
+      { texto: 'sunset catamaran', personas: 2 },
+      { locale: 'en', negocioSlug: 'mar-y-sol-tamarindo' },
+    );
+    expect(tours).toHaveLength(2);
   });
 
   it('sin negocio no hay respaldo', async () => {

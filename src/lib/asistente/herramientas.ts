@@ -155,7 +155,7 @@ export async function buscarTours(
   // "catamaran sunset" no calza con "Sunset catamaran": con un negocio acotado se repite
   // sin el texto y el modelo elige entre sus tours. Sin negocio no hay respaldo.
   if (!tours?.length && texto && slug)
-    ({ data: tours } = await consultarTours());
+    ({ data: tours } = await consultarTours(undefined, slugTour));
   if (!tours?.length) return { tours: [] };
 
   const { data: salidas } = await db

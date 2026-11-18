@@ -488,7 +488,7 @@ export function AsistentePanel({
               }}
               onKeyDown={alTeclear}
               className={cn(
-                'max-h-28 min-h-11 flex-1 resize-none rounded-control border border-borde-control bg-superficie px-3 py-2.5 text-base sm:text-[15px] leading-6 placeholder:text-texto-suave disabled:bg-fondo',
+                'max-h-28 min-h-11 flex-1 touch-pan-y resize-none rounded-control border border-borde-control bg-superficie px-3 py-2.5 text-base sm:text-[15px] leading-6 placeholder:text-texto-suave disabled:bg-fondo',
                 ocupado && 'bg-fondo',
               )}
             />

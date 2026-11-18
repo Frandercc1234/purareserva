@@ -2,9 +2,9 @@
 
 import { z } from 'zod';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { prepararReserva, prepararReservaSchema } from './herramientas';
+import { prepararReserva, prepararReservaBaseSchema } from './herramientas';
 
-const entradaSchema = prepararReservaSchema.extend({
+const entradaSchema = prepararReservaBaseSchema.extend({
   locale: z.enum(['es', 'en']),
 });
 

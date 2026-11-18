@@ -114,7 +114,7 @@ export function crearModeloSimulado(locale: 'es' | 'en') {
         // Paso forzado por prepareStep: se reserva la primera salida de la última búsqueda.
         const tours = (
           resultadoDe(mensajes, 'buscar_tours') as {
-            tours?: { salidas: { id: string }[] }[];
+            tours?: { salidas: { id: string; fecha: string }[] }[];
           }
         )?.tours;
         const texto = textoDe(
@@ -123,9 +123,11 @@ export function crearModeloSimulado(locale: 'es' | 'en') {
         const personas = Number(
           texto.match(/(\d+)\s*(personas|people|guests)/)?.[1] ?? 1,
         );
+        const salida = tours?.[0]?.salidas?.[0];
         partes = llamarHerramienta('preparar_reserva', {
-          salida_id: tours?.[0]?.salidas?.[0]?.id,
+          salida_id: salida?.id,
           personas,
+          fecha: salida?.fecha,
         });
       } else if (
         ultimo?.role === 'tool' &&
@@ -152,14 +154,15 @@ export function crearModeloSimulado(locale: 'es' | 'en') {
         if (/reserv|book/.test(texto)) {
           const tours = (
             resultadoDe(mensajes, 'buscar_tours') as {
-              tours?: { salidas: { id: string }[] }[];
+              tours?: { salidas: { id: string; fecha: string }[] }[];
             }
           )?.tours;
-          const salida = tours?.[0]?.salidas?.[0]?.id;
+          const salida = tours?.[0]?.salidas?.[0];
           partes = salida
             ? llamarHerramienta('preparar_reserva', {
-                salida_id: salida,
+                salida_id: salida.id,
                 personas,
+                fecha: salida.fecha,
               })
             : responderTexto(
                 es

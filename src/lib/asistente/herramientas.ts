@@ -22,6 +22,8 @@ export type ContextoHerramientas = {
   locale: 'es' | 'en';
   /** Negocio que el turista está viendo: se prioriza si el modelo no pide otro. */
   negocioSlug?: string;
+  /** Tour que el turista está viendo (del negocio de arriba): filtra la búsqueda sin texto. */
+  tourSlug?: string;
 };
 
 const HORA_MS = 3_600_000;
@@ -53,9 +55,17 @@ export const buscarGuiaSchema = z.object({
   consulta_en: z.string().trim().min(2).max(300),
 });
 
-export const prepararReservaSchema = z.object({
+/** Lo mínimo para preparar una reserva: lo usa también el botón "Reservar" de la tarjeta. */
+export const prepararReservaBaseSchema = z.object({
   salida_id: uuid,
   personas: z.number().int().min(1).max(50),
+});
+
+/** Lo que manda el modelo: además, el día que pidió el usuario, para comprobar la salida. */
+export const prepararReservaSchema = prepararReservaBaseSchema.extend({
+  fecha: fecha.describe(
+    'El día que pidió el usuario (YYYY-MM-DD), copiado del calendario del prompt. Debe ser el día de la salida elegida.',
+  ),
 });
 
 export type TourParaChat = {
@@ -65,7 +75,13 @@ export type TourParaChat = {
   duracion_texto: string;
   url: string;
   imagen_url: string;
-  salidas: { id: string; fecha_hora_texto: string; cupos: number }[];
+  salidas: {
+    id: string;
+    /** Día de la salida (YYYY-MM-DD, Costa Rica): se copia en `fecha` de preparar_reserva. */
+    fecha: string;
+    fecha_hora_texto: string;
+    cupos: number;
+  }[];
 };
 
 /** Quita los caracteres con significado especial en los filtros de PostgREST. */
@@ -110,7 +126,10 @@ export async function buscarTours(
   const { data: negocios } = await negociosQ;
   if (!negocios?.length) return { tours: [] };
 
-  const consultarTours = (texto?: string) => {
+  // Viendo un tour y sin texto: solo ese tour (no todo el negocio).
+  const slugTour =
+    ctx.tourSlug && slug === ctx.negocioSlug ? ctx.tourSlug : undefined;
+  const consultarTours = (texto?: string, soloTour?: string) => {
     let q = db
       .from('tours')
       .select(
@@ -121,6 +140,7 @@ export async function buscarTours(
         'negocio_id',
         negocios.map((n) => n.id),
       );
+    if (soloTour) q = q.eq('slug', soloTour);
     if (texto)
       q = q.or(
         `nombre_${locale}.ilike.%${texto}%,descripcion_${locale}.ilike.%${texto}%`,
@@ -128,7 +148,10 @@ export async function buscarTours(
     return q;
   };
   const texto = limpiarTexto(entrada.texto);
-  let { data: tours } = await consultarTours(texto);
+  let { data: tours } = await consultarTours(
+    texto,
+    texto ? undefined : slugTour,
+  );
   // "catamaran sunset" no calza con "Sunset catamaran": con un negocio acotado se repite
   // sin el texto y el modelo elige entre sus tours. Sin negocio no hay respaldo.
   if (!tours?.length && texto && slug)
@@ -168,6 +191,7 @@ export async function buscarTours(
       imagen_url: tour.imagen_url ?? IMAGEN_RESPALDO,
       salidas: lista.slice(0, MAX_SALIDAS).map((s) => ({
         id: s.id,
+        fecha: diaCR(s.inicia_en),
         fecha_hora_texto: formatearCorto(s.inicia_en, locale),
         cupos: s.cupo - (s.ocupados ?? 0),
       })),
@@ -209,11 +233,15 @@ export async function buscarGuia(
 
 export type ResultadoReserva =
   | { ok: true; url: string; resumen: string }
-  | { ok: false; motivo: 'SIN_CUPO' | 'SALIDA_NO_DISPONIBLE' };
+  | {
+      ok: false;
+      motivo: 'SIN_CUPO' | 'SALIDA_NO_DISPONIBLE' | 'FECHA_DISTINTA';
+    };
 
+/** `fecha` solo la manda el modelo: el botón de la tarjeta ya eligió la salida. */
 export async function prepararReserva(
   db: Db,
-  entrada: z.infer<typeof prepararReservaSchema>,
+  entrada: z.infer<typeof prepararReservaBaseSchema> & { fecha?: string },
   ctx: ContextoHerramientas,
 ): Promise<ResultadoReserva> {
   const { locale } = ctx;
@@ -236,6 +264,11 @@ export async function prepararReserva(
     new Date(salida.inicia_en).getTime() <= Date.now() + HORA_MS
   ) {
     return { ok: false, motivo: 'SALIDA_NO_DISPONIBLE' };
+  }
+
+  // El modelo calcula mal los días de la semana: si la salida no es del día pedido, no hay botón.
+  if (entrada.fecha && diaCR(salida.inicia_en) !== entrada.fecha) {
+    return { ok: false, motivo: 'FECHA_DISTINTA' };
   }
 
   const { data: libres } = await db.rpc('cupos_disponibles', {
@@ -321,14 +354,22 @@ export function crearHerramientas(
   ctx: ContextoHerramientas,
   db: Db = createAdminClient(),
 ) {
+  // Una petición, una búsqueda: si el modelo repite buscar_tours, devuelve lo mismo.
+  let busqueda: ReturnType<typeof ejecutarBusqueda> | undefined;
+  const ejecutarBusqueda = (entrada: z.infer<typeof buscarToursSchema>) =>
+    seguro('buscar_tours', () => buscarTours(db, entrada, ctx));
   return {
     buscar_tours: tool({
       description:
         'Tours activos con salidas y cupos. Úsala siempre para tours, precios, horarios o cupos. Por defecto: hoy a 14 días, 1 persona.',
       inputSchema: buscarToursSchema,
       toModelOutput: vistaModelo,
-      execute: (entrada) =>
-        seguro('buscar_tours', () => buscarTours(db, entrada, ctx)),
+      execute: async (entrada) => {
+        busqueda ??= ejecutarBusqueda(entrada);
+        const resultado = await busqueda;
+        if ('error' in resultado) busqueda = undefined;
+        return resultado;
+      },
     }),
     buscar_guia: tool({
       description:
@@ -340,7 +381,7 @@ export function crearHerramientas(
     }),
     preparar_reserva: tool({
       description:
-        'Llamala siempre que el usuario quiera reservar ("quiero reservar", "book it"), justo después de buscar_tours, con el id de la salida y las personas. Es la única forma de mostrar el botón de reserva: sin esta llamada no hay botón. No crea la reserva ni cobra.',
+        'Llamala siempre que el usuario quiera reservar ("quiero reservar", "book it"), justo después de buscar_tours, con el id de la salida, las personas y la fecha pedida. Es la única forma de mostrar el botón de reserva: sin esta llamada no hay botón. No crea la reserva ni cobra.',
       inputSchema: prepararReservaSchema,
       toModelOutput: vistaModelo,
       execute: (entrada) =>

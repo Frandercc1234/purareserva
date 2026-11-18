@@ -168,7 +168,9 @@ test('el enlace con ?salida y ?personas llena el formulario y respeta los cupos'
 
 test('enviar el formulario vacío lleva el foco al selector de salida y lista los errores', async ({
   page,
-}) => {
+}, info) => {
+  // En móvil la barra de pago no existe hasta elegir una salida: no hay nada que enviar vacío.
+  test.skip(info.project.name === 'mobile');
   await irA(page, URL_TOUR);
   await page
     .getByRole('button', { name: /Pagar depósito/ })

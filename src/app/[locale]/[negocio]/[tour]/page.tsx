@@ -161,7 +161,7 @@ export default async function TourPage({
         </div>
       </section>
 
-      <div className="mx-auto max-w-5xl px-4 py-8 pb-28 md:py-10 lg:pb-12">
+      <div className="mx-auto max-w-5xl px-4 py-8 md:py-10 lg:pb-12">
         <div className="flex flex-col gap-8">
           <div className="flex min-w-0 flex-col gap-4 lg:grid lg:grid-cols-[2fr_1fr_1fr] lg:gap-8">
             {descripcion && <p className="text-lg">{descripcion}</p>}

@@ -110,22 +110,29 @@ export async function buscarTours(
   const { data: negocios } = await negociosQ;
   if (!negocios?.length) return { tours: [] };
 
-  let toursQ = db
-    .from('tours')
-    .select(
-      'id, negocio_id, slug, nombre_es, nombre_en, precio_cents, duracion_min, imagen_url',
-    )
-    .eq('activo', true)
-    .in(
-      'negocio_id',
-      negocios.map((n) => n.id),
-    );
+  const consultarTours = (texto?: string) => {
+    let q = db
+      .from('tours')
+      .select(
+        'id, negocio_id, slug, nombre_es, nombre_en, precio_cents, duracion_min, imagen_url',
+      )
+      .eq('activo', true)
+      .in(
+        'negocio_id',
+        negocios.map((n) => n.id),
+      );
+    if (texto)
+      q = q.or(
+        `nombre_${locale}.ilike.%${texto}%,descripcion_${locale}.ilike.%${texto}%`,
+      );
+    return q;
+  };
   const texto = limpiarTexto(entrada.texto);
-  if (texto)
-    toursQ = toursQ.or(
-      `nombre_${locale}.ilike.%${texto}%,descripcion_${locale}.ilike.%${texto}%`,
-    );
-  const { data: tours } = await toursQ;
+  let { data: tours } = await consultarTours(texto);
+  // "catamaran sunset" no calza con "Sunset catamaran": con un negocio acotado se repite
+  // sin el texto y el modelo elige entre sus tours. Sin negocio no hay respaldo.
+  if (!tours?.length && texto && slug)
+    ({ data: tours } = await consultarTours());
   if (!tours?.length) return { tours: [] };
 
   const { data: salidas } = await db

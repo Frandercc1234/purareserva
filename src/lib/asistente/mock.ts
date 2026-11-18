@@ -102,12 +102,35 @@ function resumir(ultimo: Parte[], es: boolean) {
 export function crearModeloSimulado(locale: 'es' | 'en') {
   const es = locale === 'es';
   return new MockLanguageModelV2({
-    doStream: async ({ prompt }) => {
+    doStream: async ({ prompt, toolChoice }) => {
       const mensajes = prompt as unknown as Mensaje[];
       const ultimo = mensajes[mensajes.length - 1];
       let partes: Parte[];
 
-      if (ultimo?.role === 'tool' && typeof ultimo.content !== 'string') {
+      if (
+        toolChoice?.type === 'tool' &&
+        toolChoice.toolName === 'preparar_reserva'
+      ) {
+        // Paso forzado por prepareStep: se reserva la primera salida de la última búsqueda.
+        const tours = (
+          resultadoDe(mensajes, 'buscar_tours') as {
+            tours?: { salidas: { id: string }[] }[];
+          }
+        )?.tours;
+        const texto = textoDe(
+          [...mensajes].reverse().find((m) => m.role === 'user'),
+        ).toLowerCase();
+        const personas = Number(
+          texto.match(/(\d+)\s*(personas|people|guests)/)?.[1] ?? 1,
+        );
+        partes = llamarHerramienta('preparar_reserva', {
+          salida_id: tours?.[0]?.salidas?.[0]?.id,
+          personas,
+        });
+      } else if (
+        ultimo?.role === 'tool' &&
+        typeof ultimo.content !== 'string'
+      ) {
         // Simula el 429 de Groq en el último paso, después de que la herramienta ya respondió.
         const ultimoUsuario = [...mensajes]
           .reverse()

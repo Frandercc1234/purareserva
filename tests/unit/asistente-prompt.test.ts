@@ -10,7 +10,7 @@ describe('prompt del asistente', () => {
     expect(es).toContain('Sos el asistente de PuraReserva');
     expect(es).toContain('siempre `buscar_tours`');
     expect(es).toContain('llamar al 911');
-    expect(es.length).toBeLessThan(2200);
+    expect(es.length).toBeLessThan(2400);
     expect(es).toContain('16 de noviembre (2026-11-16)');
     expect(es).not.toContain('The user is viewing');
 
@@ -18,6 +18,16 @@ describe('prompt del asistente', () => {
     expect(en).toContain('You are the PuraReserva assistant');
     expect(en).toContain('always `buscar_tours`');
     expect(en).toContain('November 16 (2026-11-16)');
+  });
+
+  it('la regla de reservas dice que el botón lleva a pagar y no que la reserva está hecha', () => {
+    const es = construirPrompt({ locale: 'es', ahora: AHORA });
+    expect(es).toContain('el botón lleva a pagar el depósito');
+    expect(es).toContain('Nunca digas que la reserva está hecha o confirmada');
+
+    const en = construirPrompt({ locale: 'en', ahora: AHORA });
+    expect(en).toContain('the button leads to paying the deposit');
+    expect(en).toContain('Never say the booking is made or confirmed');
   });
 
   it('agrega el contexto del negocio y el tour que se está viendo', () => {

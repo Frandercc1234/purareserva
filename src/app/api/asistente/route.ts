@@ -10,6 +10,7 @@ import {
 } from 'ai';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { debeForzarReserva } from '@/lib/asistente/forzar-reserva';
 import { crearHerramientas } from '@/lib/asistente/herramientas';
 import {
   claveVisitante,
@@ -182,6 +183,15 @@ export async function POST(request: Request) {
         `asistente: tokens entrada=${totalUsage.inputTokens} salida=${totalUsage.outputTokens}`,
       ),
     stopWhen: stepCountIs(4),
+    // Pidió reservar y la búsqueda dejó una sola salida: el modelo no puede responder con
+    // texto en vez de llamar a preparar_reserva (sin la llamada no hay botón).
+    prepareStep: ({ steps }) =>
+      debeForzarReserva({ textoUsuario: textoDe(ultimo), pasos: steps })
+        ? {
+            toolChoice: { type: 'tool', toolName: 'preparar_reserva' },
+            activeTools: ['preparar_reserva'],
+          }
+        : undefined,
     temperature: 0.3,
     maxOutputTokens: 600,
     // gpt-oss razona antes de responder: con esfuerzo bajo gasta menos cuota.

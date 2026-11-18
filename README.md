@@ -120,13 +120,13 @@ Corre en el plan gratis de Groq (`openai/gpt-oss-120b`). El límite que manda es
 
 ### Evaluación
 
-`tests/asistente/casos.json` tiene 30 casos (15 en español y 15 en inglés): tours, guía, preguntas sin dato, reservas y seguridad. Se corren contra el modelo real:
+`tests/asistente/casos.json` tiene 36 casos (18 en español y 18 en inglés): tours, guía, preguntas sin dato, reservas y seguridad. Se corren contra el modelo real:
 
 ```bash
 npm run asistente:evaluar
 ```
 
-La primera corrida completa dio 27 de 30. Tras ajustar el prompt, los 3 que fallaban y otros 5 pasaron (8 de 8). Los otros 22 no se repitieron para no gastar la cuota diaria. No corre en CI: ahí las pruebas e2e usan un modelo simulado (`ASISTENTE_MOCK=1`).
+La primera corrida completa de los 30 casos originales dio 27 de 30. Tras ajustar el prompt, los 3 que fallaban y otros 5 pasaron (8 de 8). El 18 de noviembre de 2026, con las correcciones de reservas ya en main, se corrieron los 6 casos de reserva (25, 26, 27, 31, 32 y 33) contra Groq real: 6 de 6 (100 %). Los demás casos no se repitieron para no gastar la cuota diaria, así que no hay un puntaje reciente de los 36. No corre en CI: ahí las pruebas e2e usan un modelo simulado (`ASISTENTE_MOCK=1`).
 
 ## Correrlo en local
 

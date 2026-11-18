@@ -10,7 +10,7 @@ import {
 } from 'ai';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { debeForzarReserva } from '@/lib/asistente/forzar-reserva';
+import { configurarPaso } from '@/lib/asistente/forzar-reserva';
 import { crearHerramientas } from '@/lib/asistente/herramientas';
 import {
   claveVisitante,
@@ -163,6 +163,7 @@ export async function POST(request: Request) {
     {
       locale,
       negocioSlug: negocio ? contexto?.negocio_slug : undefined,
+      tourSlug: tour ? contexto?.tour_slug : undefined,
     },
     db,
   );
@@ -185,17 +186,15 @@ export async function POST(request: Request) {
     stopWhen: stepCountIs(4),
     // Pidió reservar y la búsqueda dejó una sola salida: el modelo no puede responder con
     // texto en vez de llamar a preparar_reserva (sin la llamada no hay botón).
+    // Con buscar_tours ya llamada en este mensaje, deja de estar disponible.
     prepareStep: ({ steps }) =>
-      debeForzarReserva({ textoUsuario: textoDe(ultimo), pasos: steps })
-        ? {
-            toolChoice: { type: 'tool', toolName: 'preparar_reserva' },
-            activeTools: ['preparar_reserva'],
-          }
-        : undefined,
+      configurarPaso({ textoUsuario: textoDe(ultimo), pasos: steps }),
     temperature: 0.3,
     maxOutputTokens: 600,
     // gpt-oss razona antes de responder: con esfuerzo bajo gasta menos cuota.
-    providerOptions: { groq: { reasoningEffort: 'low' } },
+    providerOptions: {
+      groq: { reasoningEffort: 'low', parallelToolCalls: false },
+    },
   });
 
   // Se espera el primer fragmento: si el proveedor falla de entrada (429 o 5xx), se

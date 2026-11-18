@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { debeForzarReserva } from '@/lib/asistente/forzar-reserva';
+import {
+  configurarPaso,
+  debeForzarReserva,
+} from '@/lib/asistente/forzar-reserva';
 
 const salida = (id: string) => ({ id, fecha_hora_texto: 'sáb', cupos: 8 });
 const tour = (salidas: ReturnType<typeof salida>[]) => ({
@@ -97,5 +100,36 @@ describe('debeForzarReserva', () => {
         ],
       }),
     ).toBe(false);
+  });
+});
+
+describe('configurarPaso', () => {
+  it('sin llamadas previas no cambia nada', () => {
+    expect(
+      configurarPaso({
+        textoUsuario: 'Hola',
+        pasos: [{ toolCalls: [], toolResults: [] }],
+      }),
+    ).toBeUndefined();
+  });
+
+  it('después de buscar_tours, ya no está entre las herramientas activas', () => {
+    const paso = configurarPaso({
+      textoUsuario: 'Tours de canopy',
+      pasos: [busqueda([tour([salida('s1'), salida('s2')])])],
+    });
+    expect(paso?.activeTools).toEqual(['buscar_guia', 'preparar_reserva']);
+    expect(paso?.activeTools).not.toContain('buscar_tours');
+  });
+
+  it('si además hay que forzar la reserva, solo preparar_reserva', () => {
+    const paso = configurarPaso({
+      textoUsuario: TEXTO,
+      pasos: [busqueda([tour([salida('s1')])])],
+    });
+    expect(paso).toEqual({
+      toolChoice: { type: 'tool', toolName: 'preparar_reserva' },
+      activeTools: ['preparar_reserva'],
+    });
   });
 });

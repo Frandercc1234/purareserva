@@ -47,3 +47,38 @@ export function debeForzarReserva({
     .find((r) => r.toolName === 'buscar_tours');
   return busqueda !== undefined && unaSolaSalida(busqueda.output);
 }
+
+type NombreHerramienta = 'buscar_tours' | 'buscar_guia' | 'preparar_reserva';
+const TODAS: NombreHerramienta[] = [
+  'buscar_tours',
+  'buscar_guia',
+  'preparar_reserva',
+];
+
+/**
+ * Qué puede hacer el modelo en el siguiente paso (`prepareStep` de `streamText`):
+ * - Si hay que forzar la reserva, solo `preparar_reserva` y sin elegir.
+ * - Si `buscar_tours` ya se llamó en este mensaje, deja de estar disponible: dos búsquedas
+ *   en un mensaje solo duplican las tarjetas.
+ * - Si no, sin cambios (`undefined`).
+ */
+export function configurarPaso({
+  textoUsuario,
+  pasos,
+}: {
+  textoUsuario: string;
+  pasos: readonly PasoAsistente[];
+}) {
+  if (debeForzarReserva({ textoUsuario, pasos })) {
+    return {
+      toolChoice: {
+        type: 'tool' as const,
+        toolName: 'preparar_reserva' as const,
+      },
+      activeTools: ['preparar_reserva' as const],
+    };
+  }
+  if (pasos.some((p) => p.toolCalls.some((l) => l.toolName === 'buscar_tours')))
+    return { activeTools: TODAS.filter((n) => n !== 'buscar_tours') };
+  return undefined;
+}

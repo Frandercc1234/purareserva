@@ -10,7 +10,7 @@ describe('prompt del asistente', () => {
     expect(es).toContain('Sos el asistente de PuraReserva');
     expect(es).toContain('siempre `buscar_tours`');
     expect(es).toContain('llamar al 911');
-    expect(es.length).toBeLessThan(2400);
+    expect(es.length).toBeLessThan(2600);
     expect(es).toContain('16 de noviembre (2026-11-16)');
     expect(es).not.toContain('The user is viewing');
 
@@ -22,12 +22,36 @@ describe('prompt del asistente', () => {
 
   it('la regla de reservas dice que el botón lleva a pagar y no que la reserva está hecha', () => {
     const es = construirPrompt({ locale: 'es', ahora: AHORA });
-    expect(es).toContain('el botón lleva a pagar el depósito');
+    expect(es).toContain('el botón de la tarjeta lleva a pagar el depósito');
     expect(es).toContain('Nunca digas que la reserva está hecha o confirmada');
 
     const en = construirPrompt({ locale: 'en', ahora: AHORA });
-    expect(en).toContain('the button leads to paying the deposit');
+    expect(en).toContain('the button on the card leads to paying the deposit');
     expect(en).toContain('Never say the booking is made or confirmed');
+  });
+
+  it('en español refuerza el voseo con ejemplos y prohíbe el tuteo', () => {
+    const es = construirPrompt({ locale: 'es', ahora: AHORA });
+    expect(es).toContain('Hablá siempre de vos, nunca de tú');
+    for (const ejemplo of ['necesitás', 'escribí', 'avisame', 'podés'])
+      expect(es).toContain(`"${ejemplo}"`);
+  });
+
+  it('el botón se nombra como el de la tarjeta y nunca como el de abajo', () => {
+    const es = construirPrompt({ locale: 'es', ahora: AHORA });
+    expect(es).toContain('el botón de la tarjeta');
+    expect(es).toContain('Nunca digas "el botón de abajo"');
+
+    const en = construirPrompt({ locale: 'en', ahora: AHORA });
+    expect(en).toContain('the button on the card');
+    expect(en).toContain('Never say "the button below"');
+  });
+
+  it('pide llamar buscar_tours una sola vez por mensaje', () => {
+    const es = construirPrompt({ locale: 'es', ahora: AHORA });
+    expect(es).toContain('Llamala una sola vez por mensaje');
+    const en = construirPrompt({ locale: 'en', ahora: AHORA });
+    expect(en).toContain('Call it only once per message');
   });
 
   it('agrega el contexto del negocio y el tour que se está viendo', () => {
